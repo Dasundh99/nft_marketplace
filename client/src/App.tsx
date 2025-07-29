@@ -2,6 +2,8 @@ import {useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
 
+import Home from './pages/Home/Home'
+
 function App() {
   // const [array, setArray] = useState<string[]>([])
 
@@ -20,21 +22,9 @@ function App() {
   }, [])
 
   return (
-    <>
-      <h1>NFT Marketplace</h1>
-
-      {/* <div className="card">
-        {array.length > 0 ? (
-          <ul>
-            {array.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div> */}
-    </>
+    <div className="bg-gray-900 text-white min-h-screen">
+      <Home />
+    </div>
   )
 }
 
