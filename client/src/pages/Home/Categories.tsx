@@ -1,16 +1,15 @@
 import React from "react";
 
-const categories = ["Art", "Music", "Gaming", "Virtual Worlds", "Collectibles"];
+const categories = ["Gold", "Petroleum", "Gem", "Jewellery", "Silver", "Platinum", "Copper", "Aluminium", "Iron", "Steel"];
 
 const Categories: React.FC = () => {
   return (
-    <section className="py-12 px-6 bg-gray-950">
-      <h2 className="text-3xl font-bold mb-8 text-center">Browse by Category</h2>
-      <div className="flex flex-wrap justify-center gap-4">
+    <section className="py-6 px-6 bg-gray-950">
+      <div className="flex flex-wrap justify-left gap-2">
         {categories.map((cat) => (
           <button
             key={cat}
-            className="px-6 py-2 border border-purple-500 text-purple-400 hover:bg-purple-600 hover:text-white rounded-full transition"
+            className="px-4 py-2 border border-gray-200 text-gray-200 hover:bg-gray-500 hover:text-black rounded-lg transition"
           >
             {cat}
           </button>

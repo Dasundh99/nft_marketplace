@@ -1,6 +1,7 @@
 import {useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
+import './index.css';
 
 import Home from './pages/Home/Home'
 
