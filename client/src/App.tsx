@@ -5,6 +5,7 @@ import Layout from "./components/Layouts/Layout";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notiication";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const fetchAPI = async () => {
@@ -81,6 +82,7 @@ function App() {
           }
         /> */}
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
