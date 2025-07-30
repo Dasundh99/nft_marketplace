@@ -2,7 +2,7 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <section className="px-6 py-4 bg-gradient-to-b from-black-700 to-black-900 flex items-center justify-between">
+    <section className="pl-25 px-6 py-4 bg-gradient-to-b from-black-700 to-black-900 flex items-center justify-between">
       <div className="flex items-center w-1/3">
         <input
           type="text"
