@@ -3,7 +3,7 @@ import './App.css'
 import axios from 'axios'
 import './index.css';
 
-import Home from './pages/Home/Home'
+import Home from './pages/Home'
 
 function App() {
   // const [array, setArray] = useState<string[]>([])
