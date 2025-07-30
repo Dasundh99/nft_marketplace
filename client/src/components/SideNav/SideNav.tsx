@@ -2,8 +2,11 @@ import React from "react";
 
 const SideNav: React.FC = () => {
   return (
-    <div className="w-20 h-screen bg-gray-100 dark:bg-gray-800 p-4 transition-colors duration-200">
-      <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">NFT</h2>
+    <div className="fixed top-0 left-0 w-20 h-screen bg-gray-100 dark:bg-gray-800 p-4 transition-colors duration-200">
+      <div className="text-center p-2">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">NFT</h2>
+      </div>
+      <p className="pt-8 text-center text-sm font-bold text-gray-600 dark:text-gray-400">Menu</p>
       <ul className="mt-4 space-y-2">
         {/* Menu Icon */}
         <li>

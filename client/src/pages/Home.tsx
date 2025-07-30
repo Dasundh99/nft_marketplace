@@ -9,8 +9,8 @@ const Home: React.FC = () => {
     <div>
       <div className="flex">
         <SideNav />
-        <div className="flex-1 bg-white dark:bg-gray-900 transition-colors duration-200">
-          <div className="p-4">
+        <div className="ml-20 flex-1 bg-white dark:bg-gray-900 transition-colors duration-200 h-[2000px]">
+          <div className="">
             <Header />
             <Categories />
           </div>
