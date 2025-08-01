@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const SideNav: React.FC = () => {
   return (
-    <div className="fixed top-0 left-0 w-20 h-screen bg-gray-100 dark:bg-gray-800 p-4 transition-colors duration-200 flex flex-col items-center">
+    <div className="fixed top-0 left-0 w-20 h-screen bg-black p-4 transition-colors duration-200 flex flex-col items-center">
       <div className="text-center p-2 mb-8">
         <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">NFT</h2>
       </div>
@@ -116,11 +116,6 @@ const SideNav: React.FC = () => {
             </svg>
           </Link>
         </li>
-
-
-
-
-
       </ul>
     </div>
   );

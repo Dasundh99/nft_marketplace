@@ -2,12 +2,12 @@ import React from "react";
 
 const Header: React.FC = () => {
   return (
-    <section className="pl-25 px-6 py-4 bg-gradient-to-b from-black-700 to-black-900 flex items-center justify-between">
-      <div className="flex items-center w-1/3">
+    <section className="px-5 py-4 bg-black flex items-center justify-between">
+      <div className="bg-blackflex items-center w-1/3">
         <input
           type="text"
           placeholder="Search NFTs..."
-          className="w-full px-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
       <div className="flex items-center">
