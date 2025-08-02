@@ -1,12 +1,13 @@
 import React from "react";
 import Categories from "./Categories";
 import ImageSlider from "../components/ImageSlider/ImageSlider";
+import Image1 from "../assets/Slider1.jpg";
 
 const images = [
-  "https://images.unsplash.com/photo-1718752773168-a44aa1601ddd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1618615580649-1a4bc3bea1e5?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1714548870002-d25e8329039c?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1605821771565-35e0d046a2fb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  Image1,
+  Image1,
+  Image1,
+  Image1,
 ];
 
 const Home: React.FC = () => {
@@ -19,16 +20,16 @@ const Home: React.FC = () => {
         </div>
 
         <div className="flex flex-col bg-white">
-          <div className="h-[400px] bg-black flex items-center justify-center ">
-            <div className="p-4">
+          <div className="h-[400px] w-full bg-black flex items-center justify-center ">
+            <div className="p-5">
               <ImageSlider images={images} interval={4000} />
             </div>
           </div>
 
 
-          <div className="h-[400px] bg-black flex-col flex items-center justify-center gap-5 p-5">
+          <div className="h-[400px] bg-black flex-col gap-5 p-5 flex">
             <div>
-              <div>Trending Assets</div>
+              <div className="text-white font-bold flex justify-start">Trending Assets</div>
             </div>
 
             <div className="w-full flex-1 flex gap-5">
@@ -45,9 +46,9 @@ const Home: React.FC = () => {
           </div>
 
 
-          <div className="h-[300px] bg-black flex-col flex items-center justify-center gap-5 p-5">
+          <div className="h-[300px] bg-black flex-col flex gap-5 p-5">
             <div>
-              <div>Weekly Highest Sales </div>
+              <div className="text-white font-bold flex justify-start">Weekly Highest Sales </div>
             </div>
 
             <div className="w-full flex-1 flex gap-5">
@@ -57,9 +58,9 @@ const Home: React.FC = () => {
           </div>
 
 
-          <div className="h-[500px] bg-black flex-col flex items-center justify-center gap-5 p-5">
+          <div className="h-[500px] bg-black flex-col flex gap-5 p-5">
             <div>
-              <div>Highest Assets</div>
+              <div className="text-white font-bold flex justify-start">Highest Assets</div>
             </div>
 
             <div className="w-full flex-1 flex gap-5">
@@ -76,13 +77,13 @@ const Home: React.FC = () => {
           </div>
 
 
-          <div className="h-[300px] bg-black flex-col flex items-center justify-center gap-5 p-5">
+          <div className="h-[300px] bg-black flex-col flex gap-5 p-5">
             <div>
-              <div>How NFT Works</div>
+              <div className="text-white font-bold flex justify-start">How NFT Works</div>
             </div>
 
             <div>
-              <div>"A fusion of timeless elegance and digital innovation — this NFT captures</div>
+              <div className="text-xs">"A fusion of timeless elegance and digital innovation — this NFT captures</div>
             </div>
 
             <div className="w-full flex-1 flex gap-5">
