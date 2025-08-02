@@ -9,7 +9,7 @@ import Footer from "./components/Footer/Footer";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
-
+import Profile from "./components/SettingsPage/Profile";
 function App() {
   const fetchAPI = async () => {
     try {
@@ -86,6 +86,16 @@ function App() {
             element={
               <Layout>
                 <TermsAndConditions />
+              </Layout>
+            }
+          />
+        }
+        {
+          <Route
+            path="/user"
+            element={
+              <Layout>
+                <Profile />
               </Layout>
             }
           />
