@@ -8,6 +8,7 @@ import Notifications from "./pages/Notiication";
 import Footer from "./components/Footer/Footer";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 function App() {
   const fetchAPI = async () => {
@@ -79,14 +80,16 @@ function App() {
             }
           />
         }
-        {/* <Route
-          path="/settings"
-          element={
-            <Layout>
-              <Settings />
-            </Layout>
-          }
-        /> */}
+        {
+          <Route
+            path="/termsandconditions"
+            element={
+              <Layout>
+                <TermsAndConditions />
+              </Layout>
+            }
+          />
+        }
       </Routes>
       <Footer />
     </BrowserRouter>
