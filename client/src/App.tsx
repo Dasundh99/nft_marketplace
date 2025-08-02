@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notiication";
 import Footer from "./components/Footer/Footer";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   const fetchAPI = async () => {
@@ -57,14 +58,14 @@ function App() {
             </Layout>
           }
         />
-        {/* <Route
-          path="/settings"
+        {<Route
+          path="/productdetails"
           element={
             <Layout>
-              <Settings />
+              <ProductDetails />
             </Layout>
           }
-        /> */}
+        />}
         {/* <Route
           path="/settings"
           element={
