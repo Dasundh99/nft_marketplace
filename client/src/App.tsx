@@ -7,6 +7,7 @@ import Settings from "./pages/Settings";
 import Notifications from "./pages/Notiication";
 import Footer from "./components/Footer/Footer";
 import ProductDetails from "./pages/ProductDetails";
+import About from "./pages/About";
 
 function App() {
   const fetchAPI = async () => {
@@ -58,22 +59,26 @@ function App() {
             </Layout>
           }
         />
-        {<Route
-          path="/productdetails"
-          element={
-            <Layout>
-              <ProductDetails />
-            </Layout>
-          }
-        />}
-        {/* <Route
-          path="/settings"
-          element={
-            <Layout>
-              <Settings />
-            </Layout>
-          }
-        /> */}
+        {
+          <Route
+            path="/productdetails"
+            element={
+              <Layout>
+                <ProductDetails />
+              </Layout>
+            }
+          />
+        }
+        {
+          <Route
+            path="/about"
+            element={
+              <Layout>
+                <About />
+              </Layout>
+            }
+          />
+        }
         {/* <Route
           path="/settings"
           element={
