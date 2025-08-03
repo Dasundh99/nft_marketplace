@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notiication";
 import Footer from "./components/Footer/Footer";
+import { ActivityPage } from "./pages/ActivityPage";
 
 function App() {
   const fetchAPI = async () => {
@@ -54,6 +55,14 @@ function App() {
           element={
             <Layout>
               <Notifications />
+            </Layout>
+          }
+        />
+         <Route
+          path="/activitypage"
+          element={
+            <Layout>
+              <ActivityPage />
             </Layout>
           }
         />
