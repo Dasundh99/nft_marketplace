@@ -11,7 +11,7 @@ const Footer = () => {
                     <div className="flex items-center gap-4">
                         <FaFacebookSquare className="text-xl hover:text-blue-500 cursor-pointer" />
                         <FaInstagram className="text-xl hover:text-pink-500 cursor-pointer" />
-                        <FaXTwitter className="text-xl hover:text-black cursor-pointer" />
+                        <FaXTwitter className="text-xl hover:text-gray-500 cursor-pointer" />
                         <FaYoutube className="text-xl hover:text-red-600 cursor-pointer" />
                     </div>
                 </div>
@@ -34,9 +34,22 @@ const Footer = () => {
                         collection is a unique digital collectible forged with precision, rarity, and prestige.</div>
                 </div>
                 <div className="mt-2 border-t border-gray-600 pt-4 text-center text-xs">
-                    <p className="text-white">
-                        Copyright © {new Date().getFullYear()} NFThrive. All Rights Reserved.
-                    </p>
+                    <div className="flex ">
+                        <div className="flex-1 flex justify-start">
+                            <p className="text-white">
+                                Copyright © {new Date().getFullYear()} NFThrive. All Rights Reserved.
+                            </p>
+                        </div>
+
+                        <div className="flex-1 flex justify-end gap-4">
+                            <a href="/termsandconditions" className="text-white hover:underline">
+                                Terms of Service
+                            </a>
+                            <a href="/about" className="text-white hover:underline">
+                                Privacy Policy
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
@@ -44,6 +57,8 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
 
 
 
