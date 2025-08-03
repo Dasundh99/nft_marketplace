@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 interface ImageSliderProps {
     images: string[];
-    interval?: number; // optional auto-slide delay
+    interval?: number;
 }
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ images, interval = 3000 }) => {
@@ -24,14 +24,14 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images, interval = 3000 }) =>
     }, [currentIndex, interval]);
 
     return (
-        <div className="relative w-full max-w-4xl mx-auto overflow-hidden rounded-lg">
+        <div className="relative w-full max-w-fit overflow-hidden rounded-lg">
             {/* Slide Images */}
-            <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+            <div className="w-full flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                 {images.map((src, index) => (
                     <img
                         key={index}
                         src={src}
-                        className="w-full flex-shrink-0 object-cover h-64 sm:h-96"
+                        className="w-full flex-shrink-0 object-cover h-64 sm:h-96 opacity-50"
                         alt={`Slide ${index + 1}`}
                     />
                 ))}

@@ -7,6 +7,10 @@ import Settings from "./pages/Settings";
 import Notifications from "./pages/Notiication";
 import Footer from "./components/Footer/Footer";
 import { ActivityPage } from "./pages/ActivityPage";
+import ProductDetails from "./pages/ProductDetails";
+import About from "./pages/About";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import Profile from "./components/SettingsPage/Profile";
 
 function App() {
   const fetchAPI = async () => {
@@ -25,7 +29,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Wrap pages with Layout */}
         <Route
           path="/"
           element={
@@ -58,7 +61,7 @@ function App() {
             </Layout>
           }
         />
-         <Route
+        <Route
           path="/activitypage"
           element={
             <Layout>
@@ -66,30 +69,38 @@ function App() {
             </Layout>
           }
         />
-        {/* <Route
-          path="/settings"
+        <Route
+          path="/productdetails"
           element={
             <Layout>
-              <Settings />
+              <ProductDetails />
             </Layout>
           }
-        /> */}
-        {/* <Route
-          path="/settings"
+        />
+        <Route
+          path="/about"
           element={
             <Layout>
-              <Settings />
+              <About />
             </Layout>
           }
-        /> */}
-        {/* <Route
-          path="/settings"
+        />
+        <Route
+          path="/termsandconditions"
           element={
             <Layout>
-              <Settings />
+              <TermsAndConditions />
             </Layout>
           }
-        /> */}
+        />
+        <Route
+          path="/user"
+          element={
+            <Layout>
+              <Profile />
+            </Layout>
+          }
+        />
       </Routes>
       <Footer />
     </BrowserRouter>
