@@ -3,7 +3,7 @@ import React from "react";
 const Header: React.FC = () => {
   return (
     <section className="px-5 py-4 bg-black flex items-center justify-between">
-      <div className="bg-blackflex items-center w-1/3">
+      <div className="bg-blackflex items-center w-1/3 border border-gray-500 rounded-lg">
         <input
           type="text"
           placeholder="Search NFTs..."
