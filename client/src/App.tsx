@@ -6,10 +6,12 @@ import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notiication";
 import Footer from "./components/Footer/Footer";
+import { ActivityPage } from "./pages/ActivityPage";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Profile from "./components/SettingsPage/Profile";
+
 function App() {
   const fetchAPI = async () => {
     try {
@@ -27,7 +29,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Wrap pages with Layout */}
         <Route
           path="/"
           element={
@@ -60,46 +61,46 @@ function App() {
             </Layout>
           }
         />
-        {
-          <Route
-            path="/productdetails"
-            element={
-              <Layout>
-                <ProductDetails />
-              </Layout>
-            }
-          />
-        }
-        {
-          <Route
-            path="/about"
-            element={
-              <Layout>
-                <About />
-              </Layout>
-            }
-          />
-        }
-        {
-          <Route
-            path="/termsandconditions"
-            element={
-              <Layout>
-                <TermsAndConditions />
-              </Layout>
-            }
-          />
-        }
-        {
-          <Route
-            path="/user"
-            element={
-              <Layout>
-                <Profile />
-              </Layout>
-            }
-          />
-        }
+        <Route
+          path="/activitypage"
+          element={
+            <Layout>
+              <ActivityPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/productdetails"
+          element={
+            <Layout>
+              <ProductDetails />
+            </Layout>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <Layout>
+              <About />
+            </Layout>
+          }
+        />
+        <Route
+          path="/termsandconditions"
+          element={
+            <Layout>
+              <TermsAndConditions />
+            </Layout>
+          }
+        />
+        <Route
+          path="/user"
+          element={
+            <Layout>
+              <Profile />
+            </Layout>
+          }
+        />
       </Routes>
       <Footer />
     </BrowserRouter>
