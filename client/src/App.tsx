@@ -12,7 +12,7 @@ import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
-import User from "./components/SideBar/SideBar"
+import User from "./components/UserProfile/UserProfile"
 
 function App() {
   const fetchAPI = async () => {

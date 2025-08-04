@@ -26,7 +26,7 @@ const SideNav: React.FC = () => {
         {/* IoPieChartSharp Icon */}
         <li>
           <Link
-            to="/home"
+            to="/activitypage"
             className="flex p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 items-center justify-center"
           >
             <FiPieChart className="w-5 h-5" />
@@ -36,7 +36,7 @@ const SideNav: React.FC = () => {
         {/* File Icon */}
         <li>
           <Link
-            to="/home"
+            to="/productdetails"
             className="flex p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 items-center justify-center"
           >
             <IoDocumentTextSharp className="w-5 h-5" />
