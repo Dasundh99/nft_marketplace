@@ -10,8 +10,9 @@ import { ActivityPage } from "./pages/ActivityPage";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import { SalesPage } from "./pages/SalesPage";
 
-import Profile from "./components/SettingsPage/Profile";
+// import Profile from "./components/SettingsPage/Profile";
 import Market from "./pages/Market";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
@@ -134,6 +135,14 @@ function App() {
           element={
             <Layout>
               <ProfileSettings />
+            </Layout>
+          }
+        />
+          <Route
+          path="/sales"
+          element={
+            <Layout>
+              <SalesPage />
             </Layout>
           }
         />
