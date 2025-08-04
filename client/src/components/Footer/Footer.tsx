@@ -7,26 +7,33 @@ const Footer = () => {
         <footer className="ml-20 bg-black text-gray-300 p-5">
             <div className="h-full w-full flex flex-col justify-center">
                 <div className="h-full w-full flex flex-1 gap-5 items-center">
-                    <div className="text-2xl font-bold flex-1">NFThrive</div>
+                    <div
+                        className="text-2xl font-bold flex-1
+             bg-gradient-to-r from-[#059669] to-[#c3f3e4]
+             bg-clip-text text-transparent"
+                    >
+                        NFThrive
+                    </div>
+
                     <div className="flex items-center gap-4">
-                        <FaFacebookSquare className="text-xl hover:text-gray-500 cursor-pointer" />
-                        <FaInstagram className="text-xl hover:text-gray-500 cursor-pointer" />
-                        <FaXTwitter className="text-xl hover:text-gray-500 cursor-pointer" />
-                        <FaYoutube className="text-xl hover:text-gray-500 cursor-pointer" />
+                        <FaFacebookSquare className="text-xl hover:text-gray-500 cursor-pointer transition-transform duration-200 hover:scale-105" />
+                        <FaInstagram className="text-xl hover:text-gray-500 cursor-pointer transition-transform duration-200 hover:scale-105" />
+                        <FaXTwitter className="text-xl hover:text-gray-500 cursor-pointer transition-transform duration-200 hover:scale-105" />
+                        <FaYoutube className="text-xl hover:text-gray-500 cursor-pointer transition-transform duration-200 hover:scale-105" />
                     </div>
                 </div>
 
                 <div className="pt-5 px-10 h-full w-full flex flex-1">
-                    <div className="flex-1 flex items-center justify-center">
+                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105">
                         <a href="/about">About us</a>
                     </div>
-                    <div className="flex-1 flex items-center justify-center">
+                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105">
                         <a href="/discover">Discover</a>
                     </div>
-                    <div className="flex-1 flex items-center justify-center">
+                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105 ">
                         <a href="/books">Books</a>
                     </div>
-                    <div className="flex-1 flex items-center justify-center">
+                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105">
                         <a href="/explore">Explore</a>
                     </div>
                 </div>
@@ -47,15 +54,16 @@ const Footer = () => {
                         </div>
 
                         <div className="flex-1 flex justify-end gap-4">
-                            <a href="/termsandconditions" className="text-white hover:underline">
+                            <a className="text-white transition-transform duration-200 hover:scale-105">
                                 Terms of Service
                             </a>
-                            <a className="text-white hover:underline">
+
+                            <a className="text-white transition-transform duration-200 hover:scale-105">
                                 Privacy Policy
                             </a>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
         </footer>
     );
