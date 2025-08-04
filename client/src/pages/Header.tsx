@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 const Header: React.FC = () => {
   return (
     <section className="px-5 py-4 bg-black flex items-center justify-between">
-      <div className="bg-blackflex items-center w-1/3 border border-gray-500 rounded-lg">
+      <div className="bg-blackflex items-center w-1/3 border border-gray-500 rounded-md">
         <input
           type="text"
           placeholder="Search NFTs..."
-          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 rounded-md bg-black text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
       <div className="flex items-center">
