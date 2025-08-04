@@ -11,6 +11,7 @@ import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import Profile from "./components/SettingsPage/Profile";
+import Market from "./pages/Market";
 
 function App() {
   const fetchAPI = async () => {
@@ -66,6 +67,14 @@ function App() {
           element={
             <Layout>
               <ActivityPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/market"
+          element={
+            <Layout>
+              <Market />
             </Layout>
           }
         />
