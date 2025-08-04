@@ -9,21 +9,26 @@ const Footer = () => {
                 <div className="h-full w-full flex flex-1 gap-5 items-center">
                     <div className="text-2xl font-bold flex-1">NFThrive</div>
                     <div className="flex items-center gap-4">
-                        <FaFacebookSquare className="text-xl hover:text-blue-500 cursor-pointer" />
-                        <FaInstagram className="text-xl hover:text-pink-500 cursor-pointer" />
+                        <FaFacebookSquare className="text-xl hover:text-gray-500 cursor-pointer" />
+                        <FaInstagram className="text-xl hover:text-gray-500 cursor-pointer" />
                         <FaXTwitter className="text-xl hover:text-gray-500 cursor-pointer" />
-                        <FaYoutube className="text-xl hover:text-red-600 cursor-pointer" />
+                        <FaYoutube className="text-xl hover:text-gray-500 cursor-pointer" />
                     </div>
                 </div>
 
-
-
                 <div className="pt-5 px-10 h-full w-full flex flex-1">
-                    <div className="flex-1 flex items-center justify-center">About us</div>
-                    <div className="flex-1 flex items-center justify-center">Discover</div>
-                    <div className="flex-1 flex items-center justify-center">About us</div>
-                    <div className="flex-1 flex items-center justify-center">Books</div>
-                    <div className="flex-1 flex items-center justify-center">Explore</div>
+                    <div className="flex-1 flex items-center justify-center">
+                        <a href="/about">About us</a>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                        <a href="/discover">Discover</a>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                        <a href="/books">Books</a>
+                    </div>
+                    <div className="flex-1 flex items-center justify-center">
+                        <a href="/explore">Explore</a>
+                    </div>
                 </div>
 
                 <div className="h-full w-full flex flex-1">
@@ -45,12 +50,12 @@ const Footer = () => {
                             <a href="/termsandconditions" className="text-white hover:underline">
                                 Terms of Service
                             </a>
-                            <a href="/about" className="text-white hover:underline">
+                            <a className="text-white hover:underline">
                                 Privacy Policy
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
         </footer>
     );

@@ -10,7 +10,9 @@ import { ActivityPage } from "./pages/ActivityPage";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
-import Profile from "./components/SettingsPage/Profile";
+import ProfileSettings from "./components/SettingsPage/ProfileSettings";
+import NotificationSettings from "./components/SettingsPage/NotificationSettings";
+import User from "./components/SideBar/SideBar"
 
 function App() {
   const fetchAPI = async () => {
@@ -37,6 +39,7 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/home"
           element={
@@ -45,6 +48,7 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/settings"
           element={
@@ -52,7 +56,12 @@ function App() {
               <Settings />
             </Layout>
           }
-        />
+        >
+          <Route index element={<ProfileSettings />} />
+          <Route path="profile" element={<ProfileSettings />} />
+          <Route path="notificationSettings" element={<NotificationSettings />} />
+        </Route>
+
         <Route
           path="/notifications"
           element={
@@ -61,6 +70,7 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/activitypage"
           element={
@@ -69,6 +79,7 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/productdetails"
           element={
@@ -77,6 +88,7 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/about"
           element={
@@ -85,6 +97,7 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/termsandconditions"
           element={
@@ -93,14 +106,25 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/user"
           element={
             <Layout>
-              <Profile />
+              < User />
             </Layout>
           }
         />
+
+        <Route
+          path="/profile"
+          element={
+            <Layout>
+              <ProfileSettings />
+            </Layout>
+          }
+        />
+
       </Routes>
       <Footer />
     </BrowserRouter>

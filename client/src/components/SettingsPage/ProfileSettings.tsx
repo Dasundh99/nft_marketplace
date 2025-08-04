@@ -2,7 +2,7 @@ import React from "react";
 import sliderImage from "../../assets/Slider1.jpg";
 import avatarImage from "../../assets/Avatar.svg";
 
-const Profile: React.FC = () => {
+const ProfileSettings: React.FC = () => {
   return (
     <div className="relative">
       <div className="relative">
@@ -55,4 +55,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default ProfileSettings;

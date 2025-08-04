@@ -33,7 +33,7 @@ const notifications = [
 
 const Notifications: React.FC = () => {
   return (
-    <div className="ml-25 mr-5 text-white">
+    <div className="ml-5 text-white">
       <h1 className="text-3xl font-bold mb-6">Notifications</h1>
       <div className="space-y-4">
         {notifications.map((note) => (
