@@ -1,30 +1,26 @@
 import React from "react";
+import { MdPeopleAlt } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   return (
     <section className="px-5 py-4 bg-black flex items-center justify-between">
-      <div className="bg-blackflex items-center w-1/3 border border-gray-500 rounded-lg">
+      <div className="bg-blackflex items-center w-1/3 border border-gray-500 rounded-md">
         <input
           type="text"
           placeholder="Search NFTs..."
-          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 rounded-md bg-black text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
       </div>
       <div className="flex items-center">
-        <svg
-          className="w-8 h-8 text-white hover:text-indigo-300 cursor-pointer"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5.121 18.879A3 3 0 018 16h8a3 3 0 012.879 2.879M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+        
+          <Link
+            to="/home"
+            className="flex p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 items-center justify-center"
+          >
+            <MdPeopleAlt className="w-5 h-5" />
+          </Link>
+        
       </div>
     </section>
   );

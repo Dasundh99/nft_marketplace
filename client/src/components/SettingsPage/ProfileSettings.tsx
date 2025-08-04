@@ -2,14 +2,14 @@ import React from "react";
 import sliderImage from "../../assets/Slider1.jpg";
 import avatarImage from "../../assets/Avatar.svg";
 
-const Profile: React.FC = () => {
+const ProfileSettings: React.FC = () => {
   return (
     <div className="relative">
       <div className="relative">
         <img
           src={sliderImage}
           alt="Cover Image"
-          className="w-full p-5 object-cover h-100"
+          className="w-full p-5 object-cover h-100 opacity-50 "
         />
         <img
           src={avatarImage}
@@ -24,14 +24,14 @@ const Profile: React.FC = () => {
         <div>
           <label>User Name</label>
           <input
-            className="bg-transparent rounded border-2 w-full p-2 mt-3 text-white"
+            className="bg-transparent rounded border-1 w-full p-2 mt-3 text-white"
             placeholder="Add a User Name"
           />
         </div>
         <div>
           <label>Bio</label>
           <textarea
-            className="bg-transparent rounded border-2 w-full p-2 mt-3 text-white"
+            className="bg-transparent rounded border-1 w-full p-2 mt-3 text-white"
             rows={4}
             placeholder="Add Bio"
           />
@@ -39,14 +39,14 @@ const Profile: React.FC = () => {
         <div>
           <label>URL</label>
           <input
-            className="bg-transparent rounded border-2 w-full p-2 mt-3 text-white"
+            className="bg-transparent rounded border-1 w-full p-2 mt-3 text-white"
             placeholder="Add a URL"
           />
         </div>
         <div className="mb-2">
           <label>Email Address</label>
           <input
-            className="bg-transparent rounded border-2 w-full p-2 mt-3 text-white"
+            className="bg-transparent rounded border-1 w-full p-2 mt-3 text-white"
             placeholder="Add a Email Address"
           />
         </div>
@@ -55,4 +55,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile;
+export default ProfileSettings;

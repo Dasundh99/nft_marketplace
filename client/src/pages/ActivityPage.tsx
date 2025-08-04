@@ -1,4 +1,4 @@
-import { Sidebar } from "../components/SideBar/SideBar";
+import { Sidebar } from "../components/UserProfile/UserProfile";
 import { DataTable } from "../components/Table/DataTable";
 import goldImage1 from "../assets/activityAssets/goldImage1.png"
 import { useState } from "react";

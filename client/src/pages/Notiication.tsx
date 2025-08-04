@@ -33,14 +33,14 @@ const notifications = [
 
 const Notifications: React.FC = () => {
   return (
-    <div className="ml-25 mr-5 text-white">
+    <div className="mx-5 text-white">
       <h1 className="text-3xl font-bold mb-6">Notifications</h1>
       <div className="space-y-4">
         {notifications.map((note) => (
           <div
             key={note.id}
             className={`p-4 rounded-lg shadow-md ${
-              note.unread ? "bg-gray-800 border-l-4 border-blue-500" : "bg-gray-700"
+              note.unread ? "bg-gray-800 border-l-4 border-gray-500" : "bg-gray-700"
             }`}
           >
             <div className="flex justify-between items-center mb-1">

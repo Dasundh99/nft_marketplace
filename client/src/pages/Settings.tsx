@@ -1,40 +1,37 @@
-import React, { useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
 
-const Settings: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [notifications, setNotifications] = useState(true);
-
+const Settings = () => {
   return (
-    <div className="ml-25 min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100">
-      <h2 className="text-3xl font-bold mb-6">Settings</h2>
+    <div className="flex bg-black text-white min-h-screen">
+      <aside className="w-64 bg-black p-4 flex flex-col justify-start">
+        <h2 className="text-lg font-semibold mb-4">Settings</h2>
 
-      <div className="space-y-6">
-        {/* Theme Toggle */}
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Appearance</h3>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={darkMode}
-              onChange={() => setDarkMode(!darkMode)}
-            />
-            Enable Dark Mode
-          </label>
-        </div>
+        <NavLink
+          to="profile"
+          className={({ isActive }) =>
+            `block mt-2 w-full text-xs px-2 py-1 rounded ${
+              isActive ? "bg-gray-600" : "bg-black"
+            }`
+          }
+        >
+          Profile
+        </NavLink>
 
-        {/* Notifications */}
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Notifications</h3>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={notifications}
-              onChange={() => setNotifications(!notifications)}
-            />
-            Receive email alerts
-          </label>
-        </div>
-      </div>
+        <NavLink
+          to="notificationSettings"
+          className={({ isActive }) =>
+            `block mt-2 w-full text-xs px-2 py-1 rounded ${
+              isActive ? "bg-gray-600" : "bg-black"
+            }`
+          }
+        >
+          Notifications
+        </NavLink>
+      </aside>
+
+      <main className="flex-1 bg-black text-white p-4">
+        <Outlet />
+      </main>
     </div>
   );
 };
