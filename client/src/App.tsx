@@ -5,14 +5,11 @@ import Layout from "./components/Layouts/Layout";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Notiication";
-import Footer from "./components/Footer/Footer";
 import { ActivityPage } from "./pages/ActivityPage";
 import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { SalesPage } from "./pages/SalesPage";
-
-// import Profile from "./components/SettingsPage/Profile";
 import Market from "./pages/Market";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
@@ -148,7 +145,6 @@ function App() {
         />
 
       </Routes>
-      <Footer />
     </BrowserRouter>
   );
 }

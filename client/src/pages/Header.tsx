@@ -1,10 +1,10 @@
 import React from "react";
-import { MdPeopleAlt } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { FaWallet } from "react-icons/fa";
 
 const Header: React.FC = () => {
   return (
-    <section className="px-5 py-4 bg-black flex items-center justify-between">
+    <section className="px-5 py-4 bg-black flex items-center justify-between border-b border-gray-700">
       <div className="bg-blackflex items-center w-1/3 border border-gray-500 rounded-md">
         <input
           type="text"
@@ -18,7 +18,7 @@ const Header: React.FC = () => {
             to="/home"
             className="flex p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 items-center justify-center"
           >
-            <MdPeopleAlt className="w-5 h-5" />
+            <FaWallet className="w-5 h-5" />
           </Link>
         
       </div>

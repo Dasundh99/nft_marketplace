@@ -1,16 +1,16 @@
 import { FaInstagram, FaFacebookSquare, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
-
 const Footer = () => {
     return (
-        <footer className="ml-20 bg-black text-gray-300 p-5">
-            <div className="h-full w-full flex flex-col justify-center">
-                <div className="h-full w-full flex flex-1 gap-5 items-center">
+        <footer className="bg-black text-gray-300 p-5">
+            <div className="w-full flex flex-col justify-center">
+                {/* Logo and Social Icons */}
+                <div className="w-full flex flex-col md:flex-row gap-5 items-center md:items-start md:justify-between mb-6">
                     <div
-                        className="text-2xl font-bold flex-1
-             bg-gradient-to-r from-[#059669] to-[#c3f3e4]
-             bg-clip-text text-transparent"
+                        className="text-2xl font-bold
+                         bg-gradient-to-r from-[#059669] to-[#c3f3e4]
+                         bg-clip-text text-transparent"
                     >
                         NFThrive
                     </div>
@@ -23,44 +23,31 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div className="pt-5 px-10 h-full w-full flex flex-1">
-                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105">
-                        <a href="/about">About us</a>
-                    </div>
-                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105">
-                        <a href="/discover">Discover</a>
-                    </div>
-                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105 ">
-                        <a href="/books">Books</a>
-                    </div>
-                    <div className="flex-1 flex items-center justify-center transition-transform duration-200 hover:scale-105">
-                        <a href="/explore">Explore</a>
-                    </div>
+                {/* Navigation Links */}
+                <div className="pt-5 px-4 md:px-10 w-full flex flex-col sm:flex-row flex-wrap justify-center md:justify-between gap-4">
+                    <a href="/about" className="transition-transform duration-200 hover:scale-105 text-center">About us</a>
+                    <a href="/discover" className="transition-transform duration-200 hover:scale-105 text-center">Discover</a>
+                    <a href="/books" className="transition-transform duration-200 hover:scale-105 text-center">Books</a>
+                    <a href="/explore" className="transition-transform duration-200 hover:scale-105 text-center">Explore</a>
                 </div>
 
-                <div className="h-full w-full flex flex-1">
-                    <div className="p-10 flex-1 flex items-center justify-center text-gray-500 text-center text-xs">MintedGold is a luxury-driven NFT experience
-                        that redefines how we view digital ownership
-                        and timeless beauty. Rooted in the elegance of handcrafted gold and the artistry of fine jewelry,
-                        each NFT in the MintedGold
-                        collection is a unique digital collectible forged with precision, rarity, and prestige.</div>
+                {/* Description */}
+                <div className="p-10 text-gray-500 text-center text-xs">
+                    MintedGold is a luxury-driven NFT experience that redefines how we view digital ownership and timeless beauty.
+                    Rooted in the elegance of handcrafted gold and the artistry of fine jewelry,
+                    each NFT in the MintedGold collection is a unique digital collectible forged with precision, rarity, and prestige.
                 </div>
-                <div className="mt-2 border-t border-gray-600 pt-4 text-center text-xs">
-                    <div className="flex ">
-                        <div className="flex-1 flex justify-start">
-                            <p className="text-white">
-                                Copyright © {new Date().getFullYear()} NFThrive. All Rights Reserved.
-                            </p>
-                        </div>
 
-                        <div className="flex-1 flex justify-end gap-4">
-                            <a className="text-white transition-transform duration-200 hover:scale-105">
-                                Terms of Service
-                            </a>
+                {/* Copyright + Links */}
+                <div className="mt-2 border-t border-gray-600 pt-4 text-xs">
+                    <div className="flex flex-col sm:flex-row justify-between items-center text-center gap-3">
+                        <p className="text-white">
+                            © {new Date().getFullYear()} NFThrive. All Rights Reserved.
+                        </p>
 
-                            <a className="text-white transition-transform duration-200 hover:scale-105">
-                                Privacy Policy
-                            </a>
+                        <div className="flex gap-4">
+                            <a className="text-white transition-transform duration-200 hover:scale-105 cursor-pointer">Terms of Service</a>
+                            <a className="text-white transition-transform duration-200 hover:scale-105 cursor-pointer">Privacy Policy</a>
                         </div>
                     </div>
                 </div>
@@ -70,10 +57,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
-
-
-
-
-

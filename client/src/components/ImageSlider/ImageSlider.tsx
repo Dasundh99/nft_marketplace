@@ -47,8 +47,8 @@ const ImageSlider: React.FC = () => {
   const currentSlide = slides[currentIndex];
 
   return (
-    <div className="relative w-full overflow-hidden">
-      <div className="w-full flex transition-transform duration-500 ease-in-out">
+    <div className="relative w-full">
+      <div className="w-full flex">
         {/* Image */}
         <img
           src={currentSlide.src}
