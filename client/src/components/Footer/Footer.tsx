@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="w-full flex flex-col md:flex-row gap-5 items-center md:items-start md:justify-between mb-6">
                     <div
                         className="text-2xl font-bold
-                         bg-gradient-to-r from-[#059669] to-[#c3f3e4]
+                         bg-gradient-to-r from-[#39e0ab] to-[#059669]
                          bg-clip-text text-transparent"
                     >
                         NFThrive

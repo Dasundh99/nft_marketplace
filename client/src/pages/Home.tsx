@@ -61,6 +61,10 @@ const Articles = [
 ];
 
 const Home: React.FC = () => {
+  function handleReadMore(_id: number): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className="flex bg-black">
       <div className="flex-1 bg-white transition-colors duration-200 min-h-screen">
@@ -127,7 +131,7 @@ const Home: React.FC = () => {
               </div>
             </div>
             <div className="w-full flex-1 flex gap-5">
-              <div className="w-1/3 flex justify-center items-center border border-gray-500 rounded-md bg-gray-500 text-black p-2">
+              <div className="w-1/3 flex justify-center items-center border border-gray-500 rounded-md bg-gray-500 text-black p-2 h-56">
                 <div className="flex-1 flex justify-center items-center bg-white w-full h-full rounded-md ">
                   {/* image */}
                 </div>
@@ -161,7 +165,7 @@ const Home: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex gap-5 flex-1 h-64">
+              <div className="flex gap-5 flex-1 h-56">
                 {HighestSales.map((asset) => (
                   <div
                     key={asset.id}
@@ -183,16 +187,16 @@ const Home: React.FC = () => {
           </div>
 
           {/* Highest Assets */}
-          <div className="h-[350px] bg-black flex-col flex gap-5 p-5 justify-center">
+          <div className="h-[320px] bg-black flex-col flex gap-5 p-5 justify-center">
             <div className="text-white font-bold flex justify-start">
               Highest Assets
             </div>
 
-            <div className="grid grid-cols-4 gap-6 mt-5">
+            <div className="flex flex-cols-4 gap-6 mt-5">
               {highestAssets.map((asset) => (
                 <div
                   key={asset.id}
-                  className="relative w-full h-auto rounded-md overflow-hidden"
+                  className="relative w-full h-56 rounded-md overflow-hidden"
                 >
                   <img
                     src={asset.image}
@@ -213,7 +217,7 @@ const Home: React.FC = () => {
 
 
           {/* How NFT Works */}
-          <div className="h-[320px] bg-black flex-col flex gap-5 p-5">
+          <div className="h-[350px] bg-black flex-col flex gap-5 p-5 mb-5">
             <div>
               <div className="text-white font-bold flex justify-start">
                 How NFT Works
@@ -232,13 +236,13 @@ const Home: React.FC = () => {
                 >
                   {/* Image Placeholder */}
                   <div className="w-full h-40 bg-white rounded-md mb-4 flex justify-center items-center">
-                    {/* Replace with actual image if needed */}
                     <span className="text-gray-400 text-sm">Image</span>
                   </div>
 
                   {/* Title */}
-                  <div className="text-lg font-bold text-center mb-2">
+                  <div className="text-lg text-center mb-2 w-full px-2">
                     {article.title}
+                    <span onClick={() => handleReadMore(article.id)} className="block text-xs text-gray-400 cursor-pointer text-right">Read more</span>
                   </div>
                 </div>
               ))}
