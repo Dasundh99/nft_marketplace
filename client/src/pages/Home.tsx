@@ -1,9 +1,9 @@
 import React from "react";
 import Categories from "./Categories";
-import { useNavigate } from "react-router-dom";
+
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
+
   return (
     <div className="flex">
       <div className="ml-20 flex-1 bg-white dark:bg-gray-900 transition-colors duration-200 min-h-screen">
