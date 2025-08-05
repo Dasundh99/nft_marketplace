@@ -10,6 +10,8 @@ import ProductDetails from "./pages/ProductDetails";
 import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 
+import HowNftsWorks from "./pages/HowNftsWorks";
+
 function App() {
   const fetchAPI = async () => {
     try {
@@ -90,6 +92,24 @@ function App() {
             }
           />
         }
+
+        <Route
+          path="/hownftsworks"
+          element={
+            <Layout>
+              <HowNftsWorks />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/home/hownftsworks"
+          element={
+            <Layout>
+              <HowNftsWorks />
+            </Layout>
+          }
+        />
       </Routes>
       <Footer />
     </BrowserRouter>
