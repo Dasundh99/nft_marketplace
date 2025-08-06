@@ -5,14 +5,57 @@ import productImage1 from "../assets/Product1.svg";
 import productImage2 from "../assets/Product2.svg";
 import productImage3 from "../assets/Product3.svg";
 import productImage4 from "../assets/Product4.svg";
+import { useNavigate } from "react-router-dom";
 
 const trendingAssets = [
-  { id: 1, name: "MintedGold", price: "SOL 1.00005", Status: "NEW", changedPrice: "SOL 1.00005", Change: "-" },
-  { id: 2, name: "MintedGold", price: "SOL 1.00005", Status: "", changedPrice: "SOL 1.00005", Change: "+" },
-  { id: 3, name: "MintedGold", price: "SOL 1.00005", Status: "", changedPrice: "SOL 1.00005", Change: "+" },
-  { id: 4, name: "MintedGold", price: "SOL 1.00005", Status: "NEW", changedPrice: "SOL 1.00005", Change: "-" },
-  { id: 5, name: "MintedGold", price: "SOL 1.00005", Status: "NEW", changedPrice: "SOL 1.00005", Change: "-" },
-  { id: 6, name: "MintedGold", price: "SOL 1.00005", Status: "", changedPrice: "SOL 1.00005", Change: "+" },
+  {
+    id: 1,
+    name: "MintedGold",
+    price: "SOL 1.00005",
+    Status: "NEW",
+    changedPrice: "SOL 1.00005",
+    Change: "-",
+  },
+  {
+    id: 2,
+    name: "MintedGold",
+    price: "SOL 1.00005",
+    Status: "",
+    changedPrice: "SOL 1.00005",
+    Change: "+",
+  },
+  {
+    id: 3,
+    name: "MintedGold",
+    price: "SOL 1.00005",
+    Status: "",
+    changedPrice: "SOL 1.00005",
+    Change: "+",
+  },
+  {
+    id: 4,
+    name: "MintedGold",
+    price: "SOL 1.00005",
+    Status: "NEW",
+    changedPrice: "SOL 1.00005",
+    Change: "-",
+  },
+  {
+    id: 5,
+    name: "MintedGold",
+    price: "SOL 1.00005",
+    Status: "NEW",
+    changedPrice: "SOL 1.00005",
+    Change: "-",
+  },
+  {
+    id: 6,
+    name: "MintedGold",
+    price: "SOL 1.00005",
+    Status: "",
+    changedPrice: "SOL 1.00005",
+    Change: "+",
+  },
 ];
 
 const HighestSales = [
@@ -52,15 +95,31 @@ const highestAssets = [
   },
 ];
 
-
 const Articles = [
-  { id: 1, title: "Understanding NFTs", content: "A deep dive into the world of NFTs." },
-  { id: 2, title: "The Future of Digital Art", content: "Exploring the evolution of digital art." },
-  { id: 3, title: "Blockchain Technology", content: "How blockchain is revolutionizing industries." },
-  { id: 4, title: "Investing in NFTs", content: "Tips and strategies for investing in NFTs." },
+  {
+    id: 1,
+    title: "Understanding NFTs",
+    content: "A deep dive into the world of NFTs.",
+  },
+  {
+    id: 2,
+    title: "The Future of Digital Art",
+    content: "Exploring the evolution of digital art.",
+  },
+  {
+    id: 3,
+    title: "Blockchain Technology",
+    content: "How blockchain is revolutionizing industries.",
+  },
+  {
+    id: 4,
+    title: "Investing in NFTs",
+    content: "Tips and strategies for investing in NFTs.",
+  },
 ];
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
   function handleReadMore(_id: number): void {
     throw new Error("Function not implemented.");
   }
@@ -88,40 +147,47 @@ const Home: React.FC = () => {
             </div>
             {[0, 1].map((rowIndex) => (
               <div key={rowIndex} className="w-full flex-1 flex gap-5">
-                {trendingAssets.slice(rowIndex * 3, rowIndex * 3 + 3).map((asset) => (
-                  <div
-                    key={asset.id}
-                    className="w-1/3 flex items-center border border-gray-500 rounded-md bg-gray-500 text-white p-4"
-                  >
-                    <div className="flex justify-center items-center w-12 h-12 bg-gray-400 rounded-full text-black font-semibold">
-                      {/* {asset.id} */}
-                    </div>
-                    <div className="flex flex-col justify-between ml-4">
-                      <div className="flex text-lg font-bold gap-5">
-                        <div>{asset.name}</div>
-                        {asset.Status && (
-                          <div className="text-[10px] font-medium text-white bg-green-800 px-2 rounded-sm shadow-sm flex items-center">
-                            {asset.Status}
+                {trendingAssets
+                  .slice(rowIndex * 3, rowIndex * 3 + 3)
+                  .map((asset) => (
+                    <div
+                      key={asset.id}
+                      className="w-1/3 flex items-center border border-gray-500 rounded-md bg-gray-500 text-white p-4"
+                    >
+                      <div className="flex justify-center items-center w-12 h-12 bg-gray-400 rounded-full text-black font-semibold">
+                        {/* {asset.id} */}
+                      </div>
+                      <div className="flex flex-col justify-between ml-4">
+                        <div className="flex text-lg font-bold gap-5">
+                          <div>{asset.name}</div>
+                          {asset.Status && (
+                            <div className="text-[10px] font-medium text-white bg-green-800 px-2 rounded-sm shadow-sm flex items-center">
+                              {asset.Status}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="text-sm flex gap-5 pt-1 items-center">
+                          <div className="text-gray-400 font-semibold">
+                            {asset.price}
                           </div>
-                        )}
-                      </div>
-
-                      <div className="text-sm flex gap-5 pt-1 items-center">
-                        <div className="text-gray-400 font-semibold">
-                          {asset.price}
-                        </div>
-                        <div className="text-gray-400 text-xs">
-                          {asset.changedPrice} <span className={`text-${asset.Change === "+" ? "green" : "red"}-500`}>{asset.Change}</span>
+                          <div className="text-gray-400 text-xs">
+                            {asset.changedPrice}{" "}
+                            <span
+                              className={`text-${
+                                asset.Change === "+" ? "green" : "red"
+                              }-500`}
+                            >
+                              {asset.Change}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                  </div>
-                ))}
+                  ))}
               </div>
             ))}
           </div>
-
 
           {/* Weekly Highest Sales */}
           <div className="h-[320px] bg-black flex-col flex gap-5 p-5">
@@ -138,13 +204,19 @@ const Home: React.FC = () => {
 
                 <div className="flex-1 flex flex-col justify-between p-2 gap-2">
                   <div className="text-lg font-bold">AurumCraft</div>
-                  <div className="text-xs">Aurum is Latin for gold; sounds premium.</div>
+                  <div className="text-xs">
+                    Aurum is Latin for gold; sounds premium.
+                  </div>
                   <div className="text-sm font-semibold">
                     <div className="flex px-1  py-1 bg-black/60 rounded-xl border border-gray-600 shadow-md">
                       {/* Column 1 */}
                       <div className="flex-1 px-1 flex flex-col items-center justify-center text-center">
-                        <div className="text-[10px] text-gray-300">FLOOR PRICE</div>
-                        <div className="font-semibold mt-1 text-white text-xs">SOL 15.00</div>
+                        <div className="text-[10px] text-gray-300">
+                          FLOOR PRICE
+                        </div>
+                        <div className="font-semibold mt-1 text-white text-xs">
+                          SOL 15.00
+                        </div>
                       </div>
 
                       {/* Divider */}
@@ -152,8 +224,12 @@ const Home: React.FC = () => {
 
                       {/* Column 2 */}
                       <div className="flex-1 px-1 flex flex-col items-center justify-center text-center">
-                        <div className="text-[10px] text-gray-300">FLOOR PRICE</div>
-                        <div className="font-semibold mt-1 text-white text-xs">SOL 15.00</div>
+                        <div className="text-[10px] text-gray-300">
+                          FLOOR PRICE
+                        </div>
+                        <div className="font-semibold mt-1 text-white text-xs">
+                          SOL 15.00
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -171,7 +247,10 @@ const Home: React.FC = () => {
                     key={asset.id}
                     className="w-1/3 border border-gray-500 rounded-md bg-gray-500 text-black flex flex-col"
                   >
-                    <div className="bg-white rounded-md w-full flex justify-center items-center" style={{ flexBasis: "75%" }}>
+                    <div
+                      className="bg-white rounded-md w-full flex justify-center items-center"
+                      style={{ flexBasis: "75%" }}
+                    >
                       {/* image */}
                     </div>
                     <div className="mt-2 flex flex-col flex-grow justify-center pl-2">
@@ -181,8 +260,6 @@ const Home: React.FC = () => {
                   </div>
                 ))}
               </div>
-
-
             </div>
           </div>
 
@@ -215,7 +292,6 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-
           {/* How NFT Works */}
           <div className="h-[350px] bg-black flex-col flex gap-5 p-5 mb-5">
             <div>
@@ -225,14 +301,20 @@ const Home: React.FC = () => {
             </div>
             <div>
               <div className="text-xs text-white">
-                A fusion of timeless elegance and digital innovation — this NFT captures
+                A fusion of timeless elegance and digital innovation — this NFT
+                captures
               </div>
             </div>
             <div className="w-full flex-1 flex gap-5">
               {Articles.map((article) => (
                 <div
                   key={article.id}
-                  className="w-1/4 flex flex-col items-center border border-gray-500 rounded-md bg-gray-500 text-black"
+                  onClick={() => {
+                    if (article.title === "Understanding NFTs") {
+                      navigate("/hownftsworks");
+                    }
+                  }}
+                  className="w-1/4 flex flex-col items-center border border-gray-500 rounded-md bg-gray-500 text-black cursor-pointer"
                 >
                   {/* Image Placeholder */}
                   <div className="w-full h-40 bg-white rounded-md mb-4 flex justify-center items-center">
@@ -242,7 +324,12 @@ const Home: React.FC = () => {
                   {/* Title */}
                   <div className="text-lg text-center mb-2 w-full px-2">
                     {article.title}
-                    <span onClick={() => handleReadMore(article.id)} className="block text-xs text-gray-400 cursor-pointer text-right">Read more</span>
+                    <span
+                      onClick={() => handleReadMore(article.id)}
+                      className="block text-xs text-gray-400 cursor-pointer text-right"
+                    >
+                      Read more
+                    </span>
                   </div>
                 </div>
               ))}
