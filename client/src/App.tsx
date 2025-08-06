@@ -14,8 +14,8 @@ import Market from "./pages/Market";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
-import User from "./components/UserProfile/UserProfile"
-
+import User from "./components/UserProfile/UserProfile";
+import HowNftsWorks from "./pages/HowNftsWorks";
 
 function App() {
   const fetchAPI = async () => {
@@ -62,7 +62,10 @@ function App() {
         >
           <Route index element={<ProfileSettings />} />
           <Route path="profile" element={<ProfileSettings />} />
-          <Route path="notificationSettings" element={<NotificationSettings />} />
+          <Route
+            path="notificationSettings"
+            element={<NotificationSettings />}
+          />
         </Route>
 
         <Route
@@ -122,7 +125,7 @@ function App() {
           path="/user"
           element={
             <Layout>
-              < User />
+              <User />
             </Layout>
           }
         />
@@ -135,7 +138,7 @@ function App() {
             </Layout>
           }
         />
-          <Route
+        <Route
           path="/sales"
           element={
             <Layout>
@@ -143,7 +146,14 @@ function App() {
             </Layout>
           }
         />
-
+        <Route
+          path="/hownftsworks"
+          element={
+            <Layout>
+              <HowNftsWorks />
+            </Layout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
