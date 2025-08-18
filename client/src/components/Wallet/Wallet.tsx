@@ -8,6 +8,13 @@ interface WalletProps {
   onClose: () => void;
 }
 const Wallet: React.FC<WalletProps> = ({ onClose }) => {
+  const handlePhontomClick = () => {
+    {
+      /**Open https://phantom.com/download this page on a new tab */
+    }
+    window.open("https://phantom.com/download");
+    onClose();
+  };
   return (
     <div
       className="fixed inset-0 justify-center flex items-center z-50"
@@ -25,7 +32,10 @@ const Wallet: React.FC<WalletProps> = ({ onClose }) => {
 
         {/* Wallet rows */}
         <div className="space-y-3 mb-5">
-          <button className="ml-15 w-100 flex items-center gap-2 hover:bg-gray-600 rounded-lg transition-colors">
+          <button
+            className="ml-15 w-100 flex items-center gap-2 hover:bg-gray-600 rounded-lg transition-colors cursor-pointer"
+            onClick={handlePhontomClick}
+          >
             <span className="flex items-center gap-3">
               <img src={phontomIcon} alt="Phontom Icon" className="w-20 h-20" />
               <span className="text-sm">Phontom</span>
@@ -34,7 +44,7 @@ const Wallet: React.FC<WalletProps> = ({ onClose }) => {
         </div>
 
         <div className="space-y-3 mb-5">
-          <button className="ml-15 w-100 flex items-center gap-5 p-3 hover:bg-gray-600 rounded-lg transition-colors">
+          <button className="ml-15 w-100 flex items-center gap-5 p-3 hover:bg-gray-600 rounded-lg transition-colors cursor-pointer">
             <span className="flex items-center gap-3">
               <img
                 src={solflareIcon}
@@ -47,7 +57,7 @@ const Wallet: React.FC<WalletProps> = ({ onClose }) => {
         </div>
 
         <div className="space-y-3 mb-5">
-          <button className="ml-15 w-100 flex items-center gap-8 p-3 hover:bg-gray-600 rounded-lg transition-colors">
+          <button className="ml-15 w-100 flex items-center gap-8 p-3 hover:bg-gray-600 rounded-lg transition-colors cursor-pointer">
             <span className="flex items-center gap-3">
               <img
                 src={metaMaskIcon}
@@ -59,7 +69,7 @@ const Wallet: React.FC<WalletProps> = ({ onClose }) => {
           </button>
         </div>
         <div className="space-y-3 mb-5">
-          <button className="ml-15 w-100 flex items-center gap-8 p-3 hover:bg-gray-600 rounded-lg transition-colors">
+          <button className="ml-15 w-100 flex items-center gap-8 p-3 hover:bg-gray-600 rounded-lg transition-colors cursor-pointer">
             <span className="flex items-center gap-3">
               <img
                 src={walletConnectIcon}
