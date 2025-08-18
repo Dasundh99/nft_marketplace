@@ -17,6 +17,7 @@ import NotificationSettings from "./components/SettingsPage/NotificationSettings
 import User from "./components/UserProfile/UserProfile";
 import HowNftsWorks from "./pages/HowNftsWorks";
 
+
 function App() {
   const fetchAPI = async () => {
     try {
@@ -155,6 +156,7 @@ function App() {
           }
         />
       </Routes>
+     
     </BrowserRouter>
   );
 }
