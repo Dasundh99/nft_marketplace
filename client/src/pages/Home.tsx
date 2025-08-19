@@ -247,10 +247,10 @@ const Home: React.FC = () => {
                     key={asset.id}
                     className="w-1/3 border border-gray-500 rounded-md bg-gray-500 text-black flex flex-col"
                   >
-                    <div
-                      className="bg-white rounded-md w-full flex justify-center items-center"
-                      style={{ flexBasis: "75%" }}
-                    >
+                   <div
+  className="bg-white rounded-md w-full flex justify-center items-center basis-[75%]"
+>
+
                       {/* image */}
                     </div>
                     <div className="mt-2 flex flex-col flex-grow justify-center pl-2">
