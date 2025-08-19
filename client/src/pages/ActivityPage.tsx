@@ -4,6 +4,7 @@ import goldImage1 from "../assets/activityAssets/goldImage1.png"
 import { useState } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
+
 export const ActivityPage = () => {
   const [showChart, setShowChart] = useState(false);
   const mockData = [
