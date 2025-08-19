@@ -17,6 +17,7 @@ import NotificationSettings from "./components/SettingsPage/NotificationSettings
 // import User from "./components/UserProfile/UserProfile";
 import HowNftsWorks from "./pages/HowNftsWorks";
 import Profile from "./pages/Profile";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const fetchAPI = async () => {
