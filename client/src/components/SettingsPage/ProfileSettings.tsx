@@ -50,6 +50,11 @@ const ProfileSettings: React.FC = () => {
             placeholder="Add a Email Address"
           />
         </div>
+        <div className="flex justify-end mt-6">
+          <button className="bg-blue-400 px-6 py-3 rounded-2xl cursor-pointer">
+            Save
+          </button>
+        </div>
       </div>
     </div>
   );
