@@ -57,7 +57,6 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-
   plugins: [
     react(),
     tailwindcss(),
@@ -76,9 +75,3 @@ export default defineConfig({
     global: 'globalThis',
   },
 });
-
-
-  plugins: [react(), tailwindcss()],
-  cacheDir: ".vite-cache",
-})
-

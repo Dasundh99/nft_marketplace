@@ -22,7 +22,7 @@ import MintForm from "./components/MintForm";
 
 
 import Profile from "./pages/Profile";
-import "react-toastify/dist/ReactToastify.css";
+
 
 
 function App() {
