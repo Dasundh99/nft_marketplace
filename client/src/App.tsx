@@ -16,8 +16,14 @@ import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
 // import User from "./components/UserProfile/UserProfile";
 import HowNftsWorks from "./pages/HowNftsWorks";
+
+import Goods from "./pages/Goods";
+import MintForm from "./components/MintForm";
+
+
 import Profile from "./pages/Profile";
 import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   const fetchAPI = async () => {
@@ -153,6 +159,22 @@ function App() {
           element={
             <Layout>
               <HowNftsWorks />
+            </Layout>
+          }
+        />
+        <Route
+          path="/goods"
+          element={
+            <Layout>
+              <Goods />
+            </Layout>
+          }
+        />
+        <Route
+          path="/mint"
+          element={
+            <Layout>
+              <MintForm />
             </Layout>
           }
         />
