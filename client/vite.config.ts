@@ -5,19 +5,5 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-    optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
-      },
-    },
-  },
-  resolve: {
-    alias: {
-      buffer: 'buffer',
-    },
-  },
-  define: {
-    global: 'globalThis',
-  },
+  cacheDir: ".vite-cache",
 })

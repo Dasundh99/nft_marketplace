@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import sliderImage from "../../assets/Slider1.jpg";
 import avatarImage from "../../assets/Avatar.svg";
 import { useWallet } from "@solana/wallet-adapter-react";
 import edit from "../../assets/Edit.svg";
 import copyIcon from "../../assets/CopyIcon.svg";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import Sidebar from "./UserProfile";
 
 const ProfileDashboard: React.FC = () => {
   const { publicKey } = useWallet();
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
 
   const fullAddress = publicKey ? publicKey.toString() : "Not Connected";
 
@@ -18,13 +19,11 @@ const ProfileDashboard: React.FC = () => {
   };
 
   const handleCopy = () => {
-    try {
-      if (publicKey) {
-        navigator.clipboard.writeText(publicKey.toString());
-        toast.success("Wallet address Copied!");
-      }
-    } catch {
-      toast.error("An error occured. Please try again later");
+    if (publicKey) {
+      navigator.clipboard.writeText(publicKey.toString());
+      setCopied(true);
+
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -48,9 +47,15 @@ const ProfileDashboard: React.FC = () => {
         </button>
 
         <button onClick={handleCopy} className="cursor-pointer">
+          {copied && (
+            <span className="absolute -top-2 px-3 py-2 bg-black text-sm rounded">
+              Copied!
+            </span>
+          )}
           <img src={copyIcon} alt="Copy Icon" className="w-6 h-6 invert" />
         </button>
       </div>
+      <Sidebar></Sidebar>
     </div>
   );
 };
