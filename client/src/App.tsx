@@ -16,6 +16,8 @@ import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
 import User from "./components/UserProfile/UserProfile";
 import HowNftsWorks from "./pages/HowNftsWorks";
+import Goods from "./pages/Goods";
+import MintForm from "./components/MintForm";
 
 
 function App() {
@@ -152,6 +154,22 @@ function App() {
           element={
             <Layout>
               <HowNftsWorks />
+            </Layout>
+          }
+        />
+        <Route
+          path="/goods"
+          element={
+            <Layout>
+              <Goods />
+            </Layout>
+          }
+        />
+        <Route
+          path="/mint"
+          element={
+            <Layout>
+              <MintForm />
             </Layout>
           }
         />
