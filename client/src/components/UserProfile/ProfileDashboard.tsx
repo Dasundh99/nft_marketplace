@@ -55,7 +55,14 @@ const ProfileDashboard: React.FC = () => {
           <img src={copyIcon} alt="Copy Icon" className="w-6 h-6 invert" />
         </button>
       </div>
-      <Sidebar></Sidebar>
+      <Sidebar>
+        <div className="flex flex-col justify-center items-center h-full text-center">
+          <h2 className="text-3xl font-bold">No results found</h2>
+          <p className="mt-5 text-gray-400">
+            We've been searching the blockchain
+          </p>
+        </div>
+      </Sidebar>
     </div>
   );
 };
