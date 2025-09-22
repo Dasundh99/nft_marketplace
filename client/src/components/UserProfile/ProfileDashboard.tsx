@@ -32,7 +32,7 @@ const ProfileDashboard: React.FC = () => {
       <img
         src={sliderImage}
         alt="Slider Image"
-        className="w-full p-5 object-cover h-100 opacity-40"
+        className="w-full py-5 object-cover h-100 opacity-40"
       />
       <img
         src={avatarImage}
