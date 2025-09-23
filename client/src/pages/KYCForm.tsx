@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   maxFileSizeMB?: number;
@@ -16,11 +16,6 @@ export default function KycUploadForm({ maxFileSizeMB = 5 }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const [capturing, setCapturing] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
 
   const maxBytes = maxFileSizeMB * 1024 * 1024;
 
@@ -49,46 +44,6 @@ export default function KycUploadForm({ maxFileSizeMB = 5 }: Props) {
     previewSetter(f ? URL.createObjectURL(f) : null);
   }
 
-  async function startCamera() {
-    setError(null);
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-      streamRef.current = stream;
-      if (videoRef.current) videoRef.current.srcObject = stream;
-      setCapturing(true);
-    } catch (err) {
-      console.error(err);
-      setError("Unable to access camera. Please allow camera permissions or use file upload.");
-    }
-  }
-
-  function stopCamera() {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((t) => t.stop());
-      streamRef.current = null;
-    }
-    setCapturing(false);
-  }
-
-  function capturePhoto() {
-    if (!videoRef.current || !canvasRef.current) return;
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const file = new File([blob], `selfie_${Date.now()}.jpg`, { type: "image/jpeg" });
-      if (!validateFile(file)) return;
-      setSelfie(file);
-      setSelfiePreview(URL.createObjectURL(file));
-      stopCamera();
-    }, "image/jpeg");
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!idFront || !idBack || !selfie) {
@@ -107,7 +62,7 @@ export default function KycUploadForm({ maxFileSizeMB = 5 }: Props) {
       setError(null);
       setSuccess(null);
 
-      const response = await fetch("http://localhost:3003/verify", {
+      const response = await fetch("http://localhost:5000/verify", {
         method: "POST",
         body: form,
       });
@@ -119,7 +74,19 @@ export default function KycUploadForm({ maxFileSizeMB = 5 }: Props) {
 
       const data = await response.json();
       console.log("Server response:", data);
-      setSuccess("KYC verification submitted successfully!");
+
+      if (data.status === "success") {
+        if (data.verified) {
+          setSuccess("✅ KYC Verified! ID match the selfie.");
+        } else {
+          let msg = "⚠ KYC Verification Error:\n";
+          // msg += data.match_front ? "Front ID matches selfie.\n" : "Front ID does NOT match selfie.\n";
+          // msg += data.match_back ? "Back ID matches selfie.\n" : "Back ID does NOT match selfie.\n";
+          setError(msg);
+        }
+      } else {
+        setError("KYC verification failed: " + (data.message || "Unknown error"));
+      }
     } catch (err: any) {
       console.error(err);
       setError("Failed to submit KYC. " + err.message);
@@ -137,7 +104,6 @@ export default function KycUploadForm({ maxFileSizeMB = 5 }: Props) {
     setSelfiePreview(null);
     setError(null);
     setSuccess(null);
-    stopCamera();
   }
 
   return (
@@ -176,48 +142,18 @@ export default function KycUploadForm({ maxFileSizeMB = 5 }: Props) {
         {/* Selfie */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Selfie*</label>
-          <div className="flex flex-col md:flex-row md:items-center gap-3">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileChange(e, setSelfie, setSelfiePreview)}
-              className="text-sm text-gray-700 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => (capturing ? stopCamera() : startCamera())}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-              >
-                {capturing ? "Stop Camera" : "Use Camera"}
-              </button>
-
-              {capturing && (
-                <button
-                  type="button"
-                  onClick={capturePhoto}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-                >
-                  Capture
-                </button>
-              )}
-            </div>
-          </div>
-
-          {capturing && (
-            <div className="mt-3">
-              <video ref={videoRef} autoPlay playsInline className="w-full rounded-lg shadow-md" />
-              <canvas ref={canvasRef} className="hidden" />
-            </div>
-          )}
-
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleFileChange(e, setSelfie, setSelfiePreview)}
+            className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
           {selfiePreview && (
             <img src={selfiePreview} alt="selfie-preview" className="mt-3 w-40 h-40 object-cover rounded-full shadow-md" />
           )}
         </div>
 
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+        {error && <p className="text-red-600 whitespace-pre-line text-sm">{error}</p>}
         {success && <p className="text-green-600 text-sm">{success}</p>}
 
         <div className="flex justify-end gap-3 mt-3">
