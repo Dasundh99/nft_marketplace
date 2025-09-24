@@ -1,179 +1,285 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-type Props = {
-  maxFileSizeMB?: number;
+type VerifyResponse = {
+  verified: boolean;
+  reason?: string;
+  similarity?: {
+    id_front_vs_id_back?: number | null;
+    selfie_vs_id_front?: number | null;
+    selfie_vs_id_back?: number | null;
+  };
+  thresholds?: {
+    similarity_threshold?: number;
+    id_to_id_threshold?: number;
+  };
+  error?: string;
 };
 
-export default function KycUploadForm({ maxFileSizeMB = 5 }: Props) {
-  const [idFront, setIdFront] = useState<File | null>(null);
-  const [idBack, setIdBack] = useState<File | null>(null);
-  const [selfie, setSelfie] = useState<File | null>(null);
+export default function KycVerify() {
+  const [idFrontFile, setIdFrontFile] = useState<File | null>(null);
+  const [idBackFile, setIdBackFile] = useState<File | null>(null);
+  const [selfieFile, setSelfieFile] = useState<File | null>(null);
 
   const [idFrontPreview, setIdFrontPreview] = useState<string | null>(null);
   const [idBackPreview, setIdBackPreview] = useState<string | null>(null);
   const [selfiePreview, setSelfiePreview] = useState<string | null>(null);
 
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<VerifyResponse | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const maxBytes = maxFileSizeMB * 1024 * 1024;
+  // keep refs to object URLs so we can revoke them
+  const urlsRef = useRef<string[]>([]);
 
-  function validateFile(f: File | null) {
-    if (!f) return true;
-    if (!f.type.startsWith("image/")) {
-      setError("Only image files are allowed.");
-      return false;
-    }
-    if (f.size > maxBytes) {
-      setError(`File must be smaller than ${maxFileSizeMB} MB.`);
-      return false;
-    }
-    setError(null);
-    return true;
-  }
+  useEffect(() => {
+    return () => {
+      // cleanup object URLs on unmount
+      urlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+      urlsRef.current = [];
+    };
+  }, []);
 
   function handleFileChange(
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<File | null>>,
+    fileSetter: React.Dispatch<React.SetStateAction<File | null>>,
     previewSetter: React.Dispatch<React.SetStateAction<string | null>>
   ) {
-    const f = e.target.files && e.target.files[0] ? e.target.files[0] : null;
-    if (f && !validateFile(f)) return;
-    setter(f);
-    previewSetter(f ? URL.createObjectURL(f) : null);
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) {
+        fileSetter(null);
+        previewSetter(null);
+        return;
+      }
+      // Basic image type validation
+      if (!f.type.startsWith("image/")) {
+        setError("Please select an image file.");
+        fileSetter(null);
+        previewSetter(null);
+        return;
+      }
+      const url = URL.createObjectURL(f);
+      urlsRef.current.push(url);
+      fileSetter(f);
+      previewSetter(url);
+      setError(null);
+    };
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!idFront || !idBack || !selfie) {
-      setError("Please provide all three images: ID front, ID back, and a selfie.");
+  async function handleSubmit(e?: React.FormEvent) {
+    if (e) e.preventDefault();
+    setResult(null);
+    setError(null);
+
+    if (!idFrontFile || !idBackFile || !selfieFile) {
+      setError("Please choose ID front, ID back and a selfie.");
       return;
     }
-    if (!validateFile(idFront) || !validateFile(idBack) || !validateFile(selfie)) return;
 
-    const form = new FormData();
-    form.append("id_front", idFront);
-    form.append("id_back", idBack);
-    form.append("selfie", selfie);
+    setLoading(true);
+    setStatusMessage("Uploading images and verifying...");
 
     try {
-      setLoading(true);
-      setError(null);
-      setSuccess(null);
+      const fd = new FormData();
+      fd.append("id_front", idFrontFile);
+      fd.append("id_back", idBackFile);
+      fd.append("selfie", selfieFile);
 
-      const response = await fetch("http://localhost:5000/verify", {
+      // Adjust the URL if your backend runs on a different host
+      const res = await fetch("http://localhost:5000/verify", {
         method: "POST",
-        body: form,
+        body: fd,
       });
 
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text || "Server error");
+      let data: VerifyResponse;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        throw new Error(`Invalid JSON response from server (status ${res.status})`);
       }
 
-      const data = await response.json();
-      console.log("Server response:", data);
-
-      if (data.status === "success") {
-        if (data.verified) {
-          setSuccess("✅ KYC Verified! ID match the selfie.");
-        } else {
-          let msg = "⚠ KYC Verification Error:\n";
-          // msg += data.match_front ? "Front ID matches selfie.\n" : "Front ID does NOT match selfie.\n";
-          // msg += data.match_back ? "Back ID matches selfie.\n" : "Back ID does NOT match selfie.\n";
-          setError(msg);
-        }
+      if (!res.ok) {
+        // server returned 4xx/5xx but sent JSON (likely with reason)
+        setResult(data);
+        setError(data.error ?? data.reason ?? `Server responded with status ${res.status}`);
       } else {
-        setError("KYC verification failed: " + (data.message || "Unknown error"));
+        setResult(data);
+        setStatusMessage(data.verified ? "User VERIFIED" : "Not verified");
       }
     } catch (err: any) {
-      console.error(err);
-      setError("Failed to submit KYC. " + err.message);
+      console.error("Upload/verify error:", err);
+      setError(err?.message ?? "Unknown error occurred");
     } finally {
       setLoading(false);
     }
   }
 
-  function handleReset() {
-    setIdFront(null);
-    setIdBack(null);
-    setSelfie(null);
+  function resetAll() {
+    setIdFrontFile(null);
+    setIdBackFile(null);
+    setSelfieFile(null);
+
+    // revoke previews
+    urlsRef.current.forEach((u) => URL.revokeObjectURL(u));
+    urlsRef.current = [];
+
     setIdFrontPreview(null);
     setIdBackPreview(null);
     setSelfiePreview(null);
+    setResult(null);
     setError(null);
-    setSuccess(null);
+    setStatusMessage(null);
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-3xl shadow-xl border border-gray-200">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">KYC Verification</h2>
+    <div style={{ maxWidth: 820, margin: "1.5rem auto", fontFamily: "Inter, Arial, sans-serif", backgroundColor: "black", padding: 24, borderRadius: 8, boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+      <h2 style={{ marginBottom: 12 }}>KYC Face Verify (React + TSX)</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* ID Front */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">ID — Front*</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, setIdFront, setIdFrontPreview)}
-            className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          {idFrontPreview && (
-            <img src={idFrontPreview} alt="id-front" className="mt-2 w-48 h-28 object-cover rounded-md shadow-sm" />
-          )}
+      <form onSubmit={handleSubmit}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <label style={{ display: "block" }}>
+            <div style={{ fontWeight: 600 }}>ID Front</div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange(setIdFrontFile, setIdFrontPreview)}
+              disabled={loading}
+            />
+          </label>
+
+          <label style={{ display: "block" }}>
+            <div style={{ fontWeight: 600 }}>ID Back</div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange(setIdBackFile, setIdBackPreview)}
+              disabled={loading}
+            />
+          </label>
+
+          <label style={{ display: "block", gridColumn: "1 / -1" }}>
+            <div style={{ fontWeight: 600 }}>Selfie</div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange(setSelfieFile, setSelfiePreview)}
+              disabled={loading}
+            />
+          </label>
         </div>
 
-        {/* ID Back */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">ID — Back*</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, setIdBack, setIdBackPreview)}
-            className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          {idBackPreview && (
-            <img src={idBackPreview} alt="id-back" className="mt-2 w-48 h-28 object-cover rounded-md shadow-sm" />
-          )}
-        </div>
-
-        {/* Selfie */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Selfie*</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, setSelfie, setSelfiePreview)}
-            className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          {selfiePreview && (
-            <img src={selfiePreview} alt="selfie-preview" className="mt-3 w-40 h-40 object-cover rounded-full shadow-md" />
-          )}
-        </div>
-
-        {error && <p className="text-red-600 whitespace-pre-line text-sm">{error}</p>}
-        {success && <p className="text-green-600 text-sm">{success}</p>}
-
-        <div className="flex justify-end gap-3 mt-3">
-          <button
-            type="button"
-            onClick={handleReset}
-            className="px-5 py-2 border border-gray-400 rounded-md text-gray-700 hover:bg-gray-100 transition"
-          >
-            Reset
-          </button>
-
+        <div style={{ display: "flex", gap: 12, marginTop: 14 }}>
           <button
             type="submit"
             disabled={loading}
-            className={`px-5 py-2 text-white rounded-md transition ${loading ? "bg-gray-500" : "bg-black hover:bg-gray-800"}`}
+            style={{
+              padding: "10px 14px",
+              borderRadius: 6,
+              backgroundColor: "#2563eb",
+              color: "white",
+              border: "none",
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
           >
-            {loading ? "Submitting..." : "Verify Wallet"}
+            {loading ? "Verifying..." : "Verify"}
+          </button>
+
+          <button
+            type="button"
+            onClick={resetAll}
+            disabled={loading}
+            style={{
+              padding: "10px 14px",
+              borderRadius: 6,
+              background: "#e5e7eb",
+              border: "none",
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+          >
+            Reset
           </button>
         </div>
       </form>
+
+      <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap" }}>
+        {idFrontPreview && (
+          <div style={{ width: 220 }}>
+            <div style={{ fontSize: 12, color: "#374151" }}>Preview — ID Front</div>
+            <img
+              src={idFrontPreview}
+              alt="ID Front preview"
+              style={{ width: "100%", height: 140, objectFit: "cover", borderRadius: 6, border: "1px solid #ddd" }}
+            />
+            {idFrontFile && <div style={{ fontSize: 12, marginTop: 6 }}>{idFrontFile.name}</div>}
+          </div>
+        )}
+
+        {idBackPreview && (
+          <div style={{ width: 220 }}>
+            <div style={{ fontSize: 12, color: "#374151" }}>Preview — ID Back</div>
+            <img
+              src={idBackPreview}
+              alt="ID Back preview"
+              style={{ width: "100%", height: 140, objectFit: "cover", borderRadius: 6, border: "1px solid #ddd" }}
+            />
+            {idBackFile && <div style={{ fontSize: 12, marginTop: 6 }}>{idBackFile.name}</div>}
+          </div>
+        )}
+
+        {selfiePreview && (
+          <div style={{ width: 220 }}>
+            <div style={{ fontSize: 12, color: "#374151" }}>Preview — Selfie</div>
+            <img
+              src={selfiePreview}
+              alt="Selfie preview"
+              style={{ width: "100%", height: 140, objectFit: "cover", borderRadius: 6, border: "1px solid #ddd" }}
+            />
+            {selfieFile && <div style={{ fontSize: 12, marginTop: 6 }}>{selfieFile.name}</div>}
+          </div>
+        )}
+      </div>
+
+      <div style={{ marginTop: 18 }}>
+        {statusMessage && (
+          <div style={{ padding: 10, background: "#f1f5f9", borderRadius: 6, marginBottom: 8 }}>{statusMessage}</div>
+        )}
+
+        {error && (
+          <div style={{ color: "white", background: "#ef4444", padding: 10, borderRadius: 6, marginBottom: 8 }}>
+            {error}
+          </div>
+        )}
+
+        {result && (
+          <div style={{ marginTop: 8, padding: 12, borderRadius: 8, border: "1px solid #e6edf9", background: "#fbfdff" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h3 style={{ margin: 0 }}>Result</h3>
+              <div
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  background: result.verified ? "#ecfdf5" : "#fff1f2",
+                  color: result.verified ? "#065f46" : "#991b1b",
+                  fontWeight: 700,
+                }}
+              >
+                {result.verified ? "VERIFIED ✅" : "NOT VERIFIED ❌"}
+              </div>
+            </div>
+
+            {result.reason && <div style={{ marginTop: 8, color: "#374151" }}>{result.reason}</div>}
+
+            <pre style={{ marginTop: 12, maxHeight: 260, overflow: "auto", background: "#11182710", padding: 12 }}>
+              {JSON.stringify(result, null, 2)}
+            </pre>
+          </div>
+        )}
+      </div>
+
+      <div style={{ marginTop: 12, fontSize: 13, color: "#6b7280" }}>
+        Note: this component posts to <code>http://localhost:5000/verify</code>. Make sure your backend (Flask) is running and
+        CORS is enabled (the backend example I gave enables CORS). In production use HTTPS and proper auth.
+      </div>
     </div>
   );
 }
