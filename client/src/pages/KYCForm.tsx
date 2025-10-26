@@ -1,393 +1,313 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from 'react';
 
-type VerifyResponse = {
-  verified: boolean;
-  reason?: string;
-  similarity?: {
-    id_front_vs_id_back?: number | null;
-    selfie_vs_id_front?: number | null;
-    selfie_vs_id_back?: number | null;
-  };
-  thresholds?: {
-    similarity_threshold?: number;
-    id_to_id_threshold?: number;
-  };
-  error?: string;
-  ocrResults?: any;
-};
-
-export default function KycVerify() {
-  const [idFrontFile, setIdFrontFile] = useState<File | null>(null);
-  const [idBackFile, setIdBackFile] = useState<File | null>(null);
-  const [selfieFile, setSelfieFile] = useState<File | null>(null);
-
-  const [idFrontPreview, setIdFrontPreview] = useState<string | null>(null);
-  const [idBackPreview, setIdBackPreview] = useState<string | null>(null);
-  const [selfiePreview, setSelfiePreview] = useState<string | null>(null);
-
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<VerifyResponse | null>(null);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+function App() {
+  const [status, setStatus] = useState('Not started');
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [polling, setPolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [assets, setAssets] = useState<string[]>([]);
+  const BACKEND_URL = 'http://localhost:3000';
 
-  // keep refs to object URLs so we can revoke them
-  const urlsRef = useRef<string[]>([]);
-
+  // Fetch assets on mount
   useEffect(() => {
-    return () => {
-      urlsRef.current.forEach((u) => URL.revokeObjectURL(u));
-      urlsRef.current = [];
+    const fetchAssets = async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL}/api`);
+        const data = await res.json();
+        setAssets(data.assets);
+      } catch (err) {
+        console.error('Failed to fetch assets:', err);
+      }
     };
+    fetchAssets();
   }, []);
 
-  function handleFileChange(
-    fileSetter: React.Dispatch<React.SetStateAction<File | null>>,
-    previewSetter: React.Dispatch<React.SetStateAction<string | null>>
-  ) {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      const f = e.target.files && e.target.files[0];
-      if (!f) {
-        fileSetter(null);
-        previewSetter(null);
-        return;
-      }
-      if (!f.type.startsWith("image/")) {
-        setError("Please select an image file.");
-        fileSetter(null);
-        previewSetter(null);
-        return;
-      }
-      const url = URL.createObjectURL(f);
-      urlsRef.current.push(url);
-      fileSetter(f);
-      previewSetter(url);
-      setError(null);
-    };
-  }
-
-  async function handleSubmit(e?: React.FormEvent) {
-    if (e) e.preventDefault();
-    setResult(null);
-    setError(null);
-    setStatusMessage(null);
-
-    if (!idFrontFile || !idBackFile || !selfieFile) {
-      setError("Please choose ID front, ID back, and a selfie.");
-      return;
-    }
-
+  const startKYC = async () => {
     setLoading(true);
-    setStatusMessage("Uploading images...");
-
-    const fd = new FormData();
-    fd.append("id_front", idFrontFile);
-    fd.append("id_back", idBackFile);
-    fd.append("selfie", selfieFile);
-
-    let ocrData: any = null;
-
-    // ---------- 1️⃣ Call OCR API ----------
+    setError(null);
     try {
-      console.log("Sending OCR request...");
-      const ocrRes = await fetch("http://localhost:5003/read_id", {
-        method: "POST",
-        body: fd,
-      });
-
-      console.log("OCR response status:", ocrRes.status);
-      ocrData = await ocrRes.json();
-
-      if (!ocrRes.ok) {
-        console.warn("OCR returned error:", ocrData);
-      } else {
-        console.log("OCR Results:", ocrData);
+      console.log('Starting KYC fetch...');
+      const res = await fetch(`${BACKEND_URL}/api/start-kyc`, { method: 'POST' });
+      if (!res.ok) {
+        throw new Error(`Backend error: ${res.status} - ${res.statusText}`);
       }
-    } catch (err) {
-      console.warn("OCR request failed, continuing anyway:", err);
-    }
-
-    // ---------- 2️⃣ Always Call Verify API ----------
-    try {
-      setStatusMessage("Verifying face with ID...");
-      console.log("Sending VERIFY request...");
-
-      const verifyRes = await fetch("http://localhost:5000/verify", {
-        method: "POST",
-        body: fd,
-      });
-
-      console.log("VERIFY response status:", verifyRes.status);
-
-      const verifyData: VerifyResponse = await verifyRes.json();
-
-      if (!verifyRes.ok) {
-        setResult({ ...verifyData, ocrResults: ocrData });
-        setError(verifyData.error ?? verifyData.reason ?? `Verification failed`);
-      } else {
-        setResult({ ...verifyData, ocrResults: ocrData });
-        setStatusMessage(
-          verifyData.verified ? "User VERIFIED" : "Not verified"
-        );
+      const data = await res.json();
+      console.log('API response:', data);
+      const { verifyUrl, sessionId: id } = data;
+      if (!verifyUrl || !id) {
+        throw new Error('Missing verifyUrl or sessionId from backend');
       }
-    } catch (err: any) {
-      console.error("Verify request failed:", err);
-      setError(err.message || "Verify request failed");
+      setSessionId(id);
+      // Updated: Open as smaller popup window (less height) instead of full tab
+      const kycWindow = window.open(
+        verifyUrl, 
+        'kycPopup', 
+        'width=500,height=700,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no'
+      );
+      if (!kycWindow) {
+        throw new Error('Popup blocked—allow popups for this site and try again');
+      }
+      setStatus('Verification started—check the popup window!');
+      localStorage.setItem('diditSessionId', id);
+      setPolling(true);  // Start polling immediately
+    } catch (error) {
+      console.error('KYC error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(errorMessage);
+      setStatus('Not started');
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  function resetAll() {
-    setIdFrontFile(null);
-    setIdBackFile(null);
-    setSelfieFile(null);
+  const checkStatus = async (id: string) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/check-status/${id}`);
+      if (!res.ok) {
+        throw new Error(`Poll error: ${res.status}`);
+      }
+      const data = await res.json();
+      setStatus(`Status: ${data.status || 'unknown'}`);
+      if (data.status === 'approved') {
+        // Mock update user KYC (replace userId with real one)
+        await fetch(`${BACKEND_URL}/api/update-user-kyc`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: 'mockUser123', verified: true })
+        });
+        setPolling(false);
+        setStatus('Verified! You can now tokenize commodities.');
+      } else if (data.status === 'rejected') {
+        setPolling(false);
+        setStatus('Verification rejected—try again.');
+      }
+      return data.status !== 'in_progress';
+    } catch (error) {
+      console.error(error);
+      setError('Polling failed—try restarting verification.');
+      return true;  // Stop polling on error
+    }
+  };
 
-    urlsRef.current.forEach((u) => URL.revokeObjectURL(u));
-    urlsRef.current = [];
+  // Polling effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (polling && sessionId) {
+      interval = setInterval(async () => {
+        const done = await checkStatus(sessionId);
+        if (done) {
+          clearInterval(interval);
+          setPolling(false);
+        }
+      }, 10000);  // Poll every 10s
+    }
+    return () => clearInterval(interval);
+  }, [polling, sessionId]);
 
-    setIdFrontPreview(null);
-    setIdBackPreview(null);
-    setSelfiePreview(null);
-    setResult(null);
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('diditSessionId');
+      setPolling(false);
+    };
+  }, []);
+
+  const resetKYC = () => {
+    setStatus('Not started');
+    setSessionId(null);
+    setPolling(false);
     setError(null);
-    setStatusMessage(null);
-  }
+    localStorage.removeItem('diditSessionId');
+  };
+
+  const isVerified = status.includes('Verified!');
 
   return (
-    <div
-      style={{
-        maxWidth: 820,
-        margin: "1.5rem auto",
-        fontFamily: "Inter, Arial, sans-serif",
-        backgroundColor: "black",
-        padding: 24,
-        borderRadius: 8,
-        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h2 style={{ marginBottom: 12 }}>KYC Face Verify</h2>
+    <div style={{ 
+      minHeight: '50vh', 
+      backgroundColor: '#000000', 
+      color: '#ffffff', 
+      fontFamily: 'Arial, sans-serif',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    }}>
+      <header style={{ 
+        width: '100%', 
+        maxWidth: '800px', 
+        textAlign: 'center', 
+        marginBottom: '40px',
+        borderBottom: '1px solid #2c2c2c',
+        paddingBottom: '20px'
+      }}>
+        <h1 style={{ margin: 0, color: '#2e7d32', fontSize: '2.5em' }}>Commodity Tokenization</h1>
+        <p style={{ margin: '10px 0 0 0', opacity: 0.8 }}>Securely tokenize real-world assets with KYC verification</p>
+      </header>
 
-      <form onSubmit={handleSubmit}>
-        <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}
-        >
-          <label>
-            <div style={{ fontWeight: 600 }}>ID Front</div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange(setIdFrontFile, setIdFrontPreview)}
-              disabled={loading}
-            />
-          </label>
-
-          <label>
-            <div style={{ fontWeight: 600 }}>ID Back</div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange(setIdBackFile, setIdBackPreview)}
-              disabled={loading}
-            />
-          </label>
-
-          <label style={{ gridColumn: "1 / -1" }}>
-            <div style={{ fontWeight: 600 }}>Selfie</div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange(setSelfieFile, setSelfiePreview)}
-              disabled={loading}
-            />
-          </label>
-        </div>
-
-        <div style={{ display: "flex", gap: 12, marginTop: 14 }}>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: "10px 14px",
-              borderRadius: 6,
-              backgroundColor: "#2563eb",
-              color: "white",
-              border: "none",
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
-          >
-            {loading ? "Verifying..." : "Verify"}
-          </button>
-
-          <button
-            type="button"
-            onClick={resetAll}
-            disabled={loading}
-            style={{
-              padding: "10px 14px",
-              borderRadius: 6,
-              background: "#e5e7eb",
-              border: "none",
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
-          >
-            Reset
-          </button>
-        </div>
-      </form>
-
-      <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap" }}>
-        {idFrontPreview && (
-          <div style={{ width: 220 }}>
-            <div style={{ fontSize: 12, color: "#374151" }}>Preview — ID Front</div>
-            <img
-              src={idFrontPreview}
-              alt="ID Front preview"
-              style={{
-                width: "100%",
-                height: 140,
-                objectFit: "cover",
-                borderRadius: 6,
-                border: "1px solid #ddd",
-              }}
-            />
-            {idFrontFile && (
-              <div style={{ fontSize: 12, marginTop: 6 }}>{idFrontFile.name}</div>
-            )}
-          </div>
-        )}
-
-        {idBackPreview && (
-          <div style={{ width: 220 }}>
-            <div style={{ fontSize: 12, color: "#374151" }}>Preview — ID Back</div>
-            <img
-              src={idBackPreview}
-              alt="ID Back preview"
-              style={{
-                width: "100%",
-                height: 140,
-                objectFit: "cover",
-                borderRadius: 6,
-                border: "1px solid #ddd",
-              }}
-            />
-            {idBackFile && (
-              <div style={{ fontSize: 12, marginTop: 6 }}>{idBackFile.name}</div>
-            )}
-          </div>
-        )}
-
-        {selfiePreview && (
-          <div style={{ width: 220 }}>
-            <div style={{ fontSize: 12, color: "#374151" }}>Preview — Selfie</div>
-            <img
-              src={selfiePreview}
-              alt="Selfie preview"
-              style={{
-                width: "100%",
-                height: 140,
-                objectFit: "cover",
-                borderRadius: 6,
-                border: "1px solid #ddd",
-              }}
-            />
-            {selfieFile && (
-              <div style={{ fontSize: 12, marginTop: 6 }}>{selfieFile.name}</div>
-            )}
-          </div>
-        )}
-      </div>
-
-      <div style={{ marginTop: 18 }}>
-        {statusMessage && (
-          <div
-            style={{
-              padding: 10,
-              background: "gray",
-              borderRadius: 6,
-              marginBottom: 8,
-            }}
-          >
-            {statusMessage}
-          </div>
-        )}
-
-        {error && (
-          <div
-            style={{
-              color: "white",
-              background: "#ef4444",
-              padding: 10,
-              borderRadius: 6,
-              marginBottom: 8,
-            }}
-          >
-            {error}
-          </div>
-        )}
-
-        {result && (
-          <div
-            style={{
-              marginTop: 8,
-              padding: 12,
-              borderRadius: 8,
-              border: "1px solid #e6edf9",
-              background: "black",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <h3 style={{ margin: 0 }}>Result</h3>
-              <div
-                style={{
-                  padding: "6px 10px",
-                  borderRadius: 6,
-                  background: result.verified ? "#ecfdf5" : "#fff1f2",
-                  color: result.verified ? "#065f46" : "#991b1b",
-                  fontWeight: 700,
-                }}
-              >
-                {result.verified ? "VERIFIED ✅" : "NOT VERIFIED ❌"}
-              </div>
+      <main style={{ 
+        width: '100%', 
+        maxWidth: '800px', 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center',
+        gap: '20px'
+      }}>
+        {/* Status Section */}
+        <div style={{ 
+          backgroundColor: '#1a1a1a', 
+          borderRadius: '10px', 
+          padding: '20px', 
+          width: '100%', 
+          textAlign: 'center',
+          boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+        }}>
+          <h2 style={{ margin: '0 0 10px 0', color: '#2e7d32' }}>Verification Status</h2>
+          <p style={{ 
+            margin: '0 0 15px 0', 
+            fontSize: '1.1em',
+            color: status.includes('Error') || status.includes('rejected') ? '#616161' : status.includes('Verified') ? '#4caf50' : '#ffffff'
+          }}>
+            {status}
+          </p>
+          {error && (
+            <p style={{ color: '#616161', fontSize: '0.9em', margin: '10px 0' }}>
+              {error}
+            </p>
+          )}
+          {polling && (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+              <div style={{ width: '20px', height: '20px', border: '2px solid #2c2c2c', borderTop: '2px solid #2e7d32', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+              <span>Polling for results...</span>
             </div>
+          )}
+        </div>
 
-            {result.reason && (
-              <div style={{ marginTop: 8, color: "#374151" }}>{result.reason}</div>
-            )}
-
-            <pre
-              style={{
-                marginTop: 12,
-                maxHeight: 260,
-                overflow: "auto",
-                background: "#11182710",
-                padding: 12,
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {status === 'Not started' && !loading && (
+            <button 
+              onClick={startKYC} 
+              style={{ 
+                padding: '12px 24px', 
+                backgroundColor: '#4caf50', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '5px', 
+                fontSize: '1em', 
+                cursor: 'pointer',
+                fontWeight: 'bold'
               }}
             >
-              {JSON.stringify(result, null, 2)}
-            </pre>
+              Start KYC Verification
+            </button>
+          )}
+          {loading && (
+            <button disabled style={{ padding: '12px 24px', backgroundColor: '#2c2c2c', color: '#ffffff', border: 'none', borderRadius: '5px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '20px', height: '20px', border: '2px solid #ffffff', borderTop: '2px solid #2e7d32', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                Starting...
+              </div>
+            </button>
+          )}
+          {(error || status.includes('rejected')) && (
+            <button 
+              onClick={startKYC} 
+              style={{ 
+                padding: '12px 24px', 
+                backgroundColor: '#616161', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '5px', 
+                fontSize: '1em', 
+                cursor: 'pointer'
+              }}
+            >
+              Retry KYC
+            </button>
+          )}
+          {polling && (
+            <button 
+              onClick={() => setPolling(false)} 
+              style={{ 
+                padding: '12px 24px', 
+                backgroundColor: '#2c2c2c', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '5px', 
+                fontSize: '1em', 
+                cursor: 'pointer'
+              }}
+            >
+              Stop Polling
+            </button>
+          )}
+          {(status.includes('Error') || status.includes('rejected')) && (
+            <button 
+              onClick={resetKYC} 
+              style={{ 
+                padding: '12px 24px', 
+                backgroundColor: '#66bb6a', 
+                color: '#ffffff', 
+                border: 'none', 
+                borderRadius: '5px', 
+                fontSize: '1em', 
+                cursor: 'pointer'
+              }}
+            >
+              Reset
+            </button>
+          )}
+        </div>
 
-            {result?.ocrResults && (
-              <pre
-                style={{
-                  marginTop: 12,
-                  maxHeight: 200,
-                  overflow: "auto",
-                  background: "#11182710",
-                  padding: 12,
-                }}
-              >
-                {JSON.stringify(result.ocrResults, null, 2)}
-              </pre>
-            )}
+        {/* Verified Section */}
+        {isVerified && (
+          <div style={{ 
+            backgroundColor: '#1a1a1a', 
+            borderRadius: '10px', 
+            padding: '20px', 
+            width: '100%', 
+            textAlign: 'center',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+          }}>
+            <h2 style={{ margin: '0 0 15px 0', color: '#4caf50' }}>✅ KYC Complete!</h2>
+            <p style={{ margin: '0 0 20px 0' }}>You are now verified. Select an asset to tokenize:</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center' }}>
+              {assets.map((asset) => (
+                <button 
+                  key={asset} 
+                  style={{ 
+                    padding: '8px 16px', 
+                    backgroundColor: '#4caf50', 
+                    color: '#ffffff', 
+                    border: 'none', 
+                    borderRadius: '5px', 
+                    cursor: 'pointer',
+                    fontWeight: 'bold'
+                  }}
+                  onClick={() => alert(`Tokenizing ${asset}... (Integrate your tokenization logic here)`)}  // Placeholder
+                >
+                  {asset}
+                </button>
+              ))}
+            </div>
           </div>
         )}
-      </div>
+      </main>
+
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 600px) {
+          h1 { font-size: 2em; }
+          button { width: 100%; margin-bottom: 10px; }
+        }
+      `}</style>
     </div>
   );
 }
+
+export default App;

@@ -40,18 +40,19 @@ const Profile: React.FC = () => {
 
           {/* Modal content */}
           <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-screen p-6 z-10 overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">KYC Verification</h2>
+            <div className="flex justify-between items-center mb-4 p-3 rounded-lg bg-green-800 shadow-lg">
+              <h2 className="text-xl font-bold text-white drop-shadow-sm">KYC Verification</h2>
               <button
                 onClick={() => setShowKycModal(false)}
-                className="px-3 py-1 rounded-lg border hover:bg-gray-100 transition"
+                className="px-3 py-1 rounded-md border border-white text-white hover:bg-white hover:text-green-800 transition"
               >
                 Close
               </button>
             </div>
 
+
             {/* KYC Form */}
-            <KycUploadForm maxFileSizeMB={5} />
+            <KycUploadForm {...({ maxFileSizeMB: 5 } as any)} />
 
           </div>
         </div>
