@@ -2,10 +2,7 @@
   "dependencies": {
     "buffer": "^6.0.3",
     "chart.js": "^4.5.0",
-<<<<<<< HEAD
     "firebase": "^12.4.0",
-=======
->>>>>>> d4754d9e4b0e6a8f502e23f2f9df1ca94ca68f46
     "react-chartjs-2": "^5.3.0",
     "react-toastify": "^11.0.5",
     "stream-browserify": "^3.0.0",
