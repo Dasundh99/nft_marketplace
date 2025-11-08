@@ -22,6 +22,9 @@ import MintForm from "./components/MintForm";
 
 
 import Profile from "./pages/Profile";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProtectedRoute from "./components/Admin/ProtectedRoute";
 
 
 
@@ -178,6 +181,18 @@ function App() {
             </Layout>
           }
         />
+        <Route
+        path="/admin/login"
+        element={
+          <AdminLogin/>
+        }/>
+        <Route 
+        path="admin/dashboard"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard/>
+          </ProtectedRoute>
+        }/>
       </Routes>
     </BrowserRouter>
   );
