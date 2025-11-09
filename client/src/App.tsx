@@ -250,7 +250,7 @@ function App() {
             </Layout>
           }
         />
-        
+        <Route
           path="/mynfts"
           element={
             <Layout>
@@ -266,6 +266,7 @@ function App() {
             </Layout>
           }
         />
+        <Route
         path="/admin/login"
         element={
           <AdminLogin/>
