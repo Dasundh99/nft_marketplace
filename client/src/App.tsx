@@ -14,25 +14,23 @@ import Market from "./pages/Market";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
-// import User from "./components/UserProfile/UserProfile";
 import HowNftsWorks from "./pages/HowNftsWorks";
 
 import Goods from "./pages/Goods";
 import MintForm from "./components/MintForm";
-// import Marketplace from "./pages/Marketplace";
 
 
 import Profile from "./pages/Profile";
-// import GoodsByWallet from "./pages/ProfileGoods";
 import ProfileGoods from "./pages/ProfileGoods";
-// import CreateAuctionHousePage from "./pages/CreateAuctionHousePage";
 import NFTOwnershipCheck from "./pages/NFTOwnershipCheck";
 import CreateAuctionHouse from "./pages/CreateAuctionHouse";
 import ListedNFTs from "./pages/ListedNFTs";
 import BoughtNFTs from "./pages/BoughtNFTs";
 import MyNFTsPage from "./pages/MyNFTsPage";
 import ConfirmMarketplace from "./components/onfirmMarketplace";
-// import BuyNFTPage from "./pages/BuyNFTPage";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProtectedRoute from "./components/Admin/ProtectedRoute";
 
 
 function App() {
@@ -252,7 +250,7 @@ function App() {
             </Layout>
           }
         />
-        <Route
+        
           path="/mynfts"
           element={
             <Layout>
@@ -268,6 +266,17 @@ function App() {
             </Layout>
           }
         />
+        path="/admin/login"
+        element={
+          <AdminLogin/>
+        }/>
+        <Route 
+        path="admin/dashboard"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard/>
+          </ProtectedRoute>
+        }/>
       </Routes>
     </BrowserRouter>
   );
