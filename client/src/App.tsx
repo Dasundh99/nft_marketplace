@@ -19,10 +19,20 @@ import HowNftsWorks from "./pages/HowNftsWorks";
 
 import Goods from "./pages/Goods";
 import MintForm from "./components/MintForm";
+// import Marketplace from "./pages/Marketplace";
 
 
 import Profile from "./pages/Profile";
-
+// import GoodsByWallet from "./pages/ProfileGoods";
+import ProfileGoods from "./pages/ProfileGoods";
+// import CreateAuctionHousePage from "./pages/CreateAuctionHousePage";
+import NFTOwnershipCheck from "./pages/NFTOwnershipCheck";
+import CreateAuctionHouse from "./pages/CreateAuctionHouse";
+import ListedNFTs from "./pages/ListedNFTs";
+import BoughtNFTs from "./pages/BoughtNFTs";
+import MyNFTsPage from "./pages/MyNFTsPage";
+import ConfirmMarketplace from "./components/onfirmMarketplace";
+// import BuyNFTPage from "./pages/BuyNFTPage";
 
 
 function App() {
@@ -59,6 +69,30 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/listednfts"
+          element={
+            <Layout>
+              <ListedNFTs />
+            </Layout>
+          }
+        />
+        <Route
+          path="/confirmmarketplace"
+          element={
+            <Layout>
+              <ConfirmMarketplace />
+            </Layout>
+          }
+        />
+        {/* <Route
+          path="/buynft"
+          element={
+            <Layout>
+              <BuyNFTPage />
+            </Layout>
+          }
+        /> */}
 
         <Route
           path="/settings"
@@ -128,6 +162,30 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/auctionhouse"
+          element={
+            <Layout>
+              <CreateAuctionHouse />
+            </Layout>
+          }
+        />
+        <Route
+          path="/boughtnfts"
+          element={
+            <Layout>
+              <BoughtNFTs />
+            </Layout>
+          }
+        />
+        {/* <Route
+          path="/marketplace"
+          element={
+            <Layout>
+              <Marketplace />
+            </Layout>
+          }
+        /> */}
 
         <Route
           path="/user"
@@ -171,10 +229,42 @@ function App() {
           }
         />
         <Route
+          path="/mygoods"
+          element={
+            <Layout>
+              <ProfileGoods />
+            </Layout>
+          }
+        />
+        {/* <Route
+          path="/create-auction-house"
+          element={
+            <Layout>
+              <CreateAuctionHousePage />
+            </Layout>
+          }
+        /> */}
+        <Route
           path="/mint"
           element={
             <Layout>
               <MintForm />
+            </Layout>
+          }
+        />
+        <Route
+          path="/mynfts"
+          element={
+            <Layout>
+              <MyNFTsPage/>
+            </Layout>
+          }
+        />
+        <Route
+          path="/checking"
+          element={
+            <Layout>
+              <NFTOwnershipCheck />
             </Layout>
           }
         />
