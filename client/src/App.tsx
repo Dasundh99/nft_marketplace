@@ -11,6 +11,7 @@ import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { SalesPage } from "./pages/SalesPage";
 import Market from "./pages/Market";
+import { DHLWorkflow } from "./pages/delivery-portal/DHLWorkflow";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
@@ -149,6 +150,19 @@ function App() {
             </Layout>
           }
         />
+
+// Delivery Portal Routes
+
+        <Route
+          path="/dhlFlow"
+          element={
+            <Layout>
+              <DHLWorkflow />
+            </Layout>
+          }
+        />
+// End Delivery Portal Routes
+
         <Route
           path="/sales"
           element={
@@ -182,17 +196,17 @@ function App() {
           }
         />
         <Route
-        path="/admin/login"
-        element={
-          <AdminLogin/>
-        }/>
-        <Route 
-        path="admin/dashboard"
-        element={
-          <ProtectedRoute>
-            <AdminDashboard/>
-          </ProtectedRoute>
-        }/>
+          path="/admin/login"
+          element={
+            <AdminLogin />
+          } />
+        <Route
+          path="admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
       </Routes>
     </BrowserRouter>
   );
