@@ -14,10 +14,24 @@ import Market from "./pages/Market";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
-// import User from "./components/UserProfile/UserProfile";
 import HowNftsWorks from "./pages/HowNftsWorks";
+
+import Goods from "./pages/Goods";
+import MintForm from "./components/MintForm";
+
+
 import Profile from "./pages/Profile";
-import "react-toastify/dist/ReactToastify.css";
+import ProfileGoods from "./pages/ProfileGoods";
+import NFTOwnershipCheck from "./pages/NFTOwnershipCheck";
+import CreateAuctionHouse from "./pages/CreateAuctionHouse";
+import ListedNFTs from "./pages/ListedNFTs";
+import BoughtNFTs from "./pages/BoughtNFTs";
+import MyNFTsPage from "./pages/MyNFTsPage";
+import ConfirmMarketplace from "./components/onfirmMarketplace";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProtectedRoute from "./components/Admin/ProtectedRoute";
+
 
 function App() {
   const fetchAPI = async () => {
@@ -53,6 +67,30 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/listednfts"
+          element={
+            <Layout>
+              <ListedNFTs />
+            </Layout>
+          }
+        />
+        <Route
+          path="/confirmmarketplace"
+          element={
+            <Layout>
+              <ConfirmMarketplace />
+            </Layout>
+          }
+        />
+        {/* <Route
+          path="/buynft"
+          element={
+            <Layout>
+              <BuyNFTPage />
+            </Layout>
+          }
+        /> */}
 
         <Route
           path="/settings"
@@ -122,6 +160,30 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/auctionhouse"
+          element={
+            <Layout>
+              <CreateAuctionHouse />
+            </Layout>
+          }
+        />
+        <Route
+          path="/boughtnfts"
+          element={
+            <Layout>
+              <BoughtNFTs />
+            </Layout>
+          }
+        />
+        {/* <Route
+          path="/marketplace"
+          element={
+            <Layout>
+              <Marketplace />
+            </Layout>
+          }
+        /> */}
 
         <Route
           path="/user"
@@ -156,6 +218,66 @@ function App() {
             </Layout>
           }
         />
+        <Route
+          path="/goods"
+          element={
+            <Layout>
+              <Goods />
+            </Layout>
+          }
+        />
+        <Route
+          path="/mygoods"
+          element={
+            <Layout>
+              <ProfileGoods />
+            </Layout>
+          }
+        />
+        {/* <Route
+          path="/create-auction-house"
+          element={
+            <Layout>
+              <CreateAuctionHousePage />
+            </Layout>
+          }
+        /> */}
+        <Route
+          path="/mint"
+          element={
+            <Layout>
+              <MintForm />
+            </Layout>
+          }
+        />
+        <Route
+          path="/mynfts"
+          element={
+            <Layout>
+              <MyNFTsPage/>
+            </Layout>
+          }
+        />
+        <Route
+          path="/checking"
+          element={
+            <Layout>
+              <NFTOwnershipCheck />
+            </Layout>
+          }
+        />
+        <Route
+        path="/admin/login"
+        element={
+          <AdminLogin/>
+        }/>
+        <Route 
+        path="admin/dashboard"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard/>
+          </ProtectedRoute>
+        }/>
       </Routes>
     </BrowserRouter>
   );
