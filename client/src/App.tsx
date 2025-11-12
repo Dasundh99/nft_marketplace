@@ -11,6 +11,7 @@ import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { SalesPage } from "./pages/SalesPage";
 import Market from "./pages/Market";
+// import { DHLWorkflow } from "./pages/delivery-portal/DHLWorkflow";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
@@ -31,6 +32,7 @@ import ConfirmMarketplace from "./components/onfirmMarketplace";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./components/Admin/ProtectedRoute";
+import TrackingView from "./pages/delivery-portal/TrackingView";
 
 
 function App() {
@@ -202,6 +204,19 @@ function App() {
             </Layout>
           }
         />
+
+// Delivery Portal Routes
+
+        <Route
+          path="/trackingview"
+          element={
+            <Layout>
+              <TrackingView />
+            </Layout>
+          }
+        />
+// End Delivery Portal Routes
+
         <Route
           path="/sales"
           element={
@@ -251,6 +266,18 @@ function App() {
           }
         />
         <Route
+
+          path="/admin/login"
+          element={
+            <AdminLogin />
+          } />
+        <Route
+          path="admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
           path="/mynfts"
           element={
             <Layout>
@@ -266,18 +293,6 @@ function App() {
             </Layout>
           }
         />
-        <Route
-        path="/admin/login"
-        element={
-          <AdminLogin/>
-        }/>
-        <Route 
-        path="admin/dashboard"
-        element={
-          <ProtectedRoute>
-            <AdminDashboard/>
-          </ProtectedRoute>
-        }/>
       </Routes>
     </BrowserRouter>
   );

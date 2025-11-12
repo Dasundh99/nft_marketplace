@@ -9,6 +9,8 @@ import {
 import { FiPieChart } from "react-icons/fi";
 import { MdPeopleAlt } from "react-icons/md";
 import { BsPersonFill } from "react-icons/bs";
+import { IoBoatOutline } from "react-icons/io5";
+
 
 interface SideNavProps {
   isExpanded: boolean;
@@ -24,6 +26,7 @@ const SideNav: React.FC<SideNavProps> = ({ isExpanded, setIsExpanded }) => {
     { icon: <IoNotifications className="w-5 h-5" />, label: "Notifications", path: "/notifications" },
     { icon: <IoSettings className="w-5 h-5" />, label: "Settings", path: "/settings" },
     { icon: <BsPersonFill className="w-5 h-5" />, label: "Profile", path: "/user" },
+    { icon: <IoBoatOutline className="w-5 h-5" />, label: "Delivery Rate", path: "/trackingview" },
   ];
 
   return (
