@@ -115,224 +115,245 @@ const Shipping: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Shipping Portal (Demo)</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-gray-900 min-h-screen text-gray-100">
+      <h2 className="text-3xl font-bold mb-6 text-center text-blue-400">
+        Shipping Portal
+      </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 mb-6 border p-4 rounded shadow"
+        className="space-y-6 mb-8 bg-gray-800 p-6 rounded-xl shadow-lg"
       >
         {/* Sender Section */}
-        <div className="space-y-2">
-          <h3 className="font-semibold text-lg">Sender Details</h3>
-          <input
-            placeholder="Name"
-            name="senderName"
-            value={form.senderName}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Email"
-            type="email"
-            name="senderEmail"
-            value={form.senderEmail}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Phone"
-            name="senderPhone"
-            value={form.senderPhone}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Address Line 1"
-            name="senderAddress1"
-            value={form.senderAddress1}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="City"
-            name="senderCity"
-            value={form.senderCity}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="State"
-            name="senderState"
-            value={form.senderState}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Zip"
-            name="senderZip"
-            value={form.senderZip}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Country"
-            name="senderCountry"
-            value={form.senderCountry}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
+        <div className="space-y-3">
+          <h3 className="font-semibold text-xl border-b border-gray-700 pb-2">
+            Sender Details
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              placeholder="Name"
+              name="senderName"
+              value={form.senderName}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Email"
+              type="email"
+              name="senderEmail"
+              value={form.senderEmail}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Phone"
+              name="senderPhone"
+              value={form.senderPhone}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Address Line 1"
+              name="senderAddress1"
+              value={form.senderAddress1}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none col-span-2"
+            />
+            <input
+              placeholder="City"
+              name="senderCity"
+              value={form.senderCity}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="State"
+              name="senderState"
+              value={form.senderState}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Zip"
+              name="senderZip"
+              value={form.senderZip}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Country"
+              name="senderCountry"
+              value={form.senderCountry}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+          </div>
         </div>
 
         {/* Receiver Section */}
-        <div className="space-y-2">
-          <h3 className="font-semibold text-lg">Receiver Details</h3>
-          <input
-            placeholder="Name"
-            name="receiverName"
-            value={form.receiverName}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Email"
-            type="email"
-            name="receiverEmail"
-            value={form.receiverEmail}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          />
-          <input
-            placeholder="Phone"
-            name="receiverPhone"
-            value={form.receiverPhone}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Address Line 1"
-            name="receiverAddress1"
-            value={form.receiverAddress1}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="City"
-            name="receiverCity"
-            value={form.receiverCity}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="State"
-            name="receiverState"
-            value={form.receiverState}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Zip"
-            name="receiverZip"
-            value={form.receiverZip}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Country"
-            name="receiverCountry"
-            value={form.receiverCountry}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
+        <div className="space-y-3">
+          <h3 className="font-semibold text-xl border-b border-gray-700 pb-2">
+            Receiver Details
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              placeholder="Name"
+              name="receiverName"
+              value={form.receiverName}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Email"
+              type="email"
+              name="receiverEmail"
+              value={form.receiverEmail}
+              onChange={handleChange}
+              required
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Phone"
+              name="receiverPhone"
+              value={form.receiverPhone}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Address Line 1"
+              name="receiverAddress1"
+              value={form.receiverAddress1}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none col-span-2"
+            />
+            <input
+              placeholder="City"
+              name="receiverCity"
+              value={form.receiverCity}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="State"
+              name="receiverState"
+              value={form.receiverState}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Zip"
+              name="receiverZip"
+              value={form.receiverZip}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Country"
+              name="receiverCountry"
+              value={form.receiverCountry}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+          </div>
         </div>
 
         {/* Package Section */}
-        <div className="space-y-2">
-          <h3 className="font-semibold text-lg">Package Details</h3>
-          <input
-            placeholder="Weight"
-            name="packageWeight"
-            value={form.packageWeight}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Dimensions"
-            name="packageDimensions"
-            value={form.packageDimensions}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            placeholder="Description"
-            name="packageDescription"
-            value={form.packageDescription}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          <select
-            name="courier"
-            value={form.courier}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          >
-            <option value="DHL">DHL</option>
-            <option value="FedEx">FedEx</option>
-            <option value="UPS">UPS</option>
-            <option value="USPS">USPS</option>
-          </select>
-          <select
-            name="serviceType"
-            value={form.serviceType}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          >
-            <option value="Standard">Standard</option>
-            <option value="Express">Express</option>
-            <option value="Overnight">Overnight</option>
-          </select>
+        <div className="space-y-3">
+          <h3 className="font-semibold text-xl border-b border-gray-700 pb-2">
+            Package Details
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              placeholder="Weight"
+              name="packageWeight"
+              value={form.packageWeight}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Dimensions"
+              name="packageDimensions"
+              value={form.packageDimensions}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            />
+            <input
+              placeholder="Description"
+              name="packageDescription"
+              value={form.packageDescription}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none col-span-2"
+            />
+            <select
+              name="courier"
+              value={form.courier}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            >
+              <option value="DHL">DHL</option>
+              <option value="FedEx">FedEx</option>
+              <option value="UPS">UPS</option>
+              <option value="USPS">USPS</option>
+            </select>
+            <select
+              name="serviceType"
+              value={form.serviceType}
+              onChange={handleChange}
+              className="p-3 rounded-lg bg-gray-700 text-gray-100 border border-gray-600 focus:border-blue-400 focus:outline-none"
+            >
+              <option value="Standard">Standard</option>
+              <option value="Express">Express</option>
+              <option value="Overnight">Overnight</option>
+            </select>
+          </div>
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="w-full py-3 bg-blue-500 rounded-lg font-semibold hover:bg-blue-600 transition-all duration-200"
         >
           Create Shipment
         </button>
       </form>
 
       {/* Shipments Table */}
-      <h3 className="text-xl font-semibold mb-2">Shipments</h3>
+      <h3 className="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">
+        Shipments
+      </h3>
       {shipments.length === 0 ? (
-        <p>No shipments yet.</p>
+        <p className="text-gray-400">No shipments yet.</p>
       ) : (
-        <table className="w-full border-collapse border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2">#</th>
-              <th className="border p-2">Sender</th>
-              <th className="border p-2">Receiver</th>
-              <th className="border p-2">Package</th>
-              <th className="border p-2">Courier</th>
-              <th className="border p-2">Service</th>
-              <th className="border p-2">Tracking #</th>
-            </tr>
-          </thead>
-          <tbody>
-            {shipments.map((s, idx) => (
-              <tr key={idx}>
-                <td className="border p-2">{idx + 1}</td>
-                <td className="border p-2">{s.senderName}</td>
-                <td className="border p-2">{s.receiverName}</td>
-                <td className="border p-2">{s.packageDescription}</td>
-                <td className="border p-2">{s.courier}</td>
-                <td className="border p-2">{s.serviceType}</td>
-                <td className="border p-2 font-mono">{s.trackingNumber}</td>
+        <div className="overflow-x-auto rounded-lg shadow-lg">
+          <table className="min-w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-800 text-gray-200">
+                <th className="p-3 border border-gray-700">#</th>
+                <th className="p-3 border border-gray-700">Sender</th>
+                <th className="p-3 border border-gray-700">Receiver</th>
+                <th className="p-3 border border-gray-700">Package</th>
+                <th className="p-3 border border-gray-700">Courier</th>
+                <th className="p-3 border border-gray-700">Service</th>
+                <th className="p-3 border border-gray-700">Tracking #</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {shipments.map((s, idx) => (
+                <tr
+                  key={idx}
+                  className="even:bg-gray-800 odd:bg-gray-700 hover:bg-gray-600 transition-colors"
+                >
+                  <td className="p-3 border border-gray-600">{idx + 1}</td>
+                  <td className="p-3 border border-gray-600">{s.senderName}</td>
+                  <td className="p-3 border border-gray-600">{s.receiverName}</td>
+                  <td className="p-3 border border-gray-600">{s.packageDescription}</td>
+                  <td className="p-3 border border-gray-600">{s.courier}</td>
+                  <td className="p-3 border border-gray-600">{s.serviceType}</td>
+                  <td className="p-3 border border-gray-600 font-mono">{s.trackingNumber}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
