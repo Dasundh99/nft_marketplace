@@ -26,7 +26,7 @@ const SideNav: React.FC<SideNavProps> = ({ isExpanded, setIsExpanded }) => {
     { icon: <IoNotifications className="w-5 h-5" />, label: "Notifications", path: "/notifications" },
     { icon: <IoSettings className="w-5 h-5" />, label: "Settings", path: "/settings" },
     { icon: <BsPersonFill className="w-5 h-5" />, label: "Profile", path: "/user" },
-    { icon: <IoBoatOutline className="w-5 h-5" />, label: "Delivery Rate", path: "/dhlFlow" },
+    { icon: <IoBoatOutline className="w-5 h-5" />, label: "Delivery Rate", path: "/trackingview" },
   ];
 
   return (

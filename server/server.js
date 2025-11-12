@@ -1,33 +1,27 @@
 // server.js
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const fetch = require('node-fetch'); // Make sure to install: npm i node-fetch@2
-const { confirmPayment, createDHLShipment, checkDeliveryStatus } = require('./orderController.js');
+import 'dotenv/config'; // loads .env automatically
+import express from "express";
+import cors from "cors";
+import fetch from "node-fetch"; // npm i node-fetch@2
+import { getTrackingStatus } from "./trackingService.js"; // your TrackingMore service
+// import { confirmPayment, createDHLShipment, checkDeliveryStatus } from './orderController.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
+// Load Didit env vars
 const DIDIT_API_KEY = process.env.DIDIT_API_KEY;  
 const DIDIT_WORKFLOW_ID = process.env.DIDIT_WORKFLOW_ID;  
 
 // Middleware
-const corsOptions = {
-  origin: "http://localhost:5173", // Your frontend URL
-};
-app.use(cors(corsOptions));
+app.use(cors({ origin: "http://localhost:5173" })); // frontend URL
 app.use(express.json());
 
 // Debug env vars
 console.log('DIDIT_API_KEY loaded:', DIDIT_API_KEY ? 'YES (hidden)' : 'NO - Check .env!');
 console.log('DIDIT_WORKFLOW_ID loaded:', DIDIT_WORKFLOW_ID ? 'YES' : 'NO - Check .env!');
 
-// Order routes
-app.post("/api/order/confirm-payment", confirmPayment);
-app.post("/api/order/create-shipment", createDHLShipment);
-app.get("/api/order/track/:orderId", checkDeliveryStatus);
-
-// Root and assets
+// Root and sample assets
 app.get("/", (req, res) => res.send("Welcome to the root route!"));
 app.get("/api", (req, res) => {
   res.json({ assets: ["Gold", "Oil", "Jewelry", "Real Estate", "Stocks"] });
@@ -120,6 +114,62 @@ app.post('/api/update-user-kyc', (req, res) => {
   console.log(`User ${userId} KYC: ${verified ? 'Approved' : 'Rejected'}`);
   res.json({ success: true });
 });
+
+// Mock tracking endpoint for testing/demo
+app.get("/api/track/:carrier/:trackingNumber", (req, res) => {
+  const { carrier, trackingNumber } = req.params;
+
+  // Sample mock data
+  const mockData = {
+    code: 200,
+    data: {
+      items: [
+        {
+          tracking_number: trackingNumber,
+          carrier_code: carrier,
+          status: "in_transit",
+          origin_info: {
+            trackinfo: [
+              {
+                StatusDescription: "Shipment created",
+                Date: "2025-11-12 09:00",
+                Details: "Your shipment has been created",
+                Location: "Colombo, Sri Lanka",
+              },
+              {
+                StatusDescription: "Shipment picked up",
+                Date: "2025-11-12 14:00",
+                Details: "Package picked up by DHL courier",
+                Location: "Colombo, Sri Lanka",
+              },
+              {
+                StatusDescription: "In Transit",
+                Date: "2025-11-13 08:00",
+                Details: "Package is on the way to destination",
+                Location: "Kandy, Sri Lanka",
+              },
+              {
+                StatusDescription: "Out for Delivery",
+                Date: "2025-11-13 10:00",
+                Details: "Package out for delivery",
+                Location: "Galle, Sri Lanka",
+              },
+              {
+                StatusDescription: "Delivered",
+                Date: "2025-11-13 12:30",
+                Details: "Package delivered to recipient",
+                Location: "Galle, Sri Lanka",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  };
+
+  res.json(mockData);
+});
+
 
 // Start server
 app.listen(PORT, () => {

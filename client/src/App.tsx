@@ -11,7 +11,7 @@ import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { SalesPage } from "./pages/SalesPage";
 import Market from "./pages/Market";
-import { DHLWorkflow } from "./pages/delivery-portal/DHLWorkflow";
+// import { DHLWorkflow } from "./pages/delivery-portal/DHLWorkflow";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
 import NotificationSettings from "./components/SettingsPage/NotificationSettings";
@@ -26,6 +26,7 @@ import Profile from "./pages/Profile";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./components/Admin/ProtectedRoute";
+import TrackingView from "./pages/delivery-portal/TrackingView";
 
 
 
@@ -154,10 +155,10 @@ function App() {
 // Delivery Portal Routes
 
         <Route
-          path="/dhlFlow"
+          path="/trackingview"
           element={
             <Layout>
-              <DHLWorkflow />
+              <TrackingView />
             </Layout>
           }
         />
