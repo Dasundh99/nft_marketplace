@@ -278,13 +278,13 @@ function App() {
               <AdminDashboard />
             </ProtectedRoute>
           } />
+          <Route
           path="/mynfts"
           element={
             <Layout>
               <MyNFTsPage/>
             </Layout>
-          }
-        />
+          } />
         <Route
           path="/checking"
           element={
