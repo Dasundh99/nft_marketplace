@@ -1,13 +1,15 @@
 import { useState } from "react"
 import ListingTable from "../../components/Admin/ListingsTable"
 import NftTable from "../../components/Admin/NftTable"
+import PurchasesTable from "../../components/Admin/PurchasesTable";
 
 const AdminDashboard: React. FC = () => {
     const [selectedTab, setSelectedTab] = useState("nfts");
 
     const tabs = [
         {key: "nfts", label: "NFTs"},
-        {key: "listings", label: "Listings"}
+        {key: "listings", label: "Listings"},
+        {key: "purchases", label: "Purchases"},
     ];
 
     const renderContent = () => {
@@ -16,6 +18,8 @@ const AdminDashboard: React. FC = () => {
                 return <NftTable/>;
              case "listings":
                 return <ListingTable/>;
+            case "purchases":
+                return <PurchasesTable/>;
         }
     }
 
