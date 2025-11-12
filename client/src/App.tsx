@@ -11,6 +11,7 @@ import About from "./pages/About";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import { SalesPage } from "./pages/SalesPage";
 import Market from "./pages/Market";
+import Shipping from "./pages/delivery-portal/Shipping";
 // import { DHLWorkflow } from "./pages/delivery-portal/DHLWorkflow";
 
 import ProfileSettings from "./components/SettingsPage/ProfileSettings";
@@ -212,6 +213,14 @@ function App() {
           element={
             <Layout>
               <TrackingView />
+            </Layout>
+          }
+        />
+        <Route
+          path="/shipping"
+          element={
+            <Layout>
+              <Shipping />
             </Layout>
           }
         />
