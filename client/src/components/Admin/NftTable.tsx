@@ -1,14 +1,14 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, onSnapshot} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../../utils/firebase";
 
 interface NFT {
     id: string;
-    name: string;
-    image: string;
-    owner: string;
-    mintAddress: string;
-    createdAt: string;
+    name?: string;
+    image?: string;
+    owner?: string;
+    mintAddress?: string;
+    createdAt: any;
     manufactureDate: string;
     expiryDate: string;
     certificateUrl: string;
@@ -16,40 +16,58 @@ interface NFT {
     metadataUri: string;
 }
 
+interface NFTwithOrderedDate extends NFT {
+    createdAtDate: Date;
+}
+
 const NftTable: React.FC = () => {
-    const [nfts, setNfts] = useState<NFT[]>([]);
+    const [nfts, setNfts] = useState<NFTwithOrderedDate[]>([]);
 
     useEffect(() => {
-        //create a firestore query
-        const q = query(collection(db, "nfts"), orderBy("createdAt","desc"));
-
         // set a real time listener on the nfts collection
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map((doc) => ({
-                id:doc.id,
-                ...doc.data(),
-            })) as NFT[];
+        const unsubscribe = onSnapshot(collection(db, "nfts"), (snapshot) => {
+            const data = snapshot.docs.map((doc) => {
+                const nft = doc.data() as NFT;
+
+                // skip NFT with no created date
+                if(!nft.createdAt) return null;
+                
+                let createdAtDate: Date | null = null;
+
+                try{
+                    if(nft.createdAt?.toDate){
+                        createdAtDate = nft.createdAt.toDate(); //Timestamp
+                    } else if(typeof nft.createdAt === "string"){
+                        const d= new Date(nft.createdAt);
+                        if(!isNaN(d.getTime())) createdAtDate = d; // string date
+                    }
+                } catch {}
+
+                // skip if created at is invalid
+                if(!createdAtDate) return null;
+                return {
+                    ...nft,
+                    id: doc.id,
+                    createdAtDate,
+                };
+            })
             
-            //update the react state with the fetched nft data
+            // remove skipped entries
+            .filter((item) : item is NFTwithOrderedDate => item !== null)
+            
+            // sort by date desc
+            .sort((a,b) => b.createdAtDate.getTime() - a.createdAtDate.getTime());
+
             setNfts(data);
+
         });
 
-        // cleanup the listener when components unmount
         return () => unsubscribe();
     }, []);
-
-    // handles the both created date types Timestamp and string
-    const formattedDate = (createdAt: any) => {
-        if(!createdAt) return "-";
-        try{
-            if(createdAt.toDate){
-                return createdAt.toDate().toLocaleDateString(); //Timestamp
-            }
-            return new Date(createdAt).toLocaleDateString(); //string
-        }
-        catch {
-            return "Imvalid Date";
-        }
+    
+    const formattedDate = (date: Date) => {
+    
+        return date.toLocaleDateString();
     };
 
 
@@ -89,14 +107,14 @@ const NftTable: React.FC = () => {
                                     <img src={nft.image} alt={nft.name} 
                                     className="w-14 h-14 rounded-lg object-cover border border-gray-800"/>
                                 </td>
-                                <td className="p-3">{formattedDate(nft.createdAt)}</td>
+                                <td className="p-3">{formattedDate(nft.createdAtDate)}</td>
                                 <td className="p-3 font-medium">{nft.name}</td>
                                 <td className="p-3 text-gray-400">{nft.owner}</td>
                                 <td>{nft.manufactureDate}</td>
                                 <td>{nft.expiryDate}</td>
                                 <td>{nft.mintAddress}</td>
                                 <td className="p-3">
-                                    <a href="{nft.certificateUrl}"
+                                    <a href={nft.certificateUrl}
                                     target="_blank"
                                     className="text-blue-500 underline hover:text-blue-400">
                                         View
