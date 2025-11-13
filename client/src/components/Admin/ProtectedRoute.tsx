@@ -1,5 +1,5 @@
 // use protected route so that only login admin can navigate into admin dashboard
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { auth } from "../../firebaseconfig";
 import { Navigate } from "react-router-dom";
 

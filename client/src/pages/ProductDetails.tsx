@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import copyIcon from "../assets/CopyIcon.svg";
-import LineChart from "../components/Charts/LineChart";
 import trendingIcon from "../assets/Trending.svg";
 import productImage1 from "../assets/Product1.svg";
 import productImage2 from "../assets/Product2.svg";
 import productImage3 from "../assets/Product3.svg";
 import productImage4 from "../assets/Product4.svg";
+import NftChart from "../components/Admin/NftChart";
 
 const ProductDetails: React.FC = () => {
   return (
@@ -59,7 +59,7 @@ const ProductDetails: React.FC = () => {
         </div>
       </div>
       <div className="p-4">
-        <LineChart />
+        <NftChart />
       </div>
       <div className="flex flex-col md:flex-row gap-6 px-5 mt-10 mb-10">
         {/* Left Card*/}
