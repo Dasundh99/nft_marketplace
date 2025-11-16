@@ -1,206 +1,196 @@
-import React, { useState, useEffect } from "react";
-import Image1 from "../../assets/Slider1.jpg";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  fetchLimitedListings,
+} from "../../services/listingService";
 
-const slides = [
-  {
-    src: Image1,
-    name: "MintedGold",
-    by: "by CryptoArt",
-    texts: ["Floor Price", "SOL 12.00", "Floor Price", "SOL 13.00", "Floor Price", "SOL 15.00"],
-  },
-  {
-    src: "https://images.unsplash.com/photo-1666979663035-b840b143396f?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "CrystalForge",
-    by: "by Artisans",
-    texts: ["Floor Price", "SOL 12.00", "Floor Price", "SOL 6.00", "Floor Price", "SOL 12.00"],
-  },
-  {
-    src: "https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "IronPhoenix",
-    by: "by PhoenixLabs",
-    texts: ["Floor Price", "SOL 11.00", "Floor Price", "SOL 10.00", "Floor Price", "SOL 7.00"],
-  },
-  {
-    src: "https://images.unsplash.com/photo-1729830114379-4c3dfe391a74?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "ShadowCoin",
-    by: "by ShadowLabs",
-    texts: ["Floor Price", "SOL 10.00", "Floor Price", "SOL 7.00", "Floor Price", "SOL 8.00"],
-  },
-];
+const PLACEHOLDER_IMAGE =
+  "https://images.unsplash.com/photo-1618005182386-a1a8f4f6a0a3?q=80&w=1332&auto=format&fit=crop";
+
+interface Slide {
+  src: string;
+  name: string;
+  by: string;
+  texts: string[];
+}
 
 const ImageSlider: React.FC = () => {
+  const [slides, setSlides] = useState<Slide[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
-
+  // -----------------------------------------------------------
+  // Fetch listings from reusable service
+  // -----------------------------------------------------------
   useEffect(() => {
-    const slide = setInterval(nextSlide, 3000);
-    return () => clearInterval(slide);
-  }, [currentIndex]);
+    const loadSlides = async () => {
+      setLoading(true);
 
-  const currentSlide = slides[currentIndex];
+      const listings = await fetchLimitedListings(4); // <--- Fetch from service
 
-  return (
-    <div className="relative w-full">
-      <div className="w-full flex">
-        {/* Image */}
-        <img
-          src={currentSlide.src}
-          className="w-full object-cover h-120 opacity-50"
-          alt={`Slide ${currentIndex + 1}`}
-        />
+      const formattedSlides: Slide[] = listings.map((item) => ({
+        src: item.imageUrl || PLACEHOLDER_IMAGE,
+        name: item.nftName || item.nftMint.slice(0, 8) + "...",
+        by: `by ${item.seller.slice(0, 8)}...`,
+        texts: ["Price", `${item.price} ${item.currency}`],
+      }));
 
-        {/* Overlay Content */}
-        <div className="absolute inset-0 flex items-baseline-last justify-start py-10 px-5">
-          <div className="text-white w-full max-w-md">
-            <div className="flex flex-col gap-1">
-              {/* Asset Name */}
-              <div className="text-2xl font-extrabold tracking-wide">
-                {currentSlide.name}
-              </div>
-              {/* Creator Info */}
-              <div className="text-sm tracking-wide">
-                {currentSlide.by}
-              </div>
+      setSlides(formattedSlides);
+      setLoading(false);
+    };
 
-              {/* Slide Info Container */}
-              <div className="flex px-6 py-5 bg-black/60 rounded-xl border border-gray-600 shadow-md">
-                {/* Column 1 */}
-                <div className="flex-1 px-4">
-                  <div className="text-sm text-gray-300">{currentSlide.texts[0]}</div>
-                  <div className="text-base font-semibold mt-1">{currentSlide.texts[1]}</div>
-                </div>
+    loadSlides();
+  }, []);
 
-                {/* Divider */}
-                <div className="w-px bg-gray-500 mx-3"></div>
+  // -----------------------------------------------------------
+  // Auto-slide logic
+  // -----------------------------------------------------------
+  useEffect(() => {
+    if (!slides.length || loading) return;
 
-                {/* Column 2 */}
-                <div className="flex-1 px-4">
-                  <div className="text-sm text-gray-300">{currentSlide.texts[2]}</div>
-                  <div className="text-base font-semibold mt-1">{currentSlide.texts[3]}</div>
-                </div>
+    const startInterval = () => {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
+      }, 4000);
+    };
 
-                {/* Divider */}
-                <div className="w-px bg-gray-500 mx-3"></div>
+    startInterval();
 
-                {/* Column 3 */}
-                <div className="flex-1 px-4">
-                  <div className="text-sm text-gray-300">{currentSlide.texts[4]}</div>
-                  <div className="text-base font-semibold mt-1">{currentSlide.texts[5]}</div>
-                </div>
-              </div>
-            </div>
-          </div>
+    const slider = sliderRef.current;
+    if (slider) {
+      const pause = () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      };
 
-        </div>
+      const resume = () => {
+        if (!intervalRef.current && slides.length > 1) startInterval();
+      };
+
+      slider.addEventListener("mouseenter", pause);
+      slider.addEventListener("mouseleave", resume);
+      slider.addEventListener("touchstart", pause);
+
+      return () => {
+        slider.removeEventListener("mouseenter", pause);
+        slider.removeEventListener("mouseleave", resume);
+        slider.removeEventListener("touchstart", pause);
+        if (intervalRef.current) clearInterval(intervalRef.current);
+      };
+    }
+  }, [slides, loading]);
+
+  // Pause and resume on manual navigation
+  const handleNavigation = (newIndex: number) => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    setCurrentIndex(newIndex);
+
+    setTimeout(() => {
+      if (!slides.length || loading) return;
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
+      }, 4000);
+    }, 2000);
+  };
+
+  // -----------------------------------------------------------
+  // Loading state
+  // -----------------------------------------------------------
+  if (loading)
+    return (
+      <div className="w-full h-[450px] bg-black rounded-2xl flex items-center justify-center">
+        <div className="text-white">Loading featured NFTs...</div>
       </div>
+    );
 
-      {/* Thumbnail previews in bottom-right */}
-      <div className="py-6 absolute bottom-4 right-4 flex gap-2 z-10">
-        {slides
-          .map((slide, index) => ({ slide, index }))
-          .filter(({ index }) => index !== currentIndex)
-          .slice(0, 3) // Show only 3 unselected images
-          .map(({ slide, index }) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className="w-16 h-16 rounded overflow-hidden border-2 border-white/50 hover:border-white transition"
+  if (!slides.length)
+    return (
+      <div className="w-full h-[450px] bg-black rounded-2xl flex items-center justify-center">
+        <div className="text-white">No active listings.</div>
+      </div>
+    );
+
+  // -----------------------------------------------------------
+  // Slider UI
+  // -----------------------------------------------------------
+  return (
+    <div
+      ref={sliderRef}
+      className="relative w-full h-[450px] overflow-hidden rounded-2xl shadow-2xl group"
+    >
+      {/* Slides */}
+      <div className="absolute inset-0">
+        {slides.map((slide, i) => {
+          const isActive = i === currentIndex;
+          const [label, value] = slide.texts;
+
+          return (
+            <div
+              key={i}
+              className={`absolute inset-0 transition-all duration-1000 ${
+                isActive ? "opacity-100 scale-100" : "opacity-0 scale-105"
+              }`}
             >
               <img
                 src={slide.src}
-                alt={`Thumbnail ${index + 1}`}
+                alt={slide.name}
                 className="w-full h-full object-cover"
               />
-            </button>
-          ))}
+
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+              {/* Text */}
+              <div className="absolute bottom-8 left-8 text-white space-y-2">
+                <h2 className="text-3xl font-bold">{slide.name}</h2>
+                <p className="opacity-80">{slide.by}</p>
+
+                <div className="bg-black/40 rounded-xl px-4 py-2 w-fit">
+                  <p className="text-xs uppercase opacity-60">{label}</p>
+                  <p className="text-lg font-bold">{value}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-
-      {/* Controls */}
+      {/* Buttons */}
       <button
-        onClick={prevSlide}
-        className="
-    absolute 
-    top-1/2 
-    left-2 
-    md:left-4 
-    transform -translate-y-1/2 
-    bg-black/50 
-    backdrop-blur-sm 
-    text-white 
-    p-2 
-    md:p-3 
-    rounded-full 
-    hover:bg-white/30 
-    transition 
-    z-10
-  "
-        aria-label="Previous Slide"
+        onClick={() =>
+          handleNavigation(currentIndex === 0 ? slides.length - 1 : currentIndex - 1)
+        }
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white w-10 h-10 rounded-full"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4 md:w-5 md:h-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
+        ‹
       </button>
 
-
       <button
-        onClick={nextSlide}
-        className="
-    absolute
-    top-1/2
-    right-2
-    md:right-4
-    transform -translate-y-1/2
-    bg-black/50
-    backdrop-blur-sm
-    text-white
-    p-2
-    md:p-3
-    rounded-full
-    hover:bg-white/30
-    transition
-    z-10
-  "
-        aria-label="Next Slide"
+        onClick={() =>
+          handleNavigation(currentIndex === slides.length - 1 ? 0 : currentIndex + 1)
+        }
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white w-10 h-10 rounded-full"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-4 h-4 md:w-5 md:h-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        ›
       </button>
-
 
       {/* Dots */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrentIndex(i)}
-            className={`w-8 h-1 rounded-full ${currentIndex === i ? "bg-white w-20" : "bg-gray-400"
-              }`}
+            onClick={() => handleNavigation(i)}
+            className={`w-3 h-3 rounded-full transition ${
+              i === currentIndex ? "bg-white" : "bg-white/40"
+            }`}
           ></button>
         ))}
       </div>
