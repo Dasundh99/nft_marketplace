@@ -11,6 +11,7 @@ firebase-debug.*.log*
 # Firebase cache
 .firebase/
 server/serviceAccountKey.json
+server/firebase-service-account.json
 # Firebase config
 
 # Uncomment this if you'd like others to create their own Firebase project.
