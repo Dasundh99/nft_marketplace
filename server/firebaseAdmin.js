@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(
-      path.join(__dirname, "./serviceAccountKey.json")
+      path.join(__dirname, "./firebase-service-account.json")
     ),
   });
 }
