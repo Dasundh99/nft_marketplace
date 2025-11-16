@@ -34,12 +34,13 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./components/Admin/ProtectedRoute";
 import TrackingView from "./pages/delivery-portal/TrackingView";
+import DeliveryStatus from "./pages/DeliveryStatus";
 
 
 function App() {
   const fetchAPI = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api");
+      const response = await axios.get("http://localhost:5000/api");
       console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -179,6 +180,10 @@ function App() {
             </Layout>
           }
         />
+        <Route path="/delivery-status" 
+        element={<Layout>
+              <DeliveryStatus />
+            </Layout>} />
         {/* <Route
           path="/marketplace"
           element={
