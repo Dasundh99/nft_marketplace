@@ -1,200 +1,197 @@
-import React, { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../utils/firebase";
-import { Connection, PublicKey } from "@solana/web3.js";
-import { Metaplex } from "@metaplex-foundation/js";
-
-const connection = new Connection("https://api.mainnet-beta.solana.com");
-const metaplex = new Metaplex(connection);
+import React, { useState, useEffect, useRef } from "react";
+import {
+  fetchLimitedListings,
+} from "../../services/listingService";
 
 const PLACEHOLDER_IMAGE =
   "https://images.unsplash.com/photo-1618005182386-a1a8f4f6a0a3?q=80&w=1332&auto=format&fit=crop";
 
-// Firestore listing interface
-interface Listing {
-  id: string;
-  nftMint: string;
-  price: number;
-  currency: string;
-  seller: string;
-  status: string;
-  imageUrl?: string;
+interface Slide {
+  src: string;
+  name: string;
+  by: string;
+  texts: string[];
 }
 
-// Normalize image URL to avoid 403 / missing metadata issues
-const safeImageUrl = (url: string | undefined) => {
-  if (!url) return PLACEHOLDER_IMAGE;
-
-  // If already valid http link, return as is
-  if (url.startsWith("http")) return url;
-
-  // If ipfs://CID → convert
-  if (url.startsWith("ipfs://")) {
-    const cid = url.replace("ipfs://", "");
-    
-    // Primary Pinata gateway
-    return `https://gateway.pinata.cloud/ipfs/${cid}`;
-  }
-
-  // If backend stored raw CID
-  if (url.length >= 46 && !url.includes(".")) {
-    return `https://gateway.pinata.cloud/ipfs/${url}`;
-  }
-
-  return PLACEHOLDER_IMAGE;
-};
-
-// Fetch NFT image using Metaplex Metadata
-const fetchNFTImage = async (mint: string) => {
-  try {
-    const nft = await metaplex.nfts().findByMint({
-      mintAddress: new PublicKey(mint),
-    });
-
-    const img = nft.json?.image;
-
-    // Return a safe version
-    return safeImageUrl(img);
-  } catch (error) {
-    console.error("❌ Error fetching NFT metadata:", error);
-    return PLACEHOLDER_IMAGE;
-  }
-};
-
 const ImageSlider: React.FC = () => {
-  const [slides, setSlides] = useState<any[]>([]);
+  const [slides, setSlides] = useState<Slide[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Fetch listings + NFT metadata images
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  // -----------------------------------------------------------
+  // Fetch listings from reusable service
+  // -----------------------------------------------------------
   useEffect(() => {
-    const loadListings = async () => {
-      try {
-        const snap = await getDocs(collection(db, "listings"));
+    const loadSlides = async () => {
+      setLoading(true);
 
-        const listings: Listing[] = await Promise.all(
-          snap.docs.map(async (doc) => {
-            const data = doc.data();
-            const img = await fetchNFTImage(data.nftMint);
+      const listings = await fetchLimitedListings(4); // <--- Fetch from service
 
-            return {
-              id: doc.id,
-              nftMint: data.nftMint,
-              price: data.price,
-              currency: data.currency,
-              seller: data.seller,
-              status: data.status,
-              imageUrl: img,
-            };
-          })
-        );
+      const formattedSlides: Slide[] = listings.map((item) => ({
+        src: item.imageUrl || PLACEHOLDER_IMAGE,
+        name: item.nftName || item.nftMint.slice(0, 8) + "...",
+        by: `by ${item.seller.slice(0, 8)}...`,
+        texts: ["Price", `${item.price} ${item.currency}`],
+      }));
 
-        const active = listings.filter((l) => l.status !== "cancelled");
-
-        const preparedSlides = active.slice(0, 4).map((item) => ({
-          src: item.imageUrl,
-          name: item.nftMint.slice(0, 10) + "...",
-          by: `by ${item.seller.slice(0, 8)}...`,
-          texts: [
-            "Floor Price",
-            `${item.price} ${item.currency}`,
-              // "Floor Price",
-            // `${(item.price * 0.9).toFixed(2)} ${item.currency}`,
-            // "Floor Price",
-            // `${(item.price * 1.1).toFixed(2)} ${item.currency}`,
-          ],
-        }));
-
-        setSlides(preparedSlides);
-      } catch (err) {
-        console.error("🔥 Failed to fetch listings:", err);
-        setSlides([]);
-      } finally {
-        setLoading(false);
-      }
+      setSlides(formattedSlides);
+      setLoading(false);
     };
 
-    loadListings();
+    loadSlides();
   }, []);
 
-  // Auto-slide every 3s
+  // -----------------------------------------------------------
+  // Auto-slide logic
+  // -----------------------------------------------------------
   useEffect(() => {
     if (!slides.length || loading) return;
 
-    const interval = setInterval(() => {
-      setCurrentIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
-    }, 3000);
+    const startInterval = () => {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
+      }, 4000);
+    };
 
-    return () => clearInterval(interval);
+    startInterval();
+
+    const slider = sliderRef.current;
+    if (slider) {
+      const pause = () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      };
+
+      const resume = () => {
+        if (!intervalRef.current && slides.length > 1) startInterval();
+      };
+
+      slider.addEventListener("mouseenter", pause);
+      slider.addEventListener("mouseleave", resume);
+      slider.addEventListener("touchstart", pause);
+
+      return () => {
+        slider.removeEventListener("mouseenter", pause);
+        slider.removeEventListener("mouseleave", resume);
+        slider.removeEventListener("touchstart", pause);
+        if (intervalRef.current) clearInterval(intervalRef.current);
+      };
+    }
   }, [slides, loading]);
 
+  // Pause and resume on manual navigation
+  const handleNavigation = (newIndex: number) => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    setCurrentIndex(newIndex);
+
+    setTimeout(() => {
+      if (!slides.length || loading) return;
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
+      }, 4000);
+    }, 2000);
+  };
+
+  // -----------------------------------------------------------
+  // Loading state
+  // -----------------------------------------------------------
   if (loading)
     return (
-      <div className="w-full h-120 bg-gray-800 flex items-center justify-center">
-        Loading slides...
+      <div className="w-full h-[450px] bg-black rounded-2xl flex items-center justify-center">
+        <div className="text-white">Loading featured NFTs...</div>
       </div>
     );
 
   if (!slides.length)
     return (
-      <div className="w-full h-120 bg-gray-800 flex items-center justify-center">
-        No active listings.
+      <div className="w-full h-[450px] bg-black rounded-2xl flex items-center justify-center">
+        <div className="text-white">No active listings.</div>
       </div>
     );
 
-  const current = slides[currentIndex];
-
+  // -----------------------------------------------------------
+  // Slider UI
+  // -----------------------------------------------------------
   return (
-    <div className="relative w-full">
-      {/* Background Image */}
-      <img
-        src={current.src}
-        className="w-full object-cover h-120 opacity-50"
-        alt={`Slide ${currentIndex}`}
-      />
+    <div
+      ref={sliderRef}
+      className="relative w-full h-[450px] overflow-hidden rounded-2xl shadow-2xl group"
+    >
+      {/* Slides */}
+      <div className="absolute inset-0">
+        {slides.map((slide, i) => {
+          const isActive = i === currentIndex;
+          const [label, value] = slide.texts;
 
-      {/* Text Overlay */}
-      <div className="absolute inset-0 flex items-baseline-last justify-start py-10 px-5">
-        <div className="text-white max-w-md">
-          <div className="flex flex-col gap-1">
-            <p className="text-2xl font-extrabold tracking-wide">{current.name}</p>
-            <p className="text-sm tracking-wide">{current.by}</p>
+          return (
+            <div
+              key={i}
+              className={`absolute inset-0 transition-all duration-1000 ${
+                isActive ? "opacity-100 scale-100" : "opacity-0 scale-105"
+              }`}
+            >
+              <img
+                src={slide.src}
+                alt={slide.name}
+                className="w-full h-full object-cover"
+              />
 
-            <div className="flex px-6 py-5 bg-black/60 rounded-xl border border-gray-600 shadow-md">
-              {current.texts.map((text: string, i: number) => (
-                <div key={i} className="flex-1 px-4">
-                  <p className="text-sm text-gray-300">{text}</p>
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+              {/* Text */}
+              <div className="absolute bottom-8 left-8 text-white space-y-2">
+                <h2 className="text-3xl font-bold">{slide.name}</h2>
+                <p className="opacity-80">{slide.by}</p>
+
+                <div className="bg-black/40 rounded-xl px-4 py-2 w-fit">
+                  <p className="text-xs uppercase opacity-60">{label}</p>
+                  <p className="text-lg font-bold">{value}</p>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
 
-      {/* Navigation Buttons */}
+      {/* Buttons */}
       <button
-        onClick={() => setCurrentIndex(currentIndex === 0 ? slides.length - 1 : currentIndex - 1)}
-        className="absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 p-2 rounded-full"
+        onClick={() =>
+          handleNavigation(currentIndex === 0 ? slides.length - 1 : currentIndex - 1)
+        }
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white w-10 h-10 rounded-full"
       >
         ‹
       </button>
+
       <button
-        onClick={() => setCurrentIndex(currentIndex === slides.length - 1 ? 0 : currentIndex + 1)}
-        className="absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 p-2 rounded-full"
+        onClick={() =>
+          handleNavigation(currentIndex === slides.length - 1 ? 0 : currentIndex + 1)
+        }
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white w-10 h-10 rounded-full"
       >
         ›
       </button>
 
-      {/* Slide Dots */}
-      <div className="flex justify-center mt-4 gap-2">
+      {/* Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrentIndex(i)}
-            className={`h-1 rounded-full transition-all ${
-              currentIndex === i ? "bg-white w-20" : "bg-gray-400 w-8"
+            onClick={() => handleNavigation(i)}
+            className={`w-3 h-3 rounded-full transition ${
+              i === currentIndex ? "bg-white" : "bg-white/40"
             }`}
-          />
+          ></button>
         ))}
       </div>
     </div>
