@@ -174,9 +174,8 @@ const Home: React.FC = () => {
                           <div className="text-gray-400 text-xs">
                             {asset.changedPrice}{" "}
                             <span
-                              className={`text-${
-                                asset.Change === "+" ? "green" : "red"
-                              }-500`}
+                              className={`text-${asset.Change === "+" ? "green" : "red"
+                                }-500`}
                             >
                               {asset.Change}
                             </span>
@@ -247,9 +246,9 @@ const Home: React.FC = () => {
                     key={asset.id}
                     className="w-1/3 border border-gray-500 rounded-md bg-gray-500 text-black flex flex-col"
                   >
-                   <div
-  className="bg-white rounded-md w-full flex justify-center items-center basis-[75%]"
->
+                    <div
+                      className="bg-white rounded-md w-full flex justify-center items-center basis-[75%]"
+                    >
 
                       {/* image */}
                     </div>
