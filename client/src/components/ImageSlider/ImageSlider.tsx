@@ -32,7 +32,7 @@ const ImageSlider: React.FC = () => {
 
       const formattedSlides: Slide[] = listings.map((item) => ({
         src: item.imageUrl || PLACEHOLDER_IMAGE,
-        name: item.nftName || item.nftMint.slice(0, 8) + "...",
+        name: item.name || item.nftMint.slice(0, 8) + "...",
         by: `by ${item.seller.slice(0, 8)}...`,
         texts: ["Price", `${item.price} ${item.currency}`],
       }));
@@ -184,16 +184,19 @@ const ImageSlider: React.FC = () => {
 
       {/* Dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => handleNavigation(i)}
-            className={`w-3 h-3 rounded-full transition ${
-              i === currentIndex ? "bg-white" : "bg-white/40"
-            }`}
-          ></button>
-        ))}
-      </div>
+  {slides.map((_, i) => (
+    <button
+      key={i}
+      onClick={() => handleNavigation(i)}
+      aria-label={`Go to slide ${i + 1}`}
+      title={`Go to slide ${i + 1}`}
+      className={`w-3 h-3 rounded-full transition ${
+        i === currentIndex ? "bg-white" : "bg-white/40"
+      }`}
+    ></button>
+  ))}
+</div>
+
     </div>
   );
 };
