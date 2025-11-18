@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [status, setStatus] = useState('Not started');
@@ -7,13 +7,13 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [assets, setAssets] = useState<string[]>([]);
-  const BACKEND_URL = 'http://localhost:3000';
+  const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
   // Fetch assets on mount
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const res = await fetch(`${BACKEND_URL}/api`);
+        const res = await fetch(`${BACKEND_URL}`);
         const data = await res.json();
         setAssets(data.assets);
       } catch (err) {
@@ -28,7 +28,7 @@ function App() {
     setError(null);
     try {
       console.log('Starting KYC fetch...');
-      const res = await fetch(`${BACKEND_URL}/api/start-kyc`, { method: 'POST' });
+      const res = await fetch(`${BACKEND_URL}/start-kyc`, { method: 'POST' });
       if (!res.ok) {
         throw new Error(`Backend error: ${res.status} - ${res.statusText}`);
       }
@@ -63,7 +63,7 @@ function App() {
 
   const checkStatus = async (id: string) => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/check-status/${id}`);
+      const res = await fetch(`${BACKEND_URL}/check-status/${id}`);
       if (!res.ok) {
         throw new Error(`Poll error: ${res.status}`);
       }
