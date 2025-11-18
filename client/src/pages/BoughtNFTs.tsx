@@ -426,7 +426,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import { Toaster, toast } from "react-hot-toast";
-import axios from "axios";
+// import axios from "axios";
+import API from "../utils/api";
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 
 interface Purchase {
@@ -553,7 +554,7 @@ const BoughtNFTs: React.FC = () => {
       toast.loading("Creating shipment…");
 
       // Backend call — updated (removed unused variable)
-      await axios.post("http://localhost:5000/api/shipment/create", {
+      await API.post("shipment/create", {
         fullName: deliveryForm.fullName,
         address: deliveryForm.address,
         city: deliveryForm.city,

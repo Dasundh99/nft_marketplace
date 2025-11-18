@@ -538,8 +538,6 @@ import nft2 from "../assets/digital_technology.webp";
 import nft3 from "../assets/blockchain_technology.png";
 import nft4 from "../assets/how_to_invest_in_nfts.jpg";
 
-const PLACEHOLDER_IMAGE =
-  "https://images.unsplash.com/photo-1618005182386-a1a8f4f6a0a3?q=80&w=1332&auto=format&fit=crop";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();

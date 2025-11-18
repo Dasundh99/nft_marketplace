@@ -61,7 +61,7 @@ export const mintNFT = async (
     const signature = await wallet.sendTransaction(tx, connection);
     await connection.confirmTransaction(signature, "confirmed");
 
-    const { mint, metadata_uri, image_uri } = res.data.result;
+    const { mint, image_uri } = res.data.result;
 
     // Store in Firestore
     await addDoc(collection(db, "nfts"), {

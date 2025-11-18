@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
+import API from "../../utils/api";
+// import axios from "axios";
 
 interface Shipment {
   senderName: string;
@@ -80,7 +81,7 @@ const Shipping: React.FC = () => {
     setShipments([...shipments, newShipment]);
 
     try {
-      await axios.post("http://localhost:5000/api/shipment", newShipment);
+      await API.post("/shipment", newShipment);
       toast.success("Shipment created and email sent to receiver!");
     } catch (err) {
       console.error(err);

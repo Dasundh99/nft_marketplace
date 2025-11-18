@@ -35,7 +35,13 @@ const DIDIT_API_KEY = process.env.DIDIT_API_KEY;
 const DIDIT_WORKFLOW_ID = process.env.DIDIT_WORKFLOW_ID;  
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173" })); // frontend URL
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://nfthrive-8d704.web.app"
+  ]
+}));
+// frontend URL
 app.use(express.json());
 
 // Debug env vars

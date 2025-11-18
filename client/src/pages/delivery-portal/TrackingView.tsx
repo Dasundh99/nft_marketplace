@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import API from "../../utils/api";
 
 interface TrackingEvent {
   StatusDescription: string;
@@ -22,11 +23,11 @@ const TrackingView: React.FC = () => {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/track/${carrier}/${trackingNumber.trim()}`
+      const res = await API.get(
+        `track/${carrier}/${trackingNumber.trim()}`
       );
-      if (!res.ok) throw new Error("Failed to fetch tracking data");
-      const data = await res.json();
+      if (!res.status || res.status < 200 || res.status >= 300) throw new Error("Failed to fetch tracking data");
+      const data = res.data;
       const item = data.data?.items?.[0];
       setStatus(item?.status || "Unknown");
       setEvents(item?.origin_info?.trackinfo || []);
