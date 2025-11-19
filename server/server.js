@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import shipmentRoutes from "./routes/shipmentRoutes.js";
 import "./cron/shipmentCron.js";
+import deliveryRoute from "./routes/deliveryRoute.js";
 
 
 
@@ -145,6 +146,8 @@ app.post('/api/update-user-kyc', (req, res) => {
 //shipping confirm
 
 app.use("/api/shipment", shipmentRoutes);
+app.use("/api/delivery", deliveryRoute);
+app.use("/delivery", deliveryRoute);
 
 // app.post("/api/shipment", async (req, res) => {
 //   try {
