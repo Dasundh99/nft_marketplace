@@ -43,7 +43,7 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 const Header: React.FC = () => {
   return (
-    <section className="px-5 py-3 bg-black flex items-center justify-between border-b border-gray-700">
+    <section className="pl-5 pr-5 py-3 bg-black flex items-center justify-between border-b border-gray-700">
       <div className="flex items-center w-full max-w-md px-3 py-1 rounded-md bg-[#1f1f1f] border border-gray-600 text-sm text-white">
         <FiSearch className="text-gray-400 mr-2" />
         <input

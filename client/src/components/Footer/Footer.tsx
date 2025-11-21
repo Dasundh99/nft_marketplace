@@ -33,9 +33,8 @@ const Footer = () => {
 
                 {/* Description */}
                 <div className="p-10 text-gray-500 text-center text-xs">
-                    MintedGold is a luxury-driven NFT experience that redefines how we view digital ownership and timeless beauty.
-                    Rooted in the elegance of handcrafted gold and the artistry of fine jewelry,
-                    each NFT in the MintedGold collection is a unique digital collectible forged with precision, rarity, and prestige.
+                    A secure and transparent ecosystem for tokenizing real-world commodities.
+We connect suppliers, traders, and buyers through blockchain-powered digital assets, enabling faster transactions, improved traceability, and verified ownership across the global trade network.
                 </div>
 
                 {/* Copyright + Links */}
