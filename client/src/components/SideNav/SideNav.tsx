@@ -8,7 +8,7 @@ import {
   IoChevronDown,
   IoChevronForward,
 } from "react-icons/io5";
-import {MdAdminPanelSettings } from "react-icons/md"; //MdStorefront market icon if needed
+import { MdAdminPanelSettings, MdOutlineInventory2 } from "react-icons/md";
 import { GiBoxUnpacking, GiPriceTag, GiCargoShip } from "react-icons/gi";
 import { RiCoinsLine } from "react-icons/ri";
 import { FiActivity } from "react-icons/fi";
@@ -30,9 +30,13 @@ const SideNav: React.FC = () => {
     >
       {/* Logo */}
       <div className="text-center p-5">
-        <h2 className="text-2xl font-bold
-                         bg-gradient-to-r from-[#39e0ab] to-[#059669]
-                         bg-clip-text text-transparent">NFThrive</h2>
+        <h2
+          className="text-2xl font-bold
+                     bg-gradient-to-r from-[#39e0ab] to-[#059669]
+                     bg-clip-text text-transparent"
+        >
+          NFThrive
+        </h2>
       </div>
 
       {/* Menu Title */}
@@ -42,11 +46,11 @@ const SideNav: React.FC = () => {
         {/* Home */}
         <MenuItem icon={<IoHomeSharp className="w-4 h-4" />} label="Home" path="/home" />
 
-        {/* Market */}
-        {/* <MenuItem icon={<MdStorefront className="w-4 h-4" />} label="Market" path="/market" /> */}
-
         {/* Goods */}
         <MenuItem icon={<GiBoxUnpacking className="w-4 h-4" />} label="Goods" path="/goods" />
+
+        {/* Listed NFTs (main item) */}
+        <MenuItem icon={<MdOutlineInventory2 className="w-4 h-4" />} label="Listed NFTs" path="/listednfts" />
 
         {/* My NFTs Dropdown */}
         <Dropdown
@@ -54,7 +58,6 @@ const SideNav: React.FC = () => {
           icon={<RiCoinsLine className="w-4 h-4" />}
           items={[
             { label: "My NFTs", path: "/mynfts" },
-            { label: "Listed NFTs", path: "/listednfts" },
             { label: "Bought NFTs", path: "/boughtnfts" },
           ]}
           isOpen={openDropdown === "mynfts"}
@@ -125,7 +128,6 @@ const SideNav: React.FC = () => {
 
         {/* Admin Login */}
         <MenuItem icon={<MdAdminPanelSettings className="w-4 h-4" />} label="Admin Login" path="/admin/login" />
-
       </ul>
     </div>
   );
