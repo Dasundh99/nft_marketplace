@@ -24,7 +24,7 @@ const Profile: React.FC = () => {
 
       <button
         onClick={() => setShowKycModal(true)}
-        className="mt-10 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+        className="mt-10 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
       >
         Start KYC
       </button>
@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
           />
 
           {/* Modal content */}
-          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-screen p-6 z-10 overflow-y-auto">
+          <div className="relative bg-white/10 rounded-2xl shadow-xl w-full max-w-2xl max-h-screen p-6 z-10 overflow-y-auto">
             <div className="flex justify-between items-center mb-4 p-3 rounded-lg bg-green-800 shadow-lg">
               <h2 className="text-xl font-bold text-white drop-shadow-sm">KYC Verification</h2>
               <button

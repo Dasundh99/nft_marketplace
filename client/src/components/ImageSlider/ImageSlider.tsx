@@ -9,29 +9,25 @@ const STATIC_SLIDES = [
     id: 1,
     src: image1,
     title: "Tokenized Limestone Assets",
-    subtitle: "Sri Lanka’s high-grade limestone deposits now available as digital tokens for global investors",
-    highlight: "Industrial-Grade • Verified Reserves • Fractional Ownership",
+    subtitle: "Sri Lanka’s high-grade limestone deposits now available as digital tokens for global investors"
   },
   {
     id: 2,
     src: image2,
     title: "Ceylon Tea on Blockchain",
-    subtitle: "Premium Sri Lankan tea estates tokenized for secure, transparent international trade",
-    highlight: "100% Traceable • Estate-to-Exporter • Real-Time Quality Assurance",
+    subtitle: "Premium Sri Lankan tea estates tokenized for secure, transparent international trade"
   },
   {
     id: 3,
     src: image3,
     title: "Ceylon Spices Tokenization",
-    subtitle: "World-renowned cinnamon, cardamom & pepper now tradable as liquid digital assets",
-    highlight: "Authentic Origin • Instant Settlement • Global Market Access",
+    subtitle: "World-renowned cinnamon, cardamom & pepper now tradable as liquid digital assets"
   },
   {
     id: 4,
     src: image4,
     title: "Sri Lankan Gems & Jewels",
-    subtitle: "Blue sapphires, rubies and rare gemstones tokenized for inclusive investment opportunities",
-    highlight: "Certified Provenance • Fractional Ownership • Secure Vault Storage",
+    subtitle: "Blue sapphires, rubies and rare gemstones tokenized for inclusive investment opportunities"
   },
 ];
 
@@ -100,7 +96,7 @@ const ImageSlider: React.FC = () => {
               </h2>
 
               <p
-                className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/80 font-light mb-6 sm:mb-8 max-w-3xl transition-all duration-1000"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/40 font-light mb-6 sm:mb-8 max-w-3xl transition-all duration-1000"
                 style={{
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? "translateY(0)" : "translateY(30px)",
@@ -109,20 +105,6 @@ const ImageSlider: React.FC = () => {
               >
                 {slide.subtitle}
               </p>
-
-              {/* Highlight Badge */}
-              <div
-                className="inline-flex items-center gap-3 bg-black/10 backdrop-blur-xl border border-white/20 rounded-full px-5 py-3 sm:px-7 sm:py-4 transition-all duration-1000"
-                style={{
-                  opacity: isActive ? 1 : 0,
-                  transform: isActive ? "translateY(0)" : "translateY(20px)",
-                  transitionDelay: isActive ? "0.7s" : "0s",
-                }}
-              >
-                <span className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white">
-                  {slide.highlight}
-                </span>
-              </div>
             </div>
           </div>
         );

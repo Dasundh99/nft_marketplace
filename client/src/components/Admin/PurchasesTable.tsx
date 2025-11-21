@@ -3,114 +3,132 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../utils/firebase";
 
 interface Purchase {
-    id: string;
-    image: string;
-    name: string;
-    seller: string;
-    price: number;
-    buyer: string;
-    createdAt: string;
-    mintAddress: string;
-    tx: string;
+  id: string;
+  image: string;
+  name: string;
+  seller: string;
+  price: number;
+  buyer: string;
+  createdAt: any;
+  mintAddress: string;
+  tx: string;
 }
 
 const PurchasesTable: React.FC = () => {
-    const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [purchases, setPurchases] = useState<Purchase[]>([]);
 
-    useEffect(() => {
-        //create a firestore query
-        const q = query(collection(db, "purchases"), orderBy("createdAt","desc"));
+  useEffect(() => {
+    const q = query(collection(db, "purchases"), orderBy("createdAt", "desc"));
 
-        // set a real time listener on the nfts collection
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map((doc) => ({
-                id:doc.id,
-                ...doc.data(),
-            })) as Purchase[];
-            
-            //update the react state with the fetched nft data
-            setPurchases(data);
-        });
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Purchase[];
+      setPurchases(data);
+    });
 
-        // cleanup the listener when components unmount
-        return () => unsubscribe();
-    }, []);
+    return () => unsubscribe();
+  }, []);
 
-    // handles the both created date types Timestamp and string
-    const formattedDate = (createdAt: any) => {
-        if(!createdAt) return "-";
-        try{
-            if(createdAt.toDate){
-                return createdAt.toDate().toLocaleDateString(); //Timestamp
-            }
-            return new Date(createdAt).toLocaleDateString(); //string
-        }
-        catch {
-            return "Invalid Date";
-        }
-    };
+  const formattedDate = (createdAt: any) => {
+    if (!createdAt) return "-";
+    try {
+      if (createdAt.toDate) return createdAt.toDate().toLocaleDateString();
+      return new Date(createdAt).toLocaleDateString();
+    } catch {
+      return "Invalid Date";
+    }
+  };
 
-    return (
-        <div className="min-h-screen bg-gray-900 text-white p-6">
-            <h1 className="text-xl font-semibold text-white mb-6 text-center">
-                Purchases Dashoard
-            </h1>
-            {/**Mfts transaction table */}
-            <div className="overflow-x-auto bg-gray-800 rounded-2xl shadow-lg border border-gray-700">
-                <table className="min-w-full text-sm">
-                    <thead className="bg-gray-700">
-                        <tr>
-                            <th className="p-3">Name</th>
-                            <th className="p-3">Created At</th>
-                            <th className="p-3">Image</th>
-                            <th className="p-3">Seller</th>
-                            <th className="p-3">Price</th>
-                            <th className="p-3">Mint Address</th>
-                            <th className="p-3">Tx</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {purchases.length === 0 && (
-                            <tr>
-                                <td colSpan={8} className="text-center py-10 text-gray-300 italic">
-                                    No purchases found
-                                </td>
-                            </tr>
-                        )}
-                        {purchases.map((purchases) => (
-                            <tr
-                            key={purchases.id}
-                            className="border-t border-gray-700 hover:bg-gray-700">
-                                <td className="p-3 font-medium text-indigo-300">{purchases.name}</td>
-                                <td className="p-3">{formattedDate(purchases.createdAt)}</td>
-                                <td className="p-3 font-medium">
-                                    <img src={purchases.image} alt={purchases.name} 
-                                    className="w-14 h-14 rounded-lg object-cover border border-gray-800"/>
-                                </td>
-                                <td className="p-3 font-medium text-indigo-300">{purchases.seller}</td>
-                                <td className="p-3 font-semibold">{purchases.price ?? "-"}</td>
-                                <td className="p-3">{purchases.mintAddress ?? 1}</td>
-                                <td className="p-3">
-                                    {purchases.tx ? (
-                                        <a
-                                        href={`https://solscan.io/tx/${purchases.tx}?cluster=devnet`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-400 hover:underline"
-                                        >
-                                        View Tx
-                                        </a>
-                                    ) : (
-                                    "-"
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
+  return (
+    <div className="w-full p-6 text-white">
+      <h1 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-white to-green-400 bg-clip-text text-transparent">
+        Purchases Dashboard
+      </h1>
+
+      <div className="overflow-x-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
+        <table className="min-w-full text-sm">
+          <thead className="bg-white/10 border-b border-white/10 text-gray-300 text-xs uppercase tracking-wider">
+            <tr>
+              {[
+                "Name",
+                "Created At",
+                "Image",
+                "Seller",
+                "Price",
+                "Mint Address",
+                "Tx",
+              ].map((header) => (
+                <th key={header} className="p-3 text-left font-medium">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {purchases.length === 0 && (
+              <tr>
+                <td
+                  colSpan={7}
+                  className="text-center py-10 text-gray-400 italic"
+                >
+                  No purchases found
+                </td>
+              </tr>
+            )}
+
+            {purchases.map((item) => (
+              <tr
+                key={item.id}
+                className="border-t border-white/10 hover:bg-white/5 transition-all duration-150"
+              >
+                <td className="p-3 font-medium text-gray break-all">
+                  {item.name}
+                </td>
+
+                <td className="p-3 text-gray-300">{formattedDate(item.createdAt)}</td>
+
+                <td className="p-3">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-14 h-14 rounded-lg object-cover border border-white/10"
+                  />
+                </td>
+
+                <td className="p-3 text-gray-400">{item.seller}</td>
+
+                <td className="p-3 font-semibold text-white">
+                  {item.price ?? "-"}
+                </td>
+
+                <td className="p-3 break-all text-gray-400">
+                  {item.mintAddress || "-"}
+                </td>
+
+                <td className="p-3">
+                  {item.tx ? (
+                    <a
+                      href={`https://solscan.io/tx/${item.tx}?cluster=devnet`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2 py-1 rounded-md bg-green-500 text-black font-semibold text-xs hover:bg-green-400 transition"
+                    >
+                      View Tx
+                    </a>
+                  ) : (
+                    "-"
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default PurchasesTable;
