@@ -35,16 +35,16 @@ const AdminLogin: React.FC = () => {
 
       {/* Back Button */}
       <button
-                onClick={() => navigate(-1)}
-                className="fixed top-6 left-6 z-50 flex items-center gap-2
-                   bg-black/50 backdrop-blur-md border border-white/10
-                   rounded-xl px-4 py-2 text-sm font-medium text-gray-300
-                   hover:bg-white/10 hover:border-green-500 hover:text-white
-                   transition-all duration-200 shadow-lg"
-            >
-                <IoArrowBack className="text-lg" />
-                Back
-            </button>
+        onClick={() => navigate(-1)}
+        className="fixed top-6 left-6 z-50 flex items-center gap-2
+          bg-black/50 backdrop-blur-md border border-white/10
+          rounded-lg px-3 py-2 text-sm font-medium text-gray-300
+          hover:bg-white/10 hover:border-green-500 hover:text-white
+          transition-all duration-200 shadow-md"
+      >
+        <IoArrowBack className="text-lg" />
+        Back
+      </button>
 
       {/* Login Card */}
       <form

@@ -753,12 +753,12 @@ const ListedNFTs: React.FC = () => {
   };
 
   // ========================================================
-  // 🎨 UI
+  // UI
   // ========================================================
   return (
     <div className="min-h-screen bg-gray-950 text-white p-6">
       <Toaster position="top-right" />
-      <h1 className="text-3xl font-bold mb-6 text-center">🛒 Listed NFTs</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Listed NFTs</h1>
 
       {loading ? (
         <div className="text-center py-10 text-gray-400">Loading NFTs...</div>

@@ -487,7 +487,7 @@ const BoughtNFTs: React.FC = () => {
     <div className="min-h-screen bg-gray-950 text-white p-8">
       <Toaster position="top-right" />
 
-      <h1 className="text-3xl font-bold text-center mb-8">🛍️ My Bought NFTs</h1>
+      <h1 className="text-3xl font-bold text-center mb-8">My Bought NFTs</h1>
 
       {loading ? (
         <p className="text-center text-gray-400">Loading…</p>
