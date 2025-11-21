@@ -9,7 +9,6 @@ function App() {
   const [assets, setAssets] = useState<string[]>([]);
   const BACKEND_URL = import.meta.env.VITE_API_BASE_URL;
 
-  // Fetch assets on mount
   useEffect(() => {
     const fetchAssets = async () => {
       try {
@@ -27,32 +26,21 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      console.log('Starting KYC fetch...');
       const res = await fetch(`${BACKEND_URL}/start-kyc`, { method: 'POST' });
-      if (!res.ok) {
-        throw new Error(`Backend error: ${res.status} - ${res.statusText}`);
-      }
+      if (!res.ok) throw new Error(`Backend error: ${res.status}`);
       const data = await res.json();
-      console.log('API response:', data);
       const { verifyUrl, sessionId: id } = data;
-      if (!verifyUrl || !id) {
-        throw new Error('Missing verifyUrl or sessionId from backend');
-      }
+      if (!verifyUrl || !id) throw new Error('Missing verifyUrl or sessionId');
       setSessionId(id);
-      // Updated: Open as smaller popup window (less height) instead of full tab
-      const kycWindow = window.open(
-        verifyUrl, 
-        'kycPopup', 
-        'width=500,height=700,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no'
+      window.open(
+        verifyUrl,
+        'kycPopup',
+        'width=450,height=650,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no'
       );
-      if (!kycWindow) {
-        throw new Error('Popup blocked—allow popups for this site and try again');
-      }
       setStatus('Verification started—check the popup window!');
       localStorage.setItem('diditSessionId', id);
-      setPolling(true);  // Start polling immediately
+      setPolling(true);
     } catch (error) {
-      console.error('KYC error:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       setError(errorMessage);
       setStatus('Not started');
@@ -64,17 +52,14 @@ function App() {
   const checkStatus = async (id: string) => {
     try {
       const res = await fetch(`${BACKEND_URL}/check-status/${id}`);
-      if (!res.ok) {
-        throw new Error(`Poll error: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`Poll error: ${res.status}`);
       const data = await res.json();
       setStatus(`Status: ${data.status || 'unknown'}`);
       if (data.status === 'approved') {
-        // Mock update user KYC (replace userId with real one)
         await fetch(`${BACKEND_URL}/api/update-user-kyc`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: 'mockUser123', verified: true })
+          body: JSON.stringify({ userId: 'mockUser123', verified: true }),
         });
         setPolling(false);
         setStatus('Verified! You can now tokenize commodities.');
@@ -86,26 +71,21 @@ function App() {
     } catch (error) {
       console.error(error);
       setError('Polling failed—try restarting verification.');
-      return true;  // Stop polling on error
+      return true;
     }
   };
 
-  // Polling effect
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (polling && sessionId) {
       interval = setInterval(async () => {
         const done = await checkStatus(sessionId);
-        if (done) {
-          clearInterval(interval);
-          setPolling(false);
-        }
-      }, 10000);  // Poll every 10s
+        if (done) clearInterval(interval);
+      }, 10000);
     }
     return () => clearInterval(interval);
   }, [polling, sessionId]);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       localStorage.removeItem('diditSessionId');
@@ -124,137 +104,76 @@ function App() {
   const isVerified = status.includes('Verified!');
 
   return (
-    <div style={{ 
-      minHeight: '50vh', 
-      backgroundColor: '#000000', 
-      color: '#ffffff', 
-      fontFamily: 'Arial, sans-serif',
-      padding: '20px',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    }}>
-      <header style={{ 
-        width: '100%', 
-        maxWidth: '800px', 
-        textAlign: 'center', 
-        marginBottom: '40px',
-        borderBottom: '1px solid #2c2c2c',
-        paddingBottom: '20px'
-      }}>
-        <h1 style={{ margin: 0, color: '#2e7d32', fontSize: '2.5em' }}>Commodity Tokenization</h1>
-        <p style={{ margin: '10px 0 0 0', opacity: 0.8 }}>Securely tokenize real-world assets with KYC verification</p>
+    <div className=" bg-black text-white font-sans p-4 flex flex-col items-center">
+      <header className="w-full max-w-2xl text-center mb-6 border-b border-gray-800 pb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-green-600">Commodity Tokenization</h1>
+        <p className="mt-1 text-gray-400 text-sm">Securely tokenize real-world assets with KYC verification</p>
       </header>
 
-      <main style={{ 
-        width: '100%', 
-        maxWidth: '800px', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center',
-        gap: '20px'
-      }}>
-        {/* Status Section */}
-        <div style={{ 
-          backgroundColor: '#1a1a1a', 
-          borderRadius: '10px', 
-          padding: '20px', 
-          width: '100%', 
-          textAlign: 'center',
-          boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
-        }}>
-          <h2 style={{ margin: '0 0 10px 0', color: '#2e7d32' }}>Verification Status</h2>
-          <p style={{ 
-            margin: '0 0 15px 0', 
-            fontSize: '1.1em',
-            color: status.includes('Error') || status.includes('rejected') ? '#616161' : status.includes('Verified') ? '#4caf50' : '#ffffff'
-          }}>
+      <main className="w-full max-w-2xl flex flex-col items-center gap-4">
+        {/* Status Box */}
+        <div className="w-full bg-gray-900 border border-gray-800 rounded-xl p-4 text-center shadow-md">
+          <h2 className="text-green-600 font-semibold text-md mb-1">Verification Status</h2>
+          <p
+            className={`text-sm ${
+              status.includes('Error') || status.includes('rejected')
+                ? 'text-red-500'
+                : status.includes('Verified')
+                ? 'text-green-500'
+                : 'text-white'
+            }`}
+          >
             {status}
           </p>
-          {error && (
-            <p style={{ color: '#616161', fontSize: '0.9em', margin: '10px 0' }}>
-              {error}
-            </p>
-          )}
+          {error && <p className="text-gray-500 text-xs mt-1">{error}</p>}
+
           {polling && (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-              <div style={{ width: '20px', height: '20px', border: '2px solid #2c2c2c', borderTop: '2px solid #2e7d32', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-              <span>Polling for results...</span>
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <div className="w-4 h-4 border-2 border-gray-700 border-t-green-500 rounded-full animate-spin" />
+              <span className="text-gray-400 text-xs">Polling for results...</span>
             </div>
           )}
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div className="flex flex-wrap justify-center gap-2">
           {status === 'Not started' && !loading && (
-            <button 
-              onClick={startKYC} 
-              style={{ 
-                padding: '12px 24px', 
-                backgroundColor: '#4caf50', 
-                color: '#ffffff', 
-                border: 'none', 
-                borderRadius: '5px', 
-                fontSize: '1em', 
-                cursor: 'pointer',
-                fontWeight: 'bold'
-              }}
+            <button
+              onClick={startKYC}
+              className="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition-all text-sm"
             >
               Start KYC Verification
             </button>
           )}
           {loading && (
-            <button disabled style={{ padding: '12px 24px', backgroundColor: '#2c2c2c', color: '#ffffff', border: 'none', borderRadius: '5px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '20px', height: '20px', border: '2px solid #ffffff', borderTop: '2px solid #2e7d32', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
-                Starting...
-              </div>
+            <button
+              disabled
+              className="px-4 py-1.5 bg-gray-800 text-gray-300 font-semibold rounded-md flex items-center gap-1 text-sm animate-pulse"
+            >
+              <div className="w-4 h-4 border-2 border-white border-t-green-500 rounded-full animate-spin" />
+              Starting...
             </button>
           )}
           {(error || status.includes('rejected')) && (
-            <button 
-              onClick={startKYC} 
-              style={{ 
-                padding: '12px 24px', 
-                backgroundColor: '#616161', 
-                color: '#ffffff', 
-                border: 'none', 
-                borderRadius: '5px', 
-                fontSize: '1em', 
-                cursor: 'pointer'
-              }}
+            <button
+              onClick={startKYC}
+              className="px-4 py-1.5 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-md transition-all text-sm"
             >
               Retry KYC
             </button>
           )}
           {polling && (
-            <button 
-              onClick={() => setPolling(false)} 
-              style={{ 
-                padding: '12px 24px', 
-                backgroundColor: '#2c2c2c', 
-                color: '#ffffff', 
-                border: 'none', 
-                borderRadius: '5px', 
-                fontSize: '1em', 
-                cursor: 'pointer'
-              }}
+            <button
+              onClick={() => setPolling(false)}
+              className="px-4 py-1.5 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-md transition-all text-sm"
             >
               Stop Polling
             </button>
           )}
           {(status.includes('Error') || status.includes('rejected')) && (
-            <button 
-              onClick={resetKYC} 
-              style={{ 
-                padding: '12px 24px', 
-                backgroundColor: '#66bb6a', 
-                color: '#ffffff', 
-                border: 'none', 
-                borderRadius: '5px', 
-                fontSize: '1em', 
-                cursor: 'pointer'
-              }}
+            <button
+              onClick={resetKYC}
+              className="px-4 py-1.5 bg-green-700 hover:bg-green-600 text-white font-semibold rounded-md transition-all text-sm"
             >
               Reset
             </button>
@@ -263,30 +182,15 @@ function App() {
 
         {/* Verified Section */}
         {isVerified && (
-          <div style={{ 
-            backgroundColor: '#1a1a1a', 
-            borderRadius: '10px', 
-            padding: '20px', 
-            width: '100%', 
-            textAlign: 'center',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
-          }}>
-            <h2 style={{ margin: '0 0 15px 0', color: '#4caf50' }}>✅ KYC Complete!</h2>
-            <p style={{ margin: '0 0 20px 0' }}>You are now verified. Select an asset to tokenize:</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center' }}>
+          <div className="w-full bg-gray-900 border border-gray-800 rounded-xl p-4 text-center shadow-md">
+            <h2 className="text-green-500 font-semibold text-md mb-1">✅ KYC Complete!</h2>
+            <p className="text-gray-400 text-sm mb-2">You are now verified. Select an asset to tokenize:</p>
+            <div className="flex flex-wrap justify-center gap-2">
               {assets.map((asset) => (
-                <button 
-                  key={asset} 
-                  style={{ 
-                    padding: '8px 16px', 
-                    backgroundColor: '#4caf50', 
-                    color: '#ffffff', 
-                    border: 'none', 
-                    borderRadius: '5px', 
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}
-                  onClick={() => alert(`Tokenizing ${asset}... (Integrate your tokenization logic here)`)}  // Placeholder
+                <button
+                  key={asset}
+                  onClick={() => alert(`Tokenizing ${asset}...`)}
+                  className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition-all text-sm"
                 >
                   {asset}
                 </button>
@@ -297,13 +201,9 @@ function App() {
       </main>
 
       <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
         @media (max-width: 600px) {
-          h1 { font-size: 2em; }
-          button { width: 100%; margin-bottom: 10px; }
+          h1 { font-size: 1.5em; }
+          button { width: 100%; }
         }
       `}</style>
     </div>
