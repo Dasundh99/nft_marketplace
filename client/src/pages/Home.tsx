@@ -523,13 +523,12 @@
 
 // src/pages/Home.tsx
 import React, { useState, useEffect } from "react";
-import Categories from "./Categories";
 import ImageSlider from "../components/ImageSlider/ImageSlider";
 import { useNavigate } from "react-router-dom";
 import {
   fetchLimitedListings,
-  fetchRecentPurchases,
   fetchWeeklySales,
+  fetchRecentPurchases,
 } from "../services/listingService";
 
 import nft1 from "../assets/understanding_nfts.jpg";
@@ -537,11 +536,11 @@ import nft2 from "../assets/digital_technology.webp";
 import nft3 from "../assets/blockchain_technology.png";
 import nft4 from "../assets/how_to_invest_in_nfts.jpg";
 
-// Clean Professional Skeletons
+// Elegant Skeletons
 const SkeletonCard = () => (
-  <div className="animate-pulse">
-    <div className="bg-gray-800 rounded-xl h-64 w-full" />
-    <div className="mt-4 space-y-3">
+  <div className="animate-pulse space-y-4">
+    <div className="bg-gray-800 rounded-xl aspect-square w-full" />
+    <div className="space-y-2">
       <div className="h-5 bg-gray-700 rounded w-4/5" />
       <div className="h-4 bg-gray-700 rounded w-3/5" />
     </div>
@@ -549,9 +548,12 @@ const SkeletonCard = () => (
 );
 
 const SkeletonTrending = () => (
-  <div className="animate-pulse bg-gray-800/50 rounded-xl p-6 border border-gray-800">
-    <div className="h-6 bg-gray-700 rounded w-3/4 mb-4" />
-    <div className="h-9 bg-gray-700 rounded w-1/2" />
+  <div className="animate-pulse bg-gray-900/50 border border-gray-800 rounded-2xl p-8 space-y-6">
+    <div className="h-6 bg-gray-700 rounded w-28" />
+    <div className="space-y-3">
+      <div className="h-8 bg-gray-700 rounded w-3/4" />
+      <div className="h-12 bg-gray-700 rounded w-1/2" />
+    </div>
   </div>
 );
 
@@ -572,26 +574,31 @@ const Home: React.FC = () => {
           fetchRecentPurchases(4),
         ]);
 
-        setTrendingAssets(trending.map((item: any, i: number) => ({
-          id: i + 1,
-          name: item.name || "Unnamed Asset",
-          price: `${item.price} ${item.currency || "USD"}`,
-        })));
+        setTrendingAssets(
+          trending.map((item: any, i: number) => ({
+            id: i + 1,
+            name: item.name || "Unnamed Asset",
+            price: `${item.price} ${item.currency || "USD"}`,
+          }))
+        );
 
-        setWeeklyHighestSales(weekly.map((item: any, i: number) => ({
-          id: i + 1,
-          name: item.name || "Unknown",
-          price: `${item.price} ${item.currency || "USD"}`,
-          imageUrl: item.imageUrl || "/placeholder.jpg",
-        })));
+        setWeeklyHighestSales(
+          weekly.map((item: any, i: number) => ({
+            id: i + 1,
+            name: item.name || "Unknown Collection",
+            price: `${item.price} ${item.currency || "USD"}`,
+            imageUrl: item.imageUrl || "/placeholder.jpg",
+          }))
+        );
 
         setRecentSales(recent);
       } catch (err) {
-        console.error("Load failed", err);
+        console.error("Failed to load data", err);
       } finally {
         setLoading(false);
       }
     };
+
     loadAll();
   }, []);
 
@@ -603,166 +610,173 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Categories />
+    <div className="min-h-screen bg-[#0F0F0F] text-white">
 
-      {/* Hero Slider */}
-      <div className="px-5 pt-6">
+      {/* Full-width Hero Slider */}
+      <div className="px-5 pt-8 pb-12">
         <ImageSlider />
       </div>
 
       {/* Main Content */}
-      <div className="px-5 py-16 max-w-7xl mx-auto space-y-24">
+      <div className="px-5 py-5 max-w-full mx-auto space-y-20">
+
         {/* Trending Assets */}
         <section>
-          <h2 className="text-3xl md:text-4xl font-semibold mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white tracking-wide">
             Trending Assets
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {loading
               ? Array(6).fill(0).map((_, i) => <SkeletonTrending key={i} />)
               : trendingAssets.map((asset, index) => (
-                  <div
-                    key={asset.id}
-                    className="group bg-gray-900/50 border border-gray-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-gray-700 hover:shadow-xl hover:-translate-y-1"
-                  >
-                    {/* Rank */}
-                    <div className="bg-gray-800 text-gray-300 text-sm font-medium px-4 py-2">
-                      #{index + 1}
-                    </div>
+                <div
+                  key={asset.id}
+                  className="group bg-[#1C1C1C] border border-[#2A2A2A] rounded-xl overflow-hidden 
+            transition-all duration-300 hover:border-[#C0C0C0]/40 hover:shadow-md hover:-translate-y-[3px]"
+                >
+                  {/* Top badge bar */}
+                  <div className="bg-gradient-to-r from-[#1A1A1A]/40 to-[#1C1C1C]/10 px-4 py-2">
+                    <span className="text-xs md:text-sm font-medium text-[#D0D0D0]">
+                      #{index + 1} Trending
+                    </span>
+                  </div>
 
-                    <div className="p-6">
-                      <h3 className="text-xl font-medium text-white mb-3 line-clamp-2">
-                        {asset.name}
-                      </h3>
+                  {/* Card content */}
+                  <div className="p-5">
+                    <h3 className="text-lg md:text-xl font-semibold text-white mb-3 line-clamp-2 
+              group-hover:text-[#C0C0C0] transition-colors">
+                      {asset.name}
+                    </h3>
 
-                      <div className="flex items-baseline justify-between">
-                        <div>
-                          <p className="text-2xl font-bold text-teal-400">
-                            {asset.price}
-                          </p>
-                          <p className="text-sm text-gray-400 mt-1">Floor Price</p>
-                        </div>
-
-                        <svg
-                          className="w-5 h-5 text-gray-500 group-hover:text-teal-400 transition-colors"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path strokeLinecap="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                    <div className="flex items-end justify-between">
+                      <div>
+                        <p className="text-xl md:text-2xl font-bold text-[#C0C0C0]">
+                          {asset.price}
+                        </p>
+                        <p className="text-xs md:text-sm text-gray-500 mt-1">Floor Price</p>
                       </div>
+
+                      <svg
+                        className="w-5 h-5 md:w-6 md:h-6 text-gray-500 group-hover:text-[#C0C0C0] transition-colors"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
           </div>
         </section>
 
+
         {/* Weekly Top Sales */}
         <section>
-          <h2 className="text-3xl md:text-4xl font-semibold mb-10">
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-10 text-white tracking-wide">
             Weekly Top Sales
           </h2>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {loading
               ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
               : weeklyHighestSales.map((asset) => (
-                  <div
-                    key={asset.id}
-                    className="bg-gray-900/50 border border-gray-800 rounded-xl overflow-hidden transition-transform hover:scale-[1.02]"
-                  >
-                    <div className="aspect-square relative overflow-hidden bg-gray-800">
-                      <img
-                        src={asset.imageUrl}
-                        alt={asset.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                        #{asset.id}
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-medium text-sm line-clamp-2 text-gray-300">
-                        {asset.name}
-                      </h3>
-                      <p className="text-lg font-bold text-teal-400 mt-2">{asset.price}</p>
+                <div
+                  key={asset.id}
+                  className="group bg-[#1C1C1C] border border-[#2A2A2A] overflow-hidden transition-all duration-300 hover:border-[#C0C0C0]/50 hover:shadow-lg hover:shadow-[#C0C0C0]/10"
+                >
+                  <div className="aspect-square relative overflow-hidden">
+                    <img
+                      src={asset.imageUrl}
+                      alt={asset.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 right-4 bg-[#C0C0C0] text-black font-bold text-sm md:text-base px-3 py-1 rounded-full">
+                      #{asset.id}
                     </div>
                   </div>
-                ))}
+                  <div className="p-6">
+                    <h3 className="font-medium text-gray-300 md:text-lg line-clamp-2 group-hover:text-white transition-colors">
+                      {asset.name}
+                    </h3>
+                    <p className="text-2xl md:text-3xl font-bold text-[#C0C0C0] mt-3">{asset.price}</p>
+                  </div>
+                </div>
+              ))}
           </div>
         </section>
 
         {/* Recent Sales */}
         <section>
-          <h2 className="text-3xl md:text-4xl font-semibold mb-10">
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-10 text-white tracking-wide">
             Recent Sales
           </h2>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {loading
               ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
               : recentSales.map((sale: any, i: number) => (
-                  <div
-                    key={i}
-                    className="bg-gray-900/50 border border-gray-800 rounded-xl overflow-hidden"
-                  >
-                    <div className="aspect-square relative">
-                      <img
-                        src={sale.imageUrl}
-                        alt={sale.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <span className="absolute bottom-2 left-2 bg-teal-500 text-black text-xs font-bold px-2 py-1 rounded">
-                        SOLD
-                      </span>
-                    </div>
-                    <div className="p-4 text-sm">
-                      <p className="font-medium text-gray-300 line-clamp-2">{sale.name}</p>
-                      <p className="text-teal-400 font-bold mt-1">{sale.price} SOL</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {sale.createdAt
-                          ? new Date(sale.createdAt.seconds * 1000).toLocaleDateString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                            })
-                          : "Just now"}
-                      </p>
-                    </div>
+                <div
+                  key={i}
+                  className="group bg-[#1C1C1C] border border-[#2A2A2A] overflow-hidden transition-all duration-300 hover:border-[#C0C0C0]/50"
+                >
+                  <div className="aspect-square relative overflow-hidden">
+                    <img
+                      src={sale.imageUrl}
+                      alt={sale.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    <span className="absolute bottom-4 left-4 bg-[#C0C0C0] text-black text-sm md:text-xs font-bold px-3 py-1.5 rounded-full">
+                      SOLD
+                    </span>
                   </div>
-                ))}
+                  <div className="p-6 space-y-2">
+                    <p className="font-medium text-gray-300 md:text-base line-clamp-2 group-hover:text-white transition-colors">
+                      {sale.name}
+                    </p>
+                    <p className="text-xl md:text-2xl font-bold text-[#C0C0C0]">{sale.price} SOL</p>
+                    <p className="text-xs md:text-sm text-gray-500">
+                      {sale.createdAt
+                        ? new Date(sale.createdAt.seconds * 1000).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                        })
+                        : "Just now"}
+                    </p>
+                  </div>
+                </div>
+              ))}
           </div>
         </section>
 
         {/* Learn Section */}
         <section>
-          <h2 className="text-3xl md:text-4xl font-semibold mb-10">
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-10 text-white tracking-wide">
             Learn About Tokenization
           </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {articles.map((article) => (
               <div
                 key={article.id}
                 onClick={() => article.id === 1 && navigate("/hownftsworks")}
-                className="group cursor-pointer bg-gray-900/50 border border-gray-800 rounded-xl overflow-hidden transition-all hover:border-gray-700"
+                className="group cursor-pointer bg-[#1C1C1C]/90 border border-[#2A2A2A] overflow-hidden transition-all duration-500 hover:border-[#C0C0C0]/70 hover:shadow-lg hover:shadow-[#C0C0C0]/20"
               >
-                <div className="aspect-video overflow-hidden bg-gray-800">
+                <div className="aspect-video overflow-hidden">
                   <img
                     src={article.image}
                     alt={article.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
-                <div className="p-5">
-                  <h3 className="font-medium text-white group-hover:text-teal-400 transition-colors">
+                <div className="p-6 md:p-8">
+                  <h3 className="text-lg md:text-xl font-semibold text-white group-hover:text-[#C0C0C0] transition-colors duration-300">
                     {article.title}
                   </h3>
-                  <p className="text-sm text-gray-400 mt-3 group-hover:text-teal-400 transition-colors">
-                    Read article →
+                  <p className="text-sm md:text-base text-gray-400 mt-4 group-hover:text-[#C0C0C0] transition-colors duration-300 flex items-center gap-2">
+                    Read article <span className="group-hover:translate-x-2 transition-transform">→</span>
                   </p>
                 </div>
               </div>

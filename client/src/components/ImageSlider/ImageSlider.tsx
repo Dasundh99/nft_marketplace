@@ -60,7 +60,7 @@ const ImageSlider: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-[80vh] max-h-[500px] min-h-[400px] rounded-3xl overflow-hidden bg-black select-none">
+    <div className="relative w-full h-[80vh] max-h-[500px] min-h-[400px] overflow-hidden bg-black select-none">
       {/* Slides */}
       {STATIC_SLIDES.map((slide, i) => {
         const offset = i - activeIndex;
@@ -112,14 +112,14 @@ const ImageSlider: React.FC = () => {
 
               {/* Highlight Badge */}
               <div
-                className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-5 py-3 sm:px-7 sm:py-4 transition-all duration-1000"
+                className="inline-flex items-center gap-3 bg-black/10 backdrop-blur-xl border border-white/20 rounded-full px-5 py-3 sm:px-7 sm:py-4 transition-all duration-1000"
                 style={{
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? "translateY(0)" : "translateY(20px)",
                   transitionDelay: isActive ? "0.7s" : "0s",
                 }}
               >
-                <span className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-cyan-300">
+                <span className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white">
                   {slide.highlight}
                 </span>
               </div>
