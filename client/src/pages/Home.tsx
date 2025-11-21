@@ -622,7 +622,7 @@ const Home: React.FC = () => {
 
         {/* Trending Assets */}
         <section>
-          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white tracking-wide">
+          <h2 className="text-xl md:text-2xl font-bold mb-6 text-white tracking-wide">
             Trending Assets
           </h2>
 
@@ -632,33 +632,39 @@ const Home: React.FC = () => {
               : trendingAssets.map((asset, index) => (
                 <div
                   key={asset.id}
-                  className="group bg-[#1C1C1C] border border-[#2A2A2A] rounded-xl overflow-hidden 
-            transition-all duration-300 hover:border-[#C0C0C0]/40 hover:shadow-md hover:-translate-y-[3px]"
+                  className="group bg-[#1C1C1C] border border-[#2A2A2A] rounded-xl overflow-hidden
+                       transition-all duration-300 hover:border-[#C0C0C0]/40 hover:shadow-md hover:-translate-y-1"
                 >
                   {/* Top badge bar */}
-                  <div className="bg-gradient-to-r from-[#1A1A1A]/40 to-[#1C1C1C]/10 px-4 py-2">
-                    <span className="text-xs md:text-sm font-medium text-[#D0D0D0]">
+                  <div className="bg-gradient-to-r from-[#1A1A1A]/40 to-[#1C1C1C]/10 px-3 py-2">
+                    <span className="text-[11px] md:text-xs font-medium text-[#D0D0D0]">
                       #{index + 1} Trending
                     </span>
                   </div>
 
-                  {/* Card content */}
-                  <div className="p-5">
-                    <h3 className="text-lg md:text-xl font-semibold text-white mb-3 line-clamp-2 
-              group-hover:text-[#C0C0C0] transition-colors">
+                  {/* Content */}
+                  <div className="p-4">
+                    <h3 className="text-sm md:text-base font-semibold text-white mb-2 line-clamp-2 
+                             group-hover:text-[#C0C0C0] transition-colors">
                       {asset.name}
                     </h3>
 
                     <div className="flex items-end justify-between">
                       <div>
-                        <p className="text-xl md:text-2xl font-bold text-[#C0C0C0]">
+                        {/* Price */}
+                        <p className="text-lg md:text-xl font-semibold text-[#C0C0C0]">
                           {asset.price}
                         </p>
-                        <p className="text-xs md:text-sm text-gray-500 mt-1">Floor Price</p>
+
+                        {/* Floor price label */}
+                        <p className="text-[10px] md:text-[11px] text-gray-500 mt-1">
+                          Floor Price
+                        </p>
                       </div>
 
+                      {/* Arrow Icon */}
                       <svg
-                        className="w-5 h-5 md:w-6 md:h-6 text-gray-500 group-hover:text-[#C0C0C0] transition-colors"
+                        className="w-4 h-4 md:w-5 md:h-5 text-gray-500 group-hover:text-[#C0C0C0] transition-colors"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -673,70 +679,106 @@ const Home: React.FC = () => {
         </section>
 
 
+
         {/* Weekly Top Sales */}
         <section>
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-10 text-white tracking-wide">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white tracking-wide">
             Weekly Top Sales
           </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {loading
               ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
               : weeklyHighestSales.map((asset) => (
                 <div
                   key={asset.id}
-                  className="group bg-[#1C1C1C] border border-[#2A2A2A] overflow-hidden transition-all duration-300 hover:border-[#C0C0C0]/50 hover:shadow-lg hover:shadow-[#C0C0C0]/10"
+                  className="group bg-[#1C1C1C] border border-[#2A2A2A] rounded-xl overflow-hidden 
+                     transition-all duration-300 hover:border-[#C0C0C0]/40 hover:shadow-md hover:shadow-black/20"
                 >
                   <div className="aspect-square relative overflow-hidden">
                     <img
                       src={asset.imageUrl}
                       alt={asset.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover transition-transform duration-500 
+                        group-hover:scale-103"
                     />
-                    <div className="absolute top-4 right-4 bg-[#C0C0C0] text-black font-bold text-sm md:text-base px-3 py-1 rounded-full">
+                    <div className="absolute top-3 right-3 bg-[#C0C0C0] text-black font-semibold 
+                            text-[10px] md:text-xs px-2.5 py-1 rounded-full">
                       #{asset.id}
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="font-medium text-gray-300 md:text-lg line-clamp-2 group-hover:text-white transition-colors">
+
+                  <div className="p-4">
+                    <h3 className="font-medium text-gray-300 text-sm md:text-base line-clamp-2 
+                           group-hover:text-white transition-colors">
                       {asset.name}
                     </h3>
-                    <p className="text-2xl md:text-3xl font-bold text-[#C0C0C0] mt-3">{asset.price}</p>
+
+                    {/* Price Label */}
+                    <p className="text-[10px] uppercase tracking-wide text-gray-500 mt-2">
+                      Price
+                    </p>
+
+                    <p className="text-lg md:text-xl font-semibold text-[#C0C0C0] mt-0.5">
+                      {asset.price}
+                    </p>
                   </div>
                 </div>
               ))}
           </div>
+
         </section>
 
         {/* Recent Sales */}
         <section>
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-10 text-white tracking-wide">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white tracking-wide">
             Recent Sales
           </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {loading
               ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />)
               : recentSales.map((sale: any, i: number) => (
                 <div
                   key={i}
-                  className="group bg-[#1C1C1C] border border-[#2A2A2A] overflow-hidden transition-all duration-300 hover:border-[#C0C0C0]/50"
+                  className="group bg-[#1C1C1C] border border-[#2A2A2A] rounded-xl overflow-hidden
+                     transition-all duration-300 hover:border-[#C0C0C0]/40 hover:shadow-md hover:shadow-black/20"
                 >
                   <div className="aspect-square relative overflow-hidden">
                     <img
                       src={sale.imageUrl}
                       alt={sale.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover transition-transform duration-500
+                        group-hover:scale-103"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                    <span className="absolute bottom-4 left-4 bg-[#C0C0C0] text-black text-sm md:text-xs font-bold px-3 py-1.5 rounded-full">
+
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+                    {/* SOLD Tag */}
+                    <span className="absolute bottom-3 left-3 bg-[#C0C0C0] text-black font-semibold
+                             text-[10px] md:text-xs px-2.5 py-1 rounded-full">
                       SOLD
                     </span>
                   </div>
-                  <div className="p-6 space-y-2">
-                    <p className="font-medium text-gray-300 md:text-base line-clamp-2 group-hover:text-white transition-colors">
+
+                  <div className="p-4 space-y-1.5">
+                    {/* Name */}
+                    <p className="font-medium text-gray-300 text-sm md:text-base line-clamp-2
+                          group-hover:text-white transition-colors">
                       {sale.name}
                     </p>
-                    <p className="text-xl md:text-2xl font-bold text-[#C0C0C0]">{sale.price} SOL</p>
-                    <p className="text-xs md:text-sm text-gray-500">
+
+                    {/* Price Label */}
+                    <p className="text-[10px] uppercase tracking-wide text-gray-500">
+                      Price
+                    </p>
+
+                    {/* Price */}
+                    <p className="text-lg md:text-xl font-semibold text-[#C0C0C0]">
+                      {sale.price} SOL
+                    </p>
+
+                    {/* Date */}
+                    <p className="text-[11px] md:text-xs text-gray-500">
                       {sale.createdAt
                         ? new Date(sale.createdAt.seconds * 1000).toLocaleDateString("en-US", {
                           month: "short",
@@ -750,39 +792,53 @@ const Home: React.FC = () => {
                 </div>
               ))}
           </div>
+
         </section>
 
         {/* Learn Section */}
         <section>
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-10 text-white tracking-wide">
+          <h2 className="text-xl md:text-2xl font-bold mb-6 text-white tracking-wide">
             Learn About Tokenization
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {articles.map((article) => (
               <div
                 key={article.id}
                 onClick={() => article.id === 1 && navigate("/hownftsworks")}
-                className="group cursor-pointer bg-[#1C1C1C]/90 border border-[#2A2A2A] overflow-hidden transition-all duration-500 hover:border-[#C0C0C0]/70 hover:shadow-lg hover:shadow-[#C0C0C0]/20"
+                className="group cursor-pointer bg-[#1C1C1C] border border-[#2A2A2A] rounded-xl 
+                   overflow-hidden transition-all duration-300 
+                   hover:border-[#C0C0C0]/40 hover:shadow-md hover:shadow-black/20"
               >
+                {/* Thumbnail */}
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={article.image}
                     alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transition-transform duration-500 
+                       group-hover:scale-103"
                   />
                 </div>
-                <div className="p-6 md:p-8">
-                  <h3 className="text-lg md:text-xl font-semibold text-white group-hover:text-[#C0C0C0] transition-colors duration-300">
+
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="text-sm md:text-base font-semibold text-white 
+                         group-hover:text-[#C0C0C0] transition-colors duration-300">
                     {article.title}
                   </h3>
-                  <p className="text-sm md:text-base text-gray-400 mt-4 group-hover:text-[#C0C0C0] transition-colors duration-300 flex items-center gap-2">
-                    Read article <span className="group-hover:translate-x-2 transition-transform">→</span>
+
+                  <p className="text-[11px] md:text-xs text-gray-400 mt-3 
+                        group-hover:text-[#C0C0C0] transition-colors duration-300 
+                        flex items-center gap-2">
+                    Read article
+                    <span className="group-hover:translate-x-1 transition-transform">→</span>
                   </p>
                 </div>
               </div>
             ))}
           </div>
         </section>
+
       </div>
     </div>
   );

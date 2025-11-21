@@ -8,7 +8,7 @@ import {
   IoChevronDown,
   IoChevronForward,
 } from "react-icons/io5";
-import { MdStorefront, MdAdminPanelSettings } from "react-icons/md";
+import {MdAdminPanelSettings } from "react-icons/md"; //MdStorefront market icon if needed
 import { GiBoxUnpacking, GiPriceTag, GiCargoShip } from "react-icons/gi";
 import { RiCoinsLine } from "react-icons/ri";
 import { FiActivity } from "react-icons/fi";
@@ -43,7 +43,7 @@ const SideNav: React.FC = () => {
         <MenuItem icon={<IoHomeSharp className="w-4 h-4" />} label="Home" path="/home" />
 
         {/* Market */}
-        <MenuItem icon={<MdStorefront className="w-4 h-4" />} label="Market" path="/market" />
+        {/* <MenuItem icon={<MdStorefront className="w-4 h-4" />} label="Market" path="/market" /> */}
 
         {/* Goods */}
         <MenuItem icon={<GiBoxUnpacking className="w-4 h-4" />} label="Goods" path="/goods" />
