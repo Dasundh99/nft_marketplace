@@ -303,6 +303,7 @@ import { db } from "../utils/firebase";
 import { Toaster, toast } from "react-hot-toast";
 import API from "../utils/api";
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
+import { LifeLine } from "react-loading-indicators";
 
 interface Purchase {
   mintAddress: string;
@@ -490,7 +491,10 @@ const BoughtNFTs: React.FC = () => {
       <h1 className="text-3xl font-bold text-center mb-8">My Bought NFTs</h1>
 
       {loading ? (
-        <p className="text-center text-gray-400">Loading…</p>
+        // <p className="text-center text-gray-400">Loading…</p>
+        <div className="flex items-center justify-center w-full h-full">
+          <LifeLine color="green-400" size="medium" text="" textColor="" />
+        </div>
       ) : purchases.length === 0 ? (
         <p className="text-center text-gray-400">You haven't bought anything yet.</p>
       ) : (

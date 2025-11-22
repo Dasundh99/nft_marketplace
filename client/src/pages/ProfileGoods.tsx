@@ -454,6 +454,7 @@ import {
   listNFTOnAuctionHouse,
   cancelListingOnAuctionHouse,
 } from "../utils/solana"; // make sure these are exported from solana.ts
+import { LifeLine } from "react-loading-indicators";
 
 type NFTData = {
   mintAddress: string;
@@ -691,7 +692,10 @@ const ProfileGoods: React.FC = () => {
           Connect your wallet to view and manage your goods.
         </div>
       ) : loading ? (
-        <p className="text-center">Loading your NFTs…</p>
+        // <p className="text-center">Loading your NFTs…</p>
+        <div className="flex items-center justify-center w-full h-full">
+          <LifeLine color="green-400" size="medium" text="" textColor="" />
+        </div>
       ) : error ? (
         <p className="text-center text-red-400">{error}</p>
       ) : nfts.length === 0 ? (

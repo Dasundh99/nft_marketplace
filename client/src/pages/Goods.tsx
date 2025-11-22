@@ -172,6 +172,8 @@
 import React, { useEffect, useState } from "react";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../utils/firebase";
+import { LifeLine } from "react-loading-indicators";
+
 
 interface NFTData {
   mintAddress: string;
@@ -208,9 +210,15 @@ const Goods: React.FC = () => {
 
   return (
     <div className="p-6 text-white max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Minted Goods (NFTs)</h1>
+      {/* <h1 className="text-3xl font-bold mb-6">Minted Goods (NFTs)</h1> */}
+      <div className="flex items-center justify-center">
+  <h1 className="text-3xl font-bold mb-6">Minted Goods (NFTs)</h1>
+</div>
+
       {loading ? (
-        <p>Loading NFTs...</p>
+        <div className="flex items-center justify-center w-full h-full">
+          <LifeLine color="green-400" size="medium" text="" textColor="" />
+        </div>
       ) : nfts.length === 0 ? (
         <p>No NFTs found.</p>
       ) : (
