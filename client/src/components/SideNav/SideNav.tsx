@@ -107,7 +107,7 @@ const SideNav: React.FC = () => {
           icon={<IoPersonSharp className="w-4 h-4" />}
           items={[
             { label: "My Profile", path: "/user" },
-            { label: "Profile Settings", path: "/profile" },
+            // { label: "Profile Settings", path: "/profile" },
             { label: "My Goods", path: "/mygoods" },
           ]}
           isOpen={openDropdown === "profile"}

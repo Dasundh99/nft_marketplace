@@ -624,6 +624,8 @@ import {
 } from "@metaplex-foundation/js";
 import toast, { Toaster } from "react-hot-toast";
 import { AUCTION_HOUSE_ADDRESS, buyNFT } from "../utils/solana";
+import { LifeLine } from "react-loading-indicators";
+
 
 // RPC (use Helius or your preferred RPC)
 const RPC_URL = "https://api.devnet.solana.com";
@@ -761,7 +763,14 @@ const ListedNFTs: React.FC = () => {
       <h1 className="text-3xl font-bold mb-6 text-center">Listed NFTs</h1>
 
       {loading ? (
-        <div className="text-center py-10 text-gray-400">Loading NFTs...</div>
+        // <div className="text-center py-10 text-gray-400">Loading NFTs...</div>
+        // <Mosaic color="#32cd32" size="medium" text="" textColor="" />
+        // <FourSquare color="#32cd32" size="medium" text="" textColor="" />
+
+        <div className="flex items-center justify-center w-full h-full">
+          <LifeLine color="green-400" size="medium" text="" textColor="" />
+        </div>
+
       ) : listedNFTs.length === 0 ? (
         <div className="text-center py-10 text-gray-400">
           {wallet.connected
@@ -793,11 +802,10 @@ const ListedNFTs: React.FC = () => {
               <button
                 onClick={() => handleBuy(nft.mintAddress, nft.price)}
                 disabled={!wallet.connected}
-                className={`w-full py-2 rounded-lg font-semibold transition-all ${
-                  wallet.connected
-                    ? "bg-green-600 hover:bg-green-700 active:scale-95"
-                    : "bg-gray-600 cursor-not-allowed"
-                }`}
+                className={`w-full py-2 rounded-lg font-semibold transition-all ${wallet.connected
+                  ? "bg-green-600 hover:bg-green-700 active:scale-95"
+                  : "bg-gray-600 cursor-not-allowed"
+                  }`}
               >
                 {wallet.connected ? "Buy Now" : "Connect Wallet"}
               </button>

@@ -55,6 +55,7 @@ import axios from "axios";
 import { useWallet } from "@solana/wallet-adapter-react";
 import toast, { Toaster } from "react-hot-toast";
 import ListForSale from "../components/ListNFT";
+import { LifeLine } from "react-loading-indicators";
 
 interface NFTItem {
   name: string;
@@ -120,7 +121,10 @@ const fetchMyNFTs = async () => {
       <h1 className="text-3xl font-bold text-center mb-6">My NFTs</h1>
 
       {loading && (
-        <div className="text-center text-gray-400">Loading your NFTs...</div>
+        // <div className="text-center text-gray-400">Loading your NFTs...</div>
+        <div className="flex items-center justify-center w-full h-full">
+          <LifeLine color="green-400" size="medium" text="" textColor="" />
+        </div>
       )}
 
       {!loading && nfts.length === 0 && (
