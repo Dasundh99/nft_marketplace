@@ -375,7 +375,8 @@ const MintForm: React.FC = () => {
   manufactureDate: "",
   expiryDate: "",
   weight: "",
-  email: "",  // <-- ADDED
+  email: "",
+  quantity: "",
 });
 
 
@@ -495,6 +496,7 @@ const MintForm: React.FC = () => {
   manufactureDate: form.manufactureDate,
   expiryDate: form.expiryDate,
   weight: form.weight,
+  quantity: form.quantity,
   email: form.email,   // <-- ADDED
   owner: wallet.publicKey.toBase58(),
   createdAt: serverTimestamp(),
@@ -511,6 +513,7 @@ const MintForm: React.FC = () => {
         manufactureDate: "",
         expiryDate: "",
         weight: "",
+        quantity: "",
       });
       setImageFile(null);
     } catch (err: any) {
@@ -605,11 +608,20 @@ const MintForm: React.FC = () => {
         <label>Weight (grams)</label>
         <input
           type="number"
-          placeholder="Weight in grams"
+          placeholder="Weight in grams and for one item"
           aria-label="weight in grams"
           className="w-full p-2 bg-gray-800 rounded"
           value={form.weight}
           onChange={(e) => setForm({ ...form, weight: e.target.value })}
+        />
+        <label>Quantity</label>
+        <input
+          type="number"
+          placeholder="Quantity of items"
+          aria-label="quantity of items"
+          className="w-full p-2 bg-gray-800 rounded"
+          value={form.quantity}
+          onChange={(e) => setForm({ ...form, quantity: e.target.value })}
         />
 
         {/* IMAGE UPLOAD */}

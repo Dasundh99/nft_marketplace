@@ -19,6 +19,7 @@ import NotificationSettings from "./components/SettingsPage/NotificationSettings
 import HowNftsWorks from "./pages/HowNftsWorks";
 
 import Goods from "./pages/Goods";
+import NFTDetails from "./pages/NFTDetails";
 import MintForm from "./components/MintForm";
 
 
@@ -255,6 +256,7 @@ function App() {
             </Layout>
           }
         />
+        <Route path="/nft/:mintAddress" element={<NFTDetails />} />
         <Route
           path="/mygoods"
           element={
