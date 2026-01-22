@@ -77,7 +77,7 @@ const SideNav: React.FC = () => {
         />
 
         {/* Activity */}
-        <MenuItem icon={<FiActivity className="w-4 h-4" />} label="Activity" path="/activitypage" />
+        {/* <MenuItem icon={<FiActivity className="w-4 h-4" />} label="Activity" path="/activitypage" /> */}
 
         {/* Notifications */}
         <MenuItem icon={<IoNotificationsSharp className="w-4 h-4" />} label="Notifications" path="/notifications" />
